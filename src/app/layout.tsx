@@ -64,13 +64,14 @@ export default function RootLayout({
       <body className="min-h-full">
         <Providers>
           <div className="relative isolate min-h-screen overflow-x-hidden">
-            <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.12),transparent_28%),radial-gradient(circle_at_18%_16%,_rgba(249,115,22,0.18),transparent_22%),linear-gradient(180deg,#fffdf8_0%,#f5efe4_100%)]" />
-            <div className="absolute inset-0 -z-10 opacity-60 [background-image:linear-gradient(rgba(15,23,42,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(15,23,42,0.04)_1px,transparent_1px)] [background-size:52px_52px]" />
+            <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.95),rgba(248,250,252,0.98)_34%,#f8fafc_72%,#f1f5f9_100%)]" />
+            <div className="absolute inset-0 -z-10 opacity-60 [background-image:linear-gradient(rgba(15,23,42,0.035)_1px,transparent_1px),linear-gradient(90deg,rgba(15,23,42,0.035)_1px,transparent_1px)] [background-size:52px_52px]" />
             <SiteHeader />
             <main className="pb-24">{children}</main>
             <footer className="container-shell pb-10 text-sm text-slate-500">
               <div className="rounded-[28px] border border-slate-900/10 bg-white/72 px-6 py-5 backdrop-blur-xl">
-                DevFrame helps developers choose a template, add their details, and publish a portfolio without building everything from zero.
+                DevFrame helps developers choose a template, add their details,
+                and publish a portfolio without building everything from zero.
               </div>
             </footer>
           </div>
