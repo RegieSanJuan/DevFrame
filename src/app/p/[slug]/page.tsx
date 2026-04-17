@@ -46,11 +46,14 @@ export default async function PublicPortfolioPage({
   const template = getTemplateBySlug(portfolio.templateSlug);
 
   return (
-    <div className="container-shell space-y-8 pt-8">
+    <div className="container-shell space-y-8 pt-10">
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div className="space-y-3">
-          <Badge>{template.name}</Badge>
-          <p className="text-sm uppercase tracking-[0.24em] text-slate-400">
+          <div className="flex flex-wrap items-center gap-3">
+            <Badge>{template.name}</Badge>
+            <Badge variant="success">{portfolio.availability}</Badge>
+          </div>
+          <p className="text-sm uppercase tracking-[0.24em] text-foreground-soft">
             Public portfolio route
           </p>
         </div>

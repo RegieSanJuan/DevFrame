@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Show, UserButton } from "@clerk/nextjs";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, LayoutTemplate } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -9,23 +9,20 @@ import { isClerkConfigured } from "@/lib/env";
 export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40">
-      <div className="border-b border-slate-900/8 bg-slate-950 px-4 py-2 text-center text-xs font-medium tracking-[0.22em] text-white/72">
-        DevFrame lets developers create a polished portfolio in minutes using
-        ready-made templates tailored to their style.
-      </div>
-      <div className="container-shell py-5">
-        <div className="mx-auto flex max-w-6xl flex-col gap-4 rounded-full border border-slate-900/10 bg-white/82 px-4 py-3 shadow-[0_26px_70px_-46px_rgba(15,23,42,0.55)] backdrop-blur-xl md:flex-row md:items-center md:justify-between">
-          <div className="flex items-center gap-4">
-            <Link href="/" className="flex items-center gap-3">
-              <span className="flex size-11 items-center justify-center rounded-full bg-slate-950 text-sm font-bold text-white">
-                DF
+      <div className="border-b border-white/8 bg-background/82 backdrop-blur-2xl">
+        <div className="container-shell flex flex-col gap-4 py-4 md:flex-row md:items-center md:justify-between">
+          <div className="flex items-center justify-between gap-4">
+            <Link href="/" className="group flex items-center gap-3">
+              <span className="relative flex size-11 items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] shadow-[0_18px_44px_-30px_rgba(0,0,0,0.9)]">
+                <span className="absolute left-[8px] top-[8px] h-3.5 w-3.5 rounded-[5px] bg-accent" />
+                <span className="absolute bottom-[8px] right-[8px] h-3 w-3 rounded-full border border-accent/45 bg-accent/18" />
               </span>
               <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.25em] text-slate-500">
+                <p className="text-sm font-semibold uppercase tracking-[0.24em] text-foreground-soft">
                   DevFrame
                 </p>
-                <p className="text-sm text-slate-600">
-                  Developer portfolio builder
+                <p className="hidden text-sm text-foreground-muted sm:block">
+                  Developer portfolio platform
                 </p>
               </div>
             </Link>
@@ -33,9 +30,9 @@ export function SiteHeader() {
           </div>
 
           <div className="flex flex-col gap-3 md:flex-row md:items-center">
-            <nav className="flex items-center gap-2 text-sm text-slate-600">
+            <nav className="flex flex-wrap items-center gap-1 text-sm text-foreground-muted">
               <Button asChild variant="ghost" size="sm">
-                <Link href="/">Product</Link>
+                <Link href="/">Overview</Link>
               </Button>
               <Button asChild variant="ghost" size="sm">
                 <Link href="/templates">Templates</Link>
@@ -51,7 +48,7 @@ export function SiteHeader() {
             {!isClerkConfigured ? (
               <Button asChild size="sm" variant="accent">
                 <Link href="/builder">
-                  Explore the builder
+                  Open builder
                   <ArrowRight className="size-4" />
                 </Link>
               </Button>
@@ -73,6 +70,12 @@ export function SiteHeader() {
                 <Show when="signed-in">
                   <div className="flex items-center gap-3">
                     <Button asChild size="sm" variant="secondary">
+                      <Link href="/templates">
+                        Templates
+                        <LayoutTemplate className="size-4" />
+                      </Link>
+                    </Button>
+                    <Button asChild size="sm" variant="accent">
                       <Link href="/builder">Edit portfolio</Link>
                     </Button>
                     <UserButton />

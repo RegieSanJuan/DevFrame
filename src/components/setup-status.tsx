@@ -48,10 +48,13 @@ export function SetupStatus() {
         const Icon = item.icon;
 
         return (
-          <Card key={item.title}>
+          <Card
+            key={item.title}
+            className="border-white/10 transition-transform duration-200 hover:-translate-y-1 hover:border-accent/24"
+          >
             <CardHeader>
               <div className="flex items-center justify-between gap-3">
-                <span className="flex size-12 items-center justify-center rounded-2xl bg-slate-950 text-white">
+                <span className="flex size-12 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-accent">
                   <Icon className="size-5" />
                 </span>
                 <Badge variant={item.ready ? "success" : "warning"}>
@@ -62,7 +65,7 @@ export function SetupStatus() {
               <CardDescription>{item.description}</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-xs font-medium uppercase tracking-[0.22em] text-slate-400">
+              <p className="text-xs font-medium uppercase tracking-[0.22em] text-foreground-soft">
                 {item.ready
                   ? "Integrated into the app"
                   : "Preview mode stays usable until this is added"}

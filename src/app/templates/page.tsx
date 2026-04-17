@@ -18,15 +18,48 @@ export default async function TemplatesPage() {
   await requireViewer();
 
   return (
-    <div className="container-shell space-y-10 pt-8">
-      <section className="space-y-4">
+    <div className="container-shell space-y-10 pt-10">
+      <section className="grid gap-6 lg:grid-cols-[1.02fr_0.98fr] lg:items-end">
+        <div className="space-y-4">
         <Badge>Templates</Badge>
-        <h1 className="text-4xl font-semibold tracking-tight text-slate-950 md:text-5xl">
-          Pick the portfolio direction that fits your style
-        </h1>
-        <p className="max-w-3xl text-lg leading-8 text-slate-600">
-          These starter layouts are already connected to the same structured portfolio data, so you can experiment with presentation without rebuilding your content.
-        </p>
+          <h1 className="text-4xl font-semibold tracking-[-0.05em] text-foreground md:text-5xl">
+            Pick the portfolio direction that fits your style.
+          </h1>
+          <p className="max-w-3xl text-base leading-7 text-foreground-muted md:text-lg md:leading-8">
+            Each starter layout connects to the same structured portfolio data,
+            so you can change presentation without rebuilding the underlying
+            content model.
+          </p>
+        </div>
+
+        <Card className="border-white/10 bg-surface-strong">
+          <CardContent className="grid gap-4 p-6 sm:grid-cols-3">
+            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-foreground-soft">
+                Shared data
+              </p>
+              <p className="mt-3 text-lg font-semibold text-foreground">
+                One builder
+              </p>
+            </div>
+            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-foreground-soft">
+                Available styles
+              </p>
+              <p className="mt-3 text-lg font-semibold text-foreground">
+                {TEMPLATE_CATALOG.length} templates
+              </p>
+            </div>
+            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-foreground-soft">
+                Output
+              </p>
+              <p className="mt-3 text-lg font-semibold text-foreground">
+                Public `/p` route
+              </p>
+            </div>
+          </CardContent>
+        </Card>
       </section>
 
       <div className="grid gap-6 lg:grid-cols-3">
@@ -34,19 +67,24 @@ export default async function TemplatesPage() {
           const sample = getSeedPortfolioByTemplate(template.slug);
 
           return (
-            <Card key={template.slug} className="overflow-hidden">
+            <Card
+              key={template.slug}
+              className="group overflow-hidden border-white/10 transition-transform duration-200 hover:-translate-y-1 hover:border-accent/28"
+            >
               <div className={`h-2 w-full bg-gradient-to-r ${template.accent}`} />
               <CardHeader>
                 <Badge>{template.name}</Badge>
-                <CardTitle>{template.tagline}</CardTitle>
+                <CardTitle className="text-2xl tracking-[-0.04em]">
+                  {template.tagline}
+                </CardTitle>
                 <CardDescription>{template.description}</CardDescription>
               </CardHeader>
               <CardContent className="space-y-5">
                 <div>
-                  <p className="text-sm font-semibold uppercase tracking-[0.22em] text-slate-400">
+                  <p className="text-sm font-semibold uppercase tracking-[0.22em] text-foreground-soft">
                     Ideal for
                   </p>
-                  <p className="mt-2 text-sm leading-6 text-slate-600">
+                  <p className="mt-2 text-sm leading-6 text-foreground-muted">
                     {template.idealFor}
                   </p>
                 </div>
@@ -54,7 +92,7 @@ export default async function TemplatesPage() {
                   {template.highlights.map((highlight) => (
                     <span
                       key={highlight}
-                      className="rounded-full border border-slate-900/10 bg-slate-50 px-4 py-2 text-sm text-slate-600"
+                      className="rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-sm text-foreground-muted"
                     >
                       {highlight}
                     </span>

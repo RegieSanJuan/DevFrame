@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowUpRight, CheckCircle2, Sparkles } from "lucide-react";
+import { AlertCircle, ArrowUpRight, CheckCircle2, Sparkles } from "lucide-react";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 
@@ -37,7 +37,7 @@ function FieldError({ message }: { message?: string }) {
     return null;
   }
 
-  return <p className="mt-2 text-sm text-rose-600">{message}</p>;
+  return <p className="mt-2 text-sm text-danger">{message}</p>;
 }
 
 export function PortfolioBuilderForm({
@@ -75,16 +75,17 @@ export function PortfolioBuilderForm({
 
   return (
     <div className="grid gap-6 xl:grid-cols-[1.05fr_0.95fr]">
-      <Card className="order-2 xl:order-1">
+      <Card className="order-2 border-white/10 xl:order-1">
         <CardHeader>
           <div className="flex items-center gap-3">
-            <span className="flex size-12 items-center justify-center rounded-2xl bg-slate-950 text-white">
+            <span className="flex size-12 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-accent">
               <Sparkles className="size-5" />
             </span>
             <div>
               <CardTitle>Portfolio builder</CardTitle>
               <CardDescription>
-                Fill in your details, pick a template, and publish your public portfolio.
+                Fill in your details, pick a template, and publish your public
+                portfolio.
               </CardDescription>
             </div>
           </div>
@@ -94,11 +95,12 @@ export function PortfolioBuilderForm({
             <input type="hidden" {...register("templateSlug")} />
             <section className="space-y-4">
               <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.22em] text-slate-400">
+                <p className="text-sm font-semibold uppercase tracking-[0.22em] text-foreground-soft">
                   Choose a template
                 </p>
-                <p className="mt-2 text-sm leading-6 text-slate-600">
-                  Each template is wired to a different portfolio presentation, but your data structure stays the same.
+                <p className="mt-2 text-sm leading-6 text-foreground-muted">
+                  Each template is wired to a different portfolio presentation,
+                  but your data structure stays the same.
                 </p>
               </div>
               <div className="grid gap-4 md:grid-cols-3">
@@ -111,10 +113,10 @@ export function PortfolioBuilderForm({
                       setValue("templateSlug", template.slug, { shouldValidate: true });
                     }}
                     className={cn(
-                      "rounded-[24px] border p-4 text-left transition",
+                      "rounded-[24px] border p-4 text-left transition duration-200",
                       selectedTemplate === template.slug
-                        ? "border-sky-400 bg-sky-50 shadow-[0_20px_40px_-28px_rgba(14,165,233,0.7)]"
-                        : "border-slate-900/10 bg-white/80 hover:border-slate-900/20",
+                        ? "border-accent bg-accent/10 shadow-[0_22px_50px_-34px_rgba(62,207,142,0.72)]"
+                        : "border-white/10 bg-white/[0.03] hover:border-white/16 hover:bg-white/[0.05]",
                     )}
                   >
                     <div
@@ -123,8 +125,12 @@ export function PortfolioBuilderForm({
                         template.accent,
                       )}
                     />
-                    <p className="mt-4 text-base font-semibold text-slate-950">{template.name}</p>
-                    <p className="mt-2 text-sm leading-6 text-slate-600">{template.tagline}</p>
+                    <p className="mt-4 text-base font-semibold text-foreground">
+                      {template.name}
+                    </p>
+                    <p className="mt-2 text-sm leading-6 text-foreground-muted">
+                      {template.tagline}
+                    </p>
                   </button>
                 ))}
               </div>
@@ -132,21 +138,21 @@ export function PortfolioBuilderForm({
 
             <section className="grid gap-4 md:grid-cols-2">
               <div>
-                <label className="text-sm font-semibold text-slate-700" htmlFor="slug">
+                <label className="text-sm font-semibold text-foreground" htmlFor="slug">
                   Portfolio slug
                 </label>
                 <Input id="slug" placeholder="regie" {...register("slug")} />
                 <FieldError message={errors.slug?.message} />
               </div>
               <div>
-                <label className="text-sm font-semibold text-slate-700" htmlFor="name">
+                <label className="text-sm font-semibold text-foreground" htmlFor="name">
                   Full name
                 </label>
                 <Input id="name" placeholder="Regie Cruz" {...register("name")} />
                 <FieldError message={errors.name?.message} />
               </div>
               <div>
-                <label className="text-sm font-semibold text-slate-700" htmlFor="title">
+                <label className="text-sm font-semibold text-foreground" htmlFor="title">
                   Professional title
                 </label>
                 <Input
@@ -157,7 +163,7 @@ export function PortfolioBuilderForm({
                 <FieldError message={errors.title?.message} />
               </div>
               <div>
-                <label className="text-sm font-semibold text-slate-700" htmlFor="location">
+                <label className="text-sm font-semibold text-foreground" htmlFor="location">
                   Location
                 </label>
                 <Input
@@ -168,7 +174,7 @@ export function PortfolioBuilderForm({
                 <FieldError message={errors.location?.message} />
               </div>
               <div>
-                <label className="text-sm font-semibold text-slate-700" htmlFor="email">
+                <label className="text-sm font-semibold text-foreground" htmlFor="email">
                   Email
                 </label>
                 <Input
@@ -180,12 +186,12 @@ export function PortfolioBuilderForm({
                 <FieldError message={errors.email?.message} />
               </div>
               <div>
-                <label className="text-sm font-semibold text-slate-700" htmlFor="availability">
+                <label className="text-sm font-semibold text-foreground" htmlFor="availability">
                   Availability
                 </label>
                 <select
                   id="availability"
-                  className="flex h-12 w-full rounded-2xl border border-slate-900/10 bg-white/85 px-4 text-sm text-slate-950 shadow-sm outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100"
+                  className="flex h-12 w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 text-sm text-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.02)] outline-none transition focus:border-accent focus:bg-white/[0.04] focus:ring-2 focus:ring-accent/20"
                   {...register("availability")}
                 >
                   {availabilityOptions.map((option) => (
@@ -200,7 +206,7 @@ export function PortfolioBuilderForm({
 
             <section className="space-y-4">
               <div>
-                <label className="text-sm font-semibold text-slate-700" htmlFor="bio">
+                <label className="text-sm font-semibold text-foreground" htmlFor="bio">
                   Short intro
                 </label>
                 <Textarea
@@ -212,7 +218,7 @@ export function PortfolioBuilderForm({
                 <FieldError message={errors.bio?.message} />
               </div>
               <div>
-                <label className="text-sm font-semibold text-slate-700" htmlFor="about">
+                <label className="text-sm font-semibold text-foreground" htmlFor="about">
                   About story
                 </label>
                 <Textarea
@@ -224,7 +230,7 @@ export function PortfolioBuilderForm({
                 <FieldError message={errors.about?.message} />
               </div>
               <div>
-                <label className="text-sm font-semibold text-slate-700" htmlFor="skills">
+                <label className="text-sm font-semibold text-foreground" htmlFor="skills">
                   Skills
                 </label>
                 <Input
@@ -238,7 +244,7 @@ export function PortfolioBuilderForm({
 
             <section className="grid gap-4 md:grid-cols-3">
               <div>
-                <label className="text-sm font-semibold text-slate-700" htmlFor="githubUrl">
+                <label className="text-sm font-semibold text-foreground" htmlFor="githubUrl">
                   GitHub URL
                 </label>
                 <Input
@@ -249,7 +255,7 @@ export function PortfolioBuilderForm({
                 <FieldError message={errors.githubUrl?.message} />
               </div>
               <div>
-                <label className="text-sm font-semibold text-slate-700" htmlFor="linkedinUrl">
+                <label className="text-sm font-semibold text-foreground" htmlFor="linkedinUrl">
                   LinkedIn URL
                 </label>
                 <Input
@@ -260,7 +266,7 @@ export function PortfolioBuilderForm({
                 <FieldError message={errors.linkedinUrl?.message} />
               </div>
               <div>
-                <label className="text-sm font-semibold text-slate-700" htmlFor="websiteUrl">
+                <label className="text-sm font-semibold text-foreground" htmlFor="websiteUrl">
                   Personal site URL
                 </label>
                 <Input
@@ -273,13 +279,13 @@ export function PortfolioBuilderForm({
             </section>
 
             <section className="space-y-4">
-              <p className="text-sm font-semibold uppercase tracking-[0.22em] text-slate-400">
+              <p className="text-sm font-semibold uppercase tracking-[0.22em] text-foreground-soft">
                 Featured project
               </p>
               <div className="grid gap-4 md:grid-cols-2">
                 <div>
                   <label
-                    className="text-sm font-semibold text-slate-700"
+                    className="text-sm font-semibold text-foreground"
                     htmlFor="featuredProjectName"
                   >
                     Project name
@@ -293,7 +299,7 @@ export function PortfolioBuilderForm({
                 </div>
                 <div>
                   <label
-                    className="text-sm font-semibold text-slate-700"
+                    className="text-sm font-semibold text-foreground"
                     htmlFor="featuredProjectStack"
                   >
                     Project stack
@@ -308,7 +314,7 @@ export function PortfolioBuilderForm({
               </div>
               <div>
                 <label
-                  className="text-sm font-semibold text-slate-700"
+                  className="text-sm font-semibold text-foreground"
                   htmlFor="featuredProjectSummary"
                 >
                   Project summary
@@ -323,7 +329,7 @@ export function PortfolioBuilderForm({
               </div>
               <div>
                 <label
-                  className="text-sm font-semibold text-slate-700"
+                  className="text-sm font-semibold text-foreground"
                   htmlFor="featuredProjectUrl"
                 >
                   Project URL
@@ -356,12 +362,16 @@ export function PortfolioBuilderForm({
                 className={cn(
                   "rounded-[24px] border px-5 py-4 text-sm leading-6",
                   state.status === "success"
-                    ? "border-emerald-200 bg-emerald-50 text-emerald-700"
-                    : "border-rose-200 bg-rose-50 text-rose-700",
+                    ? "border-accent/30 bg-accent/10 text-accent"
+                    : "border-danger/30 bg-danger/10 text-danger",
                 )}
               >
                 <div className="flex items-start gap-3">
-                  <CheckCircle2 className="mt-0.5 size-5 shrink-0" />
+                  {state.status === "success" ? (
+                    <CheckCircle2 className="mt-0.5 size-5 shrink-0" />
+                  ) : (
+                    <AlertCircle className="mt-0.5 size-5 shrink-0" />
+                  )}
                   <div>
                     <p className="font-semibold">{state.message}</p>
                     {state.previewUrl ? (
@@ -374,7 +384,7 @@ export function PortfolioBuilderForm({
               </div>
             ) : null}
 
-            <p className="text-sm leading-6 text-slate-500">
+            <p className="text-sm leading-6 text-foreground-soft">
               {demoMode
                 ? "Demo mode is active right now, so protected pages stay accessible while you finish setting up Clerk."
                 : "Once Clerk is connected, this builder stays protected behind your authenticated dashboard."}
@@ -384,58 +394,64 @@ export function PortfolioBuilderForm({
       </Card>
 
       <div className="order-1 space-y-6 xl:order-2">
-        <Card>
+        <Card className="border-white/10">
           <CardHeader>
             <Badge>How it works</Badge>
             <CardTitle>One form, multiple portfolio styles</CardTitle>
             <CardDescription>
-              DevFrame keeps your data structured so you can switch templates without rebuilding your content from scratch.
+              DevFrame keeps your data structured so you can switch templates
+              without rebuilding your content from scratch.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="rounded-[24px] border border-slate-900/10 bg-slate-50 p-5">
-              <p className="text-sm font-semibold uppercase tracking-[0.22em] text-slate-400">
+            <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
+              <p className="text-sm font-semibold uppercase tracking-[0.22em] text-foreground-soft">
                 1. Pick your look
               </p>
-              <p className="mt-2 text-sm leading-6 text-slate-600">
-                Start with Signal, Atlas, or Pulse depending on how bold or editorial you want your portfolio to feel.
+              <p className="mt-2 text-sm leading-6 text-foreground-muted">
+                Start with Signal, Atlas, or Pulse depending on how bold or
+                editorial you want your portfolio to feel.
               </p>
             </div>
-            <div className="rounded-[24px] border border-slate-900/10 bg-slate-50 p-5">
-              <p className="text-sm font-semibold uppercase tracking-[0.22em] text-slate-400">
+            <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
+              <p className="text-sm font-semibold uppercase tracking-[0.22em] text-foreground-soft">
                 2. Fill in your profile
               </p>
-              <p className="mt-2 text-sm leading-6 text-slate-600">
+              <p className="mt-2 text-sm leading-6 text-foreground-muted">
                 Add your intro, about section, links, and featured project details.
               </p>
             </div>
-            <div className="rounded-[24px] border border-slate-900/10 bg-slate-50 p-5">
-              <p className="text-sm font-semibold uppercase tracking-[0.22em] text-slate-400">
+            <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
+              <p className="text-sm font-semibold uppercase tracking-[0.22em] text-foreground-soft">
                 3. Publish to a clean URL
               </p>
-              <p className="mt-2 text-sm leading-6 text-slate-600">
+              <p className="mt-2 text-sm leading-6 text-foreground-muted">
                 Your public portfolio lives at a route like `/p/your-name`.
               </p>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-slate-950 text-white">
+        <Card className="border-white/10 bg-surface-strong text-foreground">
           <CardHeader>
-            <Badge className="border-white/10 bg-white/8 text-white/70">
+            <Badge className="border-white/10 bg-white/[0.06] text-foreground-soft">
               MVP note
             </Badge>
-            <CardTitle className="text-white">Ready for Supabase and Vercel</CardTitle>
-            <CardDescription className="text-white/70">
-              The UI works before your environment is fully connected, and the same builder upgrades to real persistence once your keys are added.
+            <CardTitle>Ready for Supabase and Vercel</CardTitle>
+            <CardDescription>
+              The UI works before your environment is fully connected, and the
+              same builder upgrades to real persistence once your keys are added.
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4 text-sm leading-6 text-white/72">
+          <CardContent className="space-y-4 text-sm leading-6 text-foreground-muted">
             <p>
-              Clerk handles authentication. Supabase stores the portfolio data. The public page reads your saved portfolio and renders the chosen template automatically.
+              Clerk handles authentication. Supabase stores the portfolio data.
+              The public page reads your saved portfolio and renders the chosen
+              template automatically.
             </p>
             <p>
-              When Supabase is missing, DevFrame uses preview mode so you can keep shaping the product instead of getting blocked by setup.
+              When Supabase is missing, DevFrame uses preview mode so you can
+              keep shaping the product instead of getting blocked by setup.
             </p>
           </CardContent>
         </Card>

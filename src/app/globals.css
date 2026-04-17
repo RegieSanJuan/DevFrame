@@ -2,16 +2,44 @@
 @import "tailwindcss";
 
 :root {
-  --background: #fffdf8;
-  --foreground: #0f172a;
-  --border: rgba(15, 23, 42, 0.1);
+  --background: #0b0d0c;
+  --background-alt: #101413;
+  --surface: #111614;
+  --surface-strong: #161d1a;
+  --surface-soft: #0e1211;
+  --surface-inset: #0a0d0c;
+  --foreground: #f3f5f4;
+  --foreground-strong: #ffffff;
+  --foreground-muted: #a3ada8;
+  --foreground-soft: #7a857f;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.14);
+  --accent: #3ecf8e;
+  --accent-strong: #27bc74;
+  --accent-soft: rgba(62, 207, 142, 0.16);
+  --danger: #ff7b72;
+  --warning: #f2b46f;
 }
 
 @theme inline {
   --color-background: var(--background);
+  --color-background-alt: var(--background-alt);
+  --color-surface: var(--surface);
+  --color-surface-strong: var(--surface-strong);
+  --color-surface-soft: var(--surface-soft);
+  --color-surface-inset: var(--surface-inset);
   --color-foreground: var(--foreground);
+  --color-foreground-strong: var(--foreground-strong);
+  --color-foreground-muted: var(--foreground-muted);
+  --color-foreground-soft: var(--foreground-soft);
   --color-border: var(--border);
-  --font-sans: var(--font-sora);
+  --color-border-strong: var(--border-strong);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-soft: var(--accent-soft);
+  --color-danger: var(--danger);
+  --color-warning: var(--warning);
+  --font-sans: var(--font-manrope);
   --font-mono: var(--font-ibm-plex-mono);
 }
 
@@ -21,16 +49,22 @@
 
 html {
   scroll-behavior: smooth;
+  background: var(--background);
 }
 
 body {
-  background: var(--background);
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top, rgba(62, 207, 142, 0.14), transparent 22%),
+    radial-gradient(circle at 80% 18%, rgba(62, 207, 142, 0.08), transparent 18%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent 24%),
+    var(--background);
   color: var(--foreground);
-  font-family: var(--font-sora), sans-serif;
+  font-family: var(--font-manrope), sans-serif;
 }
 
 ::selection {
-  background: rgba(14, 165, 233, 0.2);
+  background: rgba(62, 207, 142, 0.24);
 }
 
 a {
@@ -39,6 +73,45 @@ a {
 
 @layer components {
   .container-shell {
-    @apply mx-auto w-full max-w-7xl px-6 md:px-10;
+    @apply mx-auto w-full max-w-[88rem] px-5 sm:px-6 lg:px-8;
+  }
+
+  .surface-panel {
+    @apply rounded-[28px] border backdrop-blur-xl;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0)),
+      rgba(17, 22, 20, 0.9);
+    box-shadow: 0 24px 80px -48px rgba(0, 0, 0, 0.82);
+  }
+
+  .surface-panel-strong {
+    @apply rounded-[30px] border;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0)),
+      rgba(22, 29, 26, 0.96);
+    border-color: var(--border-strong);
+    box-shadow: 0 32px 90px -52px rgba(0, 0, 0, 0.9);
+  }
+
+  .section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 999px;
+    border: 1px solid var(--border-strong);
+    background: rgba(255, 255, 255, 0.04);
+    padding: 0.35rem 0.8rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--foreground-soft);
+  }
+
+  .subtle-grid {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    background-size: 42px 42px;
   }
 }
