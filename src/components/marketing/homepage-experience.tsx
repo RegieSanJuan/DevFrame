@@ -143,12 +143,12 @@ function LogoWithFallback({
 export function StackSection() {
   return (
     <section id="stack" className="relative mt-9 h-full py-4">
-      <div className="[mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)] w-200 ">
+      <div className="[mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)] w-200 grayscale">
         <Marquee speed={20} pauseOnHover loop={0}>
           {TECH_STACK_MARQUEE.map((item) => (
             <span
               key={item.label}
-              className="flex items-center gap-2 mx-2 rounded-full px-4 py-2 text-sm font-medium text-foreground-soft whitespace-nowrap"
+              className="flex items-center gap-2 mx-2 rounded-full px-4 py-2 text-sm font-medium text-foreground-soft whitespace-nowrap grayscale"
             >
               <LogoWithFallback item={item} />
               {item.label}
@@ -238,21 +238,17 @@ export function HomepageExperience() {
             data-hero-item
             className="mt-6 max-w-2xl text-base leading-7 text-foreground-muted md:text-lg md:leading-8"
           >
-            DevFrame gives developers a dark, focused workspace for choosing a
-            template, editing content, checking setup health, and publishing a
+            DevFrame gives developers a dark, focused workspace for publishing a
             shareable portfolio route without the usual clutter.
           </p>
           <div
             data-hero-item
             className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center"
           >
-            <Button asChild size="lg" variant="accent">
-              <Link href="/builder">
-                Open the builder
-                <ArrowRight className="size-4" />
-              </Link>
+            <Button asChild size="sm" variant="accent">
+              <Link href="/builder">Open the builder</Link>
             </Button>
-            <Button asChild size="lg" variant="secondary">
+            <Button asChild size="sm" variant="secondary">
               <Link href="/templates">Browse templates</Link>
             </Button>
           </div>
