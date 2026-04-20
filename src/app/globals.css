@@ -2,23 +2,35 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0b0d0c;
-  --background-alt: #101413;
-  --surface: #111614;
-  --surface-strong: #161d1a;
-  --surface-soft: #0e1211;
-  --surface-inset: #0a0d0c;
-  --foreground: #f3f5f4;
+  /* Backgrounds */
+  --background: #0f0f0f;
+  --background-alt: #0a0a0a;
+
+  /* Surfaces */
+  --surface: #161616;
+  --surface-strong: #1e1e1e;
+  --surface-soft: #121212;
+  --surface-inset: #0c0c0c;
+
+  /* Foreground */
+  --foreground: #ededed;
   --foreground-strong: #ffffff;
-  --foreground-muted: #a3ada8;
-  --foreground-soft: #7a857f;
-  --border: rgba(255, 255, 255, 0.08);
-  --border-strong: rgba(255, 255, 255, 0.14);
-  --accent: #3ecf8e;
-  --accent-strong: #27bc74;
-  --accent-soft: rgba(62, 207, 142, 0.16);
-  --danger: #ff7b72;
-  --warning: #f2b46f;
+  --foreground-muted: #7a7a7a;
+  --foreground-soft: #4a4a4a;
+
+  /* Borders */
+  --border: #222222;
+  --border-strong: #2e2e2e;
+
+  /* Accent — silver chrome */
+  --accent: #c9a96e;
+  --accent-strong: #e2c488;
+  --accent-soft: #1e1a12;
+  --accent-foreground: #0f0f0f;
+
+  /* Semantic */
+  --danger: #e05252;
+  --warning: #d4924a;
 }
 
 @theme inline {
@@ -43,7 +55,7 @@
   --font-mono: var(--font-ibm-plex-mono);
 }
 
-* {
+/* * {
   border-color: var(--border);
 }
 
@@ -114,4 +126,4 @@ a {
       linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
     background-size: 42px 42px;
   }
-}
+} */

@@ -26,6 +26,12 @@ export const metadata: Metadata = {
   },
   description:
     "Create your developer portfolio in minutes using ready-made templates tailored to your style.",
+  icons: {
+    icon: [
+      { url: "/devframe-bg-icon.svg", type: "image/svg+xml" },
+      { url: "/devframe.ico" }, // fallback
+    ],
+  },
 };
 
 function Providers({ children }: Readonly<{ children: React.ReactNode }>) {
@@ -72,9 +78,9 @@ export default function RootLayout({
     >
       <body className="min-h-full bg-background text-foreground">
         <Providers>
-          <div className="relative isolate min-h-screen overflow-x-hidden">
-            <div className="pointer-events-none absolute inset-0 -z-10 opacity-70 subtle-grid [mask-image:linear-gradient(to_bottom,white,transparent_88%)]" />
-            <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-64 bg-[radial-gradient(circle_at_top,rgba(62,207,142,0.22),transparent_58%)] blur-3xl" />
+          <div className="relative isolate min-h-screen">
+            {/* <div className="pointer-events-none absolute inset-0 -z-10 opacity-70 subtle-grid [mask-image:linear-gradient(to_bottom,white,transparent_88%)]" />
+            <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-64 bg-[radial-gradient(circle_at_top,rgba(62,207,142,0.22),transparent_58%)] blur-3xl" /> */}
             <SiteHeader />
             <main className="pb-24">{children}</main>
             <footer className="container-shell pb-10 text-sm text-foreground-muted">
