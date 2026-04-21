@@ -20,12 +20,9 @@ import {
   ArrowRight,
   Blocks,
   Braces,
-  CheckCheck,
   Globe,
   Layers3,
   LayoutDashboard,
-  LayoutTemplate,
-  ShieldCheck,
 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
@@ -255,183 +252,119 @@ export function HomepageExperience() {
           <StackSection />
         </div>
 
-        <div className="grid gap-5 lg:grid-cols-[1.08fr_0.92fr]">
-          <Card data-hero-panel className="overflow-hidden border-white/10">
-            <CardContent className="p-0">
-              <div className="grid gap-0 md:grid-cols-[0.84fr_1.16fr]">
-                <div className="border-b border-white/8 p-6 md:border-b-0 md:border-r">
-                  <div className="flex items-center justify-between gap-3">
-                    <span className="section-label">Control center</span>
-                    <Badge variant="success">Live draft</Badge>
-                  </div>
-                  <h2 className="mt-5 text-3xl font-semibold tracking-[-0.05em] text-foreground">
-                    Publish without losing the builder context.
-                  </h2>
-                  <p className="mt-4 text-sm leading-7 text-foreground-muted">
-                    The editing flow stays centered around cards, short labels,
-                    and readable route details instead of a busy admin panel.
-                  </p>
-                  <div className="mt-6 grid gap-3">
-                    <div className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-4">
-                      <p className="text-xs font-semibold uppercase tracking-[0.24em] text-foreground-soft">
-                        Public route
-                      </p>
-                      <p className="mt-2 text-lg font-semibold text-foreground">
-                        /p/regie-codes
-                      </p>
-                    </div>
-                    <div className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-4">
-                      <p className="text-xs font-semibold uppercase tracking-[0.24em] text-foreground-soft">
-                        Current template
-                      </p>
-                      <p className="mt-2 text-lg font-semibold text-foreground">
-                        Signal
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="space-y-4 p-6">
-                  <div className="rounded-[26px] border border-white/10 bg-surface-soft p-5">
+        <div className="h-[600px] shrink-0 mask-[radial-gradient(white_30%,transparent_90%)] perspective-[4000px] perspective-origin-center">
+          <div className="translate-y-8 rotate-x-8 rotate-y-12 -rotate-z-6 transform-3d scale-[0.82] origin-top">
+            <Card data-hero-panel className="border-white/10">
+              <CardContent className="p-0">
+                <div className="grid gap-0 md:grid-cols-[0.84fr_1.16fr]">
+                  <div className="border-b border-white/8 p-6 md:border-b-0 md:border-r">
                     <div className="flex items-center justify-between gap-3">
-                      <div>
+                      <span className="section-label">Control center</span>
+                      <Badge variant="success">Live draft</Badge>
+                    </div>
+                    <h2 className="mt-5 text-3xl font-semibold tracking-[-0.05em] text-foreground">
+                      Publish without losing the builder context.
+                    </h2>
+                    <p className="mt-4 text-sm leading-7 text-foreground-muted">
+                      The editing flow stays centered around cards, short
+                      labels, and readable route details instead of a busy admin
+                      panel.
+                    </p>
+                    <div className="mt-6 grid gap-3">
+                      <div className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-4">
                         <p className="text-xs font-semibold uppercase tracking-[0.24em] text-foreground-soft">
-                          Builder fields
+                          Public route
                         </p>
                         <p className="mt-2 text-lg font-semibold text-foreground">
-                          Tight, readable form sections
+                          /p/your-username
                         </p>
                       </div>
-                      <Braces className="size-5 text-accent" />
-                    </div>
-                    <div className="mt-4 grid gap-3 md:grid-cols-2">
-                      {["Name", "Role", "Skills", "Featured project"].map(
-                        (item) => (
-                          <div
-                            key={item}
-                            className="rounded-2xl border border-white/8 bg-white/[0.03] px-4 py-3 text-sm text-foreground-muted"
-                          >
-                            {item}
-                          </div>
-                        ),
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
-                      <p className="text-xs font-semibold uppercase tracking-[0.24em] text-foreground-soft">
-                        Setup
-                      </p>
-                      <div className="mt-4 space-y-3">
-                        <div className="flex items-center justify-between text-sm text-foreground-muted">
-                          <span>Clerk auth</span>
-                          <span className="text-accent">Ready</span>
-                        </div>
-                        <div className="flex items-center justify-between text-sm text-foreground-muted">
-                          <span>Supabase read</span>
-                          <span className="text-accent">Ready</span>
-                        </div>
-                        <div className="flex items-center justify-between text-sm text-foreground-muted">
-                          <span>Supabase write</span>
-                          <span className="text-foreground-soft">Optional</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
-                      <p className="text-xs font-semibold uppercase tracking-[0.24em] text-foreground-soft">
-                        Output
-                      </p>
-                      <div className="mt-4 space-y-3">
-                        {["Hero", "About", "Skills", "Project"].map((item) => (
-                          <div
-                            key={item}
-                            className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3 text-sm text-foreground-muted"
-                          >
-                            {item}
-                          </div>
-                        ))}
+                      <div className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-4">
+                        <p className="text-xs font-semibold uppercase tracking-[0.24em] text-foreground-soft">
+                          Current template
+                        </p>
+                        <p className="mt-2 text-lg font-semibold text-foreground">
+                          Signal
+                        </p>
                       </div>
                     </div>
                   </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
 
-          <div className="grid gap-5">
-            <Card data-hero-panel className="border-white/10">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between gap-3">
-                  <span className="section-label">Template state</span>
-                  <LayoutTemplate className="size-5 text-accent" />
-                </div>
-                <h3 className="mt-5 text-2xl font-semibold tracking-[-0.04em] text-foreground">
-                  Swap direction, keep the same content model.
-                </h3>
-                <div className="mt-5 space-y-3">
-                  {TEMPLATE_CATALOG.map((template) => (
-                    <div
-                      key={template.slug}
-                      className="rounded-[22px] border border-white/10 bg-white/[0.03] p-4"
-                    >
-                      <div
-                        className={`h-2 w-full rounded-full bg-gradient-to-r ${template.accent}`}
-                      />
-                      <div className="mt-3 flex items-center justify-between gap-3">
+                  <div className="space-y-4 p-6">
+                    <div className="rounded-[26px] border border-white/10 bg-surface-soft p-5">
+                      <div className="flex items-center justify-between gap-3">
                         <div>
-                          <p className="text-sm font-semibold text-foreground">
-                            {template.name}
+                          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-foreground-soft">
+                            Builder fields
                           </p>
-                          <p className="text-sm text-foreground-muted">
-                            {template.tagline}
+                          <p className="mt-2 text-lg font-semibold text-foreground">
+                            Tight, readable form sections
                           </p>
                         </div>
-                        <CheckCheck className="size-4 text-accent" />
+                        <Braces className="size-5 text-accent" />
+                      </div>
+                      <div className="mt-4 grid gap-3 md:grid-cols-2">
+                        {["Name", "Role", "Skills", "Featured project"].map(
+                          (item) => (
+                            <div
+                              key={item}
+                              className="rounded-2xl border border-white/8 bg-white/[0.03] px-4 py-3 text-sm text-foreground-muted"
+                            >
+                              {item}
+                            </div>
+                          ),
+                        )}
                       </div>
                     </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
 
-            <Card data-hero-panel className="border-white/10 bg-surface-strong">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between gap-3">
-                  <span className="section-label">Why this works</span>
-                  <ShieldCheck className="size-5 text-accent" />
-                </div>
-                <div className="mt-5 space-y-4">
-                  {[
-                    "Shorter labels make the shell feel lighter.",
-                    "Dark surfaces keep cards and forms visually grouped.",
-                    "Green accents only show up where action matters.",
-                  ].map((item) => (
-                    <div
-                      key={item}
-                      className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-4 text-sm leading-6 text-foreground-muted"
-                    >
-                      {item}
+                    <div className="grid gap-4 sm:grid-cols-2">
+                      <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
+                        <p className="text-xs font-semibold uppercase tracking-[0.24em] text-foreground-soft">
+                          Setup
+                        </p>
+                        <div className="mt-4 space-y-3">
+                          <div className="flex items-center justify-between text-sm text-foreground-muted">
+                            <span>Clerk auth</span>
+                            <span className="text-accent">Ready</span>
+                          </div>
+                          <div className="flex items-center justify-between text-sm text-foreground-muted">
+                            <span>Supabase read</span>
+                            <span className="text-accent">Ready</span>
+                          </div>
+                          <div className="flex items-center justify-between text-sm text-foreground-muted">
+                            <span>Supabase write</span>
+                            <span className="text-foreground-soft">
+                              Optional
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
+                        <p className="text-xs font-semibold uppercase tracking-[0.24em] text-foreground-soft">
+                          Output
+                        </p>
+                        <div className="mt-4 space-y-3">
+                          {["Hero", "About", "Skills", "Project"].map(
+                            (item) => (
+                              <div
+                                key={item}
+                                className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3 text-sm text-foreground-muted"
+                              >
+                                {item}
+                              </div>
+                            ),
+                          )}
+                        </div>
+                      </div>
                     </div>
-                  ))}
+                  </div>
                 </div>
               </CardContent>
             </Card>
           </div>
         </div>
       </div>
-      <section className="relative overflow-hidden rounded-[40px] border border-white/8 bg-background-alt/82 px-6 py-10 md:px-10 md:py-14 lg:px-14">
-        <div
-          data-glow="one"
-          className="pointer-events-none absolute left-[7%] top-0 size-44 rounded-full bg-accent/14 blur-3xl"
-        />
-        <div
-          data-glow="two"
-          className="pointer-events-none absolute bottom-0 right-[9%] size-52 rounded-full bg-accent/10 blur-3xl"
-        />
-        <div className="pointer-events-none absolute inset-0 subtle-grid opacity-30 [mask-image:linear-gradient(to_bottom,white,transparent_82%)]" />
-      </section>
 
       <section data-reveal className="space-y-6">
         <div className="max-w-2xl space-y-4">
