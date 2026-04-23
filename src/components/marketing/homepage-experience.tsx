@@ -567,7 +567,7 @@ export function HomepageExperience() {
 
       {/* ── CTA ──────────────────────────────────────────── */}
       <section data-reveal className="w-full pb-10">
-        <div className="rounded-[28px] border border-border bg-surface-strong overflow-hidden relative">
+        <div className="rounded-[28px] border border-border bg-surface overflow-hidden relative">
           <div className="relative flex flex-col items-center text-center gap-8 p-12 md:p-16">
             <div className="max-w-2xl flex flex-col items-center gap-5">
               <span className="section-label">Get started</span>
