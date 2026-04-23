@@ -82,9 +82,9 @@ export default function RootLayout({
       <body className="min-h-full bg-background text-foreground">
         <ThemeProvider attribute="class" defaultTheme="dark" disableTransitionOnChange>
           <Providers>
-            <div className="relative isolate min-h-screen ">
+            <div className="relative isolate min-h-screen flex flex-col items-center w-full">
               <SiteHeader />
-              <main className="pb-24 px-84">{children}</main>
+              <main className="pb-24  max-w-6xl">{children}</main>
               <SiteFooter />
             </div>
           </Providers>

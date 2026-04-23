@@ -528,7 +528,7 @@ export function HomepageExperience() {
               <div
                 className={`h-[3px] w-full bg-gradient-to-r ${template.accent}`}
               />
-              <div className="space-y-5 p-6">
+              <div className="gap-5 p-6 h-full flex flex-col">
                 <div className="flex items-center justify-between gap-3">
                   <p className="text-xs font-semibold uppercase tracking-[0.22em] text-foreground-soft">
                     {template.name}
@@ -553,7 +553,7 @@ export function HomepageExperience() {
                     </span>
                   ))}
                 </div>
-                <Button asChild variant="secondary" size="sm" className="w-full">
+                <Button asChild variant="secondary" size="sm" className="w-full mt-auto">
                   <Link href={`/builder?template=${template.slug}`}>
                     Use {template.name}
                     <ArrowRight className="size-3.5" />

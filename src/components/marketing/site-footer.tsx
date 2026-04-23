@@ -1,7 +1,7 @@
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
-import { DevframeLogo } from "./app-icon";
 import { ThemeToggle } from "../theme-toggle";
+import { DevframeLogo } from "./app-icon";
 
 function GithubIcon({ size = 15 }: { size?: number }) {
   return (
@@ -47,7 +47,7 @@ const footerLinks = {
 
 export function SiteFooter() {
   return (
-    <footer className="relative mt-24 overflow-hidden border-t border-border">
+    <footer className="relative w-full mt-24 overflow-hidden border-t border-border">
       {/* Massive background wordmark */}
       <div
         aria-hidden="true"
