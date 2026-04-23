@@ -28,7 +28,7 @@ export function SiteHeader() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-40 grid place-items-center">
+    <header className="sticky top-0 z-40 grid place-items-center w-full">
       <div
         className={`bg-background/82 backdrop-blur-xl w-full rounded grid place-items-center pt-2 ${scrolled ? "border-b border-border" : ""
           }`}
