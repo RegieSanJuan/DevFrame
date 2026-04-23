@@ -3,6 +3,38 @@
 
 :root {
   /* Backgrounds */
+  --background: #ffffff;
+  --background-alt: #fafafa;
+
+  /* Surfaces */
+  --surface: #f4f4f5;
+  --surface-strong: #e4e4e7;
+  --surface-soft: #fbfbfc;
+  --surface-inset: #ededef;
+
+  /* Foreground */
+  --foreground: #18181b;
+  --foreground-strong: #000000;
+  --foreground-muted: #71717a;
+  --foreground-soft: #a1a1aa;
+
+  /* Borders */
+  --border: #e4e4e7;
+  --border-strong: #d4d4d8;
+
+  /* Accent — darker gold for light mode */
+  --accent: #b48e4b;
+  --accent-strong: #8f6e33;
+  --accent-soft: #fdfaf2;
+  --accent-foreground: #ffffff;
+
+  /* Semantic */
+  --danger: #ef4444;
+  --warning: #f59e0b;
+}
+
+.dark {
+  /* Backgrounds */
   --background: #0f0f0f;
   --background-alt: #0a0a0a;
 
@@ -22,7 +54,7 @@
   --border: #222222;
   --border-strong: #2e2e2e;
 
-  /* Accent — silver chrome */
+  /* Accent — silver chrome (gold in dark) */
   --accent: #c9a96e;
   --accent-strong: #e2c488;
   --accent-soft: #1e1a12;

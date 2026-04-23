@@ -253,10 +253,10 @@ export function HomepageExperience() {
 
         <div className="h-[600px] shrink-0 mask-[radial-gradient(white_30%,transparent_90%)] perspective-[4000px] perspective-origin-center">
           <div className="translate-y-8 rotate-x-8 rotate-y-12 -rotate-z-6 transform-3d scale-[0.82] origin-top">
-            <Card data-hero-panel className="border-white/10">
+            <Card data-hero-panel className="border-border">
               <CardContent className="p-0">
                 <div className="grid gap-0 md:grid-cols-[0.84fr_1.16fr]">
-                  <div className="border-b border-white/8 p-6 md:border-b-0 md:border-r">
+                  <div className="border-b border-border p-6 md:border-b-0 md:border-r">
                     <div className="flex items-center justify-between gap-3">
                       <span className="section-label">Control center</span>
                       <Badge variant="success">Live draft</Badge>
@@ -270,7 +270,7 @@ export function HomepageExperience() {
                       panel.
                     </p>
                     <div className="mt-6 grid gap-3">
-                      <div className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-4">
+                      <div className="rounded-2xl border border-border bg-surface px-4 py-4">
                         <p className="text-xs font-semibold uppercase tracking-[0.24em] text-foreground-soft">
                           Public route
                         </p>
@@ -278,7 +278,7 @@ export function HomepageExperience() {
                           /p/your-username
                         </p>
                       </div>
-                      <div className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-4">
+                      <div className="rounded-2xl border border-border bg-surface px-4 py-4">
                         <p className="text-xs font-semibold uppercase tracking-[0.24em] text-foreground-soft">
                           Current template
                         </p>
@@ -290,7 +290,7 @@ export function HomepageExperience() {
                   </div>
 
                   <div className="space-y-4 p-6">
-                    <div className="rounded-[26px] border border-white/10 bg-surface-soft p-5">
+                    <div className="rounded-[26px] border border-border bg-surface-soft p-5">
                       <div className="flex items-center justify-between gap-3">
                         <div>
                           <p className="text-xs font-semibold uppercase tracking-[0.24em] text-foreground-soft">
@@ -307,7 +307,7 @@ export function HomepageExperience() {
                           (item) => (
                             <div
                               key={item}
-                              className="rounded-2xl border border-white/8 bg-white/[0.03] px-4 py-3 text-sm text-foreground-muted"
+                              className="rounded-2xl border border-border bg-surface px-4 py-3 text-sm text-foreground-muted"
                             >
                               {item}
                             </div>
@@ -317,7 +317,7 @@ export function HomepageExperience() {
                     </div>
 
                     <div className="grid gap-4 sm:grid-cols-2">
-                      <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
+                      <div className="rounded-[24px] border border-border bg-surface p-5">
                         <p className="text-xs font-semibold uppercase tracking-[0.24em] text-foreground-soft">
                           Setup
                         </p>
@@ -339,7 +339,7 @@ export function HomepageExperience() {
                         </div>
                       </div>
 
-                      <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
+                      <div className="rounded-[24px] border border-border bg-surface p-5">
                         <p className="text-xs font-semibold uppercase tracking-[0.24em] text-foreground-soft">
                           Output
                         </p>
@@ -348,7 +348,7 @@ export function HomepageExperience() {
                             (item) => (
                               <div
                                 key={item}
-                                className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3 text-sm text-foreground-muted"
+                                className="rounded-2xl border border-border bg-surface-strong px-4 py-3 text-sm text-foreground-muted"
                               >
                                 {item}
                               </div>
@@ -385,9 +385,9 @@ export function HomepageExperience() {
             return (
               <div
                 key={item.title}
-                className="group rounded-[26px] border border-white/10 bg-white/[0.02] p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-white/20 hover:bg-white/[0.04]"
+                className="group rounded-[26px] border border-border bg-surface p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-border-strong hover:bg-surface-strong"
               >
-                <span className="flex size-10 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-accent">
+                <span className="flex size-10 items-center justify-center rounded-xl border border-border bg-surface-strong text-accent">
                   <Icon className="size-4" />
                 </span>
                 <p className="mt-5 text-base font-semibold tracking-[-0.02em] text-foreground">
@@ -410,10 +410,10 @@ export function HomepageExperience() {
         data-reveal
         className="w-full"
       >
-        <div className="rounded-[28px] border border-white/10 bg-white/[0.02] overflow-hidden">
+        <div className="rounded-[28px] border border-border bg-surface overflow-hidden">
           <div className="grid gap-0 lg:grid-cols-[1fr_1.2fr]">
             {/* Left — text + steps */}
-            <div className="border-b border-white/8 p-8 md:p-10 lg:border-b-0 lg:border-r space-y-6">
+            <div className="border-b border-border p-8 md:p-10 lg:border-b-0 lg:border-r space-y-6">
               <div className="space-y-4">
                 <span className="section-label">Workflow</span>
                 <h2 className="text-3xl font-semibold tracking-[-0.06em] text-foreground md:text-4xl">
@@ -429,9 +429,9 @@ export function HomepageExperience() {
                 {workflow.map((item, index) => (
                   <div
                     key={item.title}
-                    className="flex gap-4 rounded-2xl border border-white/8 bg-white/[0.02] px-4 py-4"
+                    className="flex gap-4 rounded-2xl border border-border bg-surface px-4 py-4"
                   >
-                    <span className="flex size-9 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] font-mono text-xs text-accent">
+                    <span className="flex size-9 shrink-0 items-center justify-center rounded-xl border border-border bg-surface-strong font-mono text-xs text-accent">
                       0{index + 1}
                     </span>
                     <div>
@@ -449,7 +449,7 @@ export function HomepageExperience() {
 
             {/* Right — quick stats panel */}
             <div className="grid gap-4 p-8 md:p-10 bg-surface-soft/50 content-start">
-              <div className="rounded-[20px] border border-white/10 bg-white/[0.03] p-5">
+              <div className="rounded-[20px] border border-border bg-surface p-5">
                 <p className="text-xs font-semibold uppercase tracking-[0.24em] text-foreground-soft">
                   What you fill in once
                 </p>
@@ -457,7 +457,7 @@ export function HomepageExperience() {
                   {["Name & role", "Stack skills", "Featured project", "Social links", "Bio", "Public slug"].map((field) => (
                     <div
                       key={field}
-                      className="rounded-xl border border-white/8 bg-black/20 px-3 py-2.5 text-sm text-foreground-muted"
+                      className="rounded-xl border border-border bg-surface-strong px-3 py-2.5 text-sm text-foreground-muted"
                     >
                       {field}
                     </div>
@@ -466,7 +466,7 @@ export function HomepageExperience() {
               </div>
 
               <div className="grid gap-3 sm:grid-cols-2">
-                <div className="rounded-[20px] border border-white/10 bg-white/[0.03] p-5">
+                <div className="rounded-[20px] border border-border bg-surface p-5">
                   <p className="text-xs font-semibold uppercase tracking-[0.24em] text-foreground-soft">
                     Templates
                   </p>
@@ -477,7 +477,7 @@ export function HomepageExperience() {
                     Directions, one system
                   </p>
                 </div>
-                <div className="rounded-[20px] border border-white/10 bg-white/[0.03] p-5">
+                <div className="rounded-[20px] border border-border bg-surface p-5">
                   <p className="text-xs font-semibold uppercase tracking-[0.24em] text-foreground-soft">
                     Setup
                   </p>
@@ -490,7 +490,7 @@ export function HomepageExperience() {
                 </div>
               </div>
 
-              <div className="rounded-[20px] border border-white/10 bg-white/[0.03] px-5 py-4 flex items-center justify-between gap-3">
+              <div className="rounded-[20px] border border-border bg-surface px-5 py-4 flex items-center justify-between gap-3">
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-[0.24em] text-foreground-soft">
                     Public at
@@ -523,7 +523,7 @@ export function HomepageExperience() {
           {TEMPLATE_CATALOG.map((template) => (
             <div
               key={template.slug}
-              className="group rounded-[26px] border border-white/10 bg-white/[0.02] overflow-hidden transition-all duration-200 hover:-translate-y-0.5 hover:border-white/20"
+              className="group rounded-[26px] border border-border bg-surface overflow-hidden transition-all duration-200 hover:-translate-y-0.5 hover:border-border-strong"
             >
               <div
                 className={`h-[3px] w-full bg-gradient-to-r ${template.accent}`}
@@ -547,7 +547,7 @@ export function HomepageExperience() {
                   {template.highlights.map((highlight) => (
                     <span
                       key={highlight}
-                      className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 text-xs text-foreground-muted"
+                      className="rounded-full border border-border bg-surface-strong px-3 py-1.5 text-xs text-foreground-muted"
                     >
                       {highlight}
                     </span>
@@ -567,12 +567,7 @@ export function HomepageExperience() {
 
       {/* ── CTA ──────────────────────────────────────────── */}
       <section data-reveal className="w-full pb-10">
-        <div className="rounded-[28px] border border-white/10 bg-surface-strong overflow-hidden relative">
-          {/* Subtle radial glow */}
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_0%,rgba(201,169,110,0.10),transparent_60%)]"
-          />
+        <div className="rounded-[28px] border border-border bg-surface-strong overflow-hidden relative">
           <div className="relative flex flex-col items-center text-center gap-8 p-12 md:p-16">
             <div className="max-w-2xl flex flex-col items-center gap-5">
               <span className="section-label">Get started</span>

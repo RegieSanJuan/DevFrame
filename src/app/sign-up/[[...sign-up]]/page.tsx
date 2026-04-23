@@ -14,7 +14,7 @@ import { isClerkConfigured } from "@/lib/env";
 export default function SignUpPage() {
   return (
     <div className="container-shell grid gap-8 pt-10 lg:grid-cols-[0.92fr_1.08fr]">
-      <Card className="h-fit border-white/10 bg-surface-strong">
+      <Card className="h-fit border-border bg-surface-strong">
         <CardHeader>
           <Badge>Start building</Badge>
           <CardTitle className="text-3xl tracking-[-0.04em]">
@@ -27,11 +27,11 @@ export default function SignUpPage() {
         </CardHeader>
         <CardContent>
           {isClerkConfigured ? (
-            <div className="rounded-[28px] border border-white/10 bg-surface-soft p-3">
+            <div className="rounded-[28px] border border-border bg-surface-soft p-3">
               <SignUp path="/sign-up" routing="path" signInUrl="/sign-in" />
             </div>
           ) : (
-            <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5 text-sm leading-7 text-foreground-muted">
+            <div className="rounded-[24px] border border-border bg-surface p-5 text-sm leading-7 text-foreground-muted">
               Clerk keys are not added yet, so this page is waiting for your
               real auth setup. You can still preview the full product flow while
               you plug your keys in.
@@ -41,7 +41,7 @@ export default function SignUpPage() {
       </Card>
 
       <div className="space-y-6">
-        <Card className="border-white/10">
+        <Card className="border-border">
           <CardHeader>
             <Badge>Onboarding</Badge>
             <CardTitle>Account creation should feel like part of the product</CardTitle>

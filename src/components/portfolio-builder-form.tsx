@@ -75,10 +75,10 @@ export function PortfolioBuilderForm({
 
   return (
     <div className="grid gap-6 xl:grid-cols-[1.05fr_0.95fr]">
-      <Card className="order-2 border-white/10 xl:order-1">
+      <Card className="order-2 border-border xl:order-1">
         <CardHeader>
           <div className="flex items-center gap-3">
-            <span className="flex size-12 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-accent">
+            <span className="flex size-12 items-center justify-center rounded-2xl border border-border bg-surface-strong text-accent">
               <Sparkles className="size-5" />
             </span>
             <div>
@@ -116,7 +116,7 @@ export function PortfolioBuilderForm({
                       "rounded-[24px] border p-4 text-left transition duration-200",
                       selectedTemplate === template.slug
                         ? "border-accent bg-accent/10 shadow-[0_22px_50px_-34px_rgba(62,207,142,0.72)]"
-                        : "border-white/10 bg-white/[0.03] hover:border-white/16 hover:bg-white/[0.05]",
+                        : "border-border bg-surface hover:border-white/16 hover:bg-surface-strong",
                     )}
                   >
                     <div
@@ -191,7 +191,7 @@ export function PortfolioBuilderForm({
                 </label>
                 <select
                   id="availability"
-                  className="flex h-12 w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 text-sm text-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.02)] outline-none transition focus:border-accent focus:bg-white/[0.04] focus:ring-2 focus:ring-accent/20"
+                  className="flex h-12 w-full rounded-xl border border-border bg-surface px-4 text-sm text-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.02)] outline-none transition focus:border-accent focus:bg-surface-strong focus:ring-2 focus:ring-accent/20"
                   {...register("availability")}
                 >
                   {availabilityOptions.map((option) => (
@@ -394,7 +394,7 @@ export function PortfolioBuilderForm({
       </Card>
 
       <div className="order-1 space-y-6 xl:order-2">
-        <Card className="border-white/10">
+        <Card className="border-border">
           <CardHeader>
             <Badge>How it works</Badge>
             <CardTitle>One form, multiple portfolio styles</CardTitle>
@@ -404,7 +404,7 @@ export function PortfolioBuilderForm({
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
+            <div className="rounded-[24px] border border-border bg-surface p-5">
               <p className="text-sm font-semibold uppercase tracking-[0.22em] text-foreground-soft">
                 1. Pick your look
               </p>
@@ -413,7 +413,7 @@ export function PortfolioBuilderForm({
                 editorial you want your portfolio to feel.
               </p>
             </div>
-            <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
+            <div className="rounded-[24px] border border-border bg-surface p-5">
               <p className="text-sm font-semibold uppercase tracking-[0.22em] text-foreground-soft">
                 2. Fill in your profile
               </p>
@@ -421,7 +421,7 @@ export function PortfolioBuilderForm({
                 Add your intro, about section, links, and featured project details.
               </p>
             </div>
-            <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
+            <div className="rounded-[24px] border border-border bg-surface p-5">
               <p className="text-sm font-semibold uppercase tracking-[0.22em] text-foreground-soft">
                 3. Publish to a clean URL
               </p>
@@ -432,9 +432,9 @@ export function PortfolioBuilderForm({
           </CardContent>
         </Card>
 
-        <Card className="border-white/10 bg-surface-strong text-foreground">
+        <Card className="border-border bg-surface-strong text-foreground">
           <CardHeader>
-            <Badge className="border-white/10 bg-white/[0.06] text-foreground-soft">
+            <Badge className="border-border bg-surface-strong text-foreground-soft">
               MVP note
             </Badge>
             <CardTitle>Ready for Supabase and Vercel</CardTitle>

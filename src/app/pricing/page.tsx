@@ -153,7 +153,7 @@ export default function PricingPage() {
             className={`relative flex flex-col rounded-[26px] border p-8 transition-all duration-200 ${
               plan.highlighted
                 ? "border-accent/40 bg-accent-soft shadow-[0_0_60px_-20px_rgba(201,169,110,0.18)]"
-                : "border-white/10 bg-white/[0.02] hover:border-white/20"
+                : "border-border bg-surface hover:border-border-strong hover:bg-surface-strong"
             }`}
           >
             {"badge" in plan && plan.badge && (
@@ -180,7 +180,7 @@ export default function PricingPage() {
               </p>
             </div>
 
-            <div className="my-7 h-px bg-white/[0.07]" />
+            <div className="my-7 h-px bg-border" />
 
             {/* Feature list */}
             <ul className="flex flex-col gap-3 flex-1">
@@ -222,9 +222,9 @@ export default function PricingPage() {
           </h2>
         </div>
 
-        <div className="rounded-[24px] border border-white/10 overflow-hidden">
+        <div className="rounded-[24px] border border-border overflow-hidden">
           {/* Table header */}
-          <div className="grid grid-cols-4 border-b border-white/8 bg-white/[0.02] px-6 py-4">
+          <div className="grid grid-cols-4 border-b border-border bg-surface px-6 py-4">
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-foreground-soft">
               Feature
             </p>
@@ -268,7 +268,7 @@ export default function PricingPage() {
           {faqs.map((faq) => (
             <div
               key={faq.q}
-              className="rounded-[20px] border border-white/10 bg-white/[0.02] p-6 space-y-3"
+              className="rounded-[20px] border border-border bg-surface p-6 space-y-3"
             >
               <p className="text-sm font-semibold tracking-[-0.01em] text-foreground">
                 {faq.q}
@@ -281,11 +281,7 @@ export default function PricingPage() {
 
       {/* ── CTA strip ──────────────────────────────────── */}
       <section className="pb-4">
-        <div className="relative overflow-hidden rounded-[28px] border border-white/10 bg-surface-strong">
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_0%,rgba(201,169,110,0.10),transparent_60%)]"
-          />
+        <div className="relative overflow-hidden rounded-[28px] border border-border bg-surface-strong">
           <div className="relative flex flex-col items-center gap-6 px-8 py-14 text-center">
             <p className="text-3xl font-semibold tracking-[-0.06em] text-foreground md:text-4xl">
               Ready to publish?

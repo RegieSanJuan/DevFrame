@@ -14,7 +14,7 @@ import { isClerkConfigured } from "@/lib/env";
 export default function SignInPage() {
   return (
     <div className="container-shell grid gap-8 pt-10 lg:grid-cols-[0.92fr_1.08fr]">
-      <Card className="h-fit border-white/10 bg-surface-strong">
+      <Card className="h-fit border-border bg-surface-strong">
         <CardHeader>
           <Badge>Sign in</Badge>
           <CardTitle className="text-3xl tracking-[-0.04em]">
@@ -27,11 +27,11 @@ export default function SignInPage() {
         </CardHeader>
         <CardContent>
           {isClerkConfigured ? (
-            <div className="rounded-[28px] border border-white/10 bg-surface-soft p-3">
+            <div className="rounded-[28px] border border-border bg-surface-soft p-3">
               <SignIn path="/sign-in" routing="path" signUpUrl="/sign-up" />
             </div>
           ) : (
-            <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5 text-sm leading-7 text-foreground-muted">
+            <div className="rounded-[24px] border border-border bg-surface p-5 text-sm leading-7 text-foreground-muted">
               Clerk keys are not added yet, so this screen stays in setup mode.
               The rest of the app still works in preview mode while you finish
               the environment setup.
@@ -41,7 +41,7 @@ export default function SignInPage() {
       </Card>
 
       <div className="space-y-6">
-        <Card className="border-white/10">
+        <Card className="border-border">
           <CardHeader>
             <Badge>Auth flow</Badge>
             <CardTitle>Small, readable access surface</CardTitle>

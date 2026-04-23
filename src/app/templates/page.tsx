@@ -32,9 +32,9 @@ export default async function TemplatesPage() {
           </p>
         </div>
 
-        <Card className="border-white/10 bg-surface-strong">
+        <Card className="border-border bg-surface-strong">
           <CardContent className="grid gap-4 p-6 sm:grid-cols-3">
-            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+            <div className="rounded-2xl border border-border bg-surface p-4">
               <p className="text-xs font-semibold uppercase tracking-[0.22em] text-foreground-soft">
                 Shared data
               </p>
@@ -42,7 +42,7 @@ export default async function TemplatesPage() {
                 One builder
               </p>
             </div>
-            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+            <div className="rounded-2xl border border-border bg-surface p-4">
               <p className="text-xs font-semibold uppercase tracking-[0.22em] text-foreground-soft">
                 Available styles
               </p>
@@ -50,7 +50,7 @@ export default async function TemplatesPage() {
                 {TEMPLATE_CATALOG.length} templates
               </p>
             </div>
-            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+            <div className="rounded-2xl border border-border bg-surface p-4">
               <p className="text-xs font-semibold uppercase tracking-[0.22em] text-foreground-soft">
                 Output
               </p>
@@ -69,7 +69,7 @@ export default async function TemplatesPage() {
           return (
             <Card
               key={template.slug}
-              className="group overflow-hidden border-white/10 transition-transform duration-200 hover:-translate-y-1 hover:border-accent/28"
+              className="group overflow-hidden border-border transition-transform duration-200 hover:-translate-y-1 hover:border-accent/28"
             >
               <div className={`h-2 w-full bg-gradient-to-r ${template.accent}`} />
               <CardHeader>
@@ -92,7 +92,7 @@ export default async function TemplatesPage() {
                   {template.highlights.map((highlight) => (
                     <span
                       key={highlight}
-                      className="rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-sm text-foreground-muted"
+                      className="rounded-full border border-border bg-surface-strong px-4 py-2 text-sm text-foreground-muted"
                     >
                       {highlight}
                     </span>

@@ -6,7 +6,7 @@ export function Card({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       className={cn(
-        "rounded-[28px] border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0))] bg-surface/10 shadow-[0_30px_80px_-48px_rgba(0,0,0,0.78)] backdrop-blur-xl",
+        "rounded-[28px] border border-border bg-[linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0))] bg-surface/10 shadow-[0_30px_80px_-48px_rgba(0,0,0,0.78)] backdrop-blur-xl",
         className,
       )}
       {...props}

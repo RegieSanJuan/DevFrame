@@ -1,6 +1,7 @@
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { DevframeLogo } from "./app-icon";
+import { ThemeToggle } from "../theme-toggle";
 
 function GithubIcon({ size = 15 }: { size?: number }) {
   return (
@@ -46,7 +47,7 @@ const footerLinks = {
 
 export function SiteFooter() {
   return (
-    <footer className="relative mt-24 overflow-hidden border-t border-white/[0.06]">
+    <footer className="relative mt-24 overflow-hidden border-t border-border">
       {/* Massive background wordmark */}
       <div
         aria-hidden="true"
@@ -84,7 +85,7 @@ export function SiteFooter() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="GitHub"
-                className="flex size-8 items-center justify-center rounded-lg border border-white/10 text-foreground-muted transition hover:border-white/20 hover:text-foreground-strong"
+                className="flex size-8 items-center justify-center rounded-lg border border-border text-foreground-muted transition hover:border-border-strong hover:text-foreground-strong"
               >
                 <GithubIcon size={15} />
               </a>
@@ -93,10 +94,11 @@ export function SiteFooter() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Twitter / X"
-                className="flex size-8 items-center justify-center rounded-lg border border-white/10 text-foreground-muted transition hover:border-white/20 hover:text-foreground-strong"
+                className="flex size-8 items-center justify-center rounded-lg border border-border text-foreground-muted transition hover:border-border-strong hover:text-foreground-strong"
               >
                 <XIcon size={15} />
               </a>
+              <ThemeToggle />
             </div>
           </div>
 

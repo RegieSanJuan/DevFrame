@@ -4,6 +4,7 @@ import { IBM_Plex_Mono, Manrope } from "next/font/google";
 
 import { SiteFooter } from "@/components/marketing/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { ThemeProvider } from "@/components/theme-provider";
 import { appEnv, isClerkConfigured } from "@/lib/env";
 
 import "./globals.css";
@@ -74,17 +75,20 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       data-scroll-behavior="smooth"
       className={`${manrope.variable} ${ibmPlexMono.variable} h-full antialiased`}
     >
       <body className="min-h-full bg-background text-foreground">
-        <Providers>
-          <div className="relative isolate min-h-screen ">
-            <SiteHeader />
-            <main className="pb-24 px-60">{children}</main>
-            <SiteFooter />
-          </div>
-        </Providers>
+        <ThemeProvider attribute="class" defaultTheme="dark" disableTransitionOnChange>
+          <Providers>
+            <div className="relative isolate min-h-screen ">
+              <SiteHeader />
+              <main className="pb-24 px-60">{children}</main>
+              <SiteFooter />
+            </div>
+          </Providers>
+        </ThemeProvider>
       </body>
     </html>
   );

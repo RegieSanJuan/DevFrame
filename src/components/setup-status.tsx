@@ -50,11 +50,11 @@ export function SetupStatus() {
         return (
           <Card
             key={item.title}
-            className="border-white/10 transition-transform duration-200 hover:-translate-y-1 hover:border-accent/24"
+            className="border-border transition-transform duration-200 hover:-translate-y-1 hover:border-accent/24"
           >
             <CardHeader>
               <div className="flex items-center justify-between gap-3">
-                <span className="flex size-12 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-accent">
+                <span className="flex size-12 items-center justify-center rounded-2xl border border-border bg-surface-strong text-accent">
                   <Icon className="size-5" />
                 </span>
                 <Badge variant={item.ready ? "success" : "warning"}>

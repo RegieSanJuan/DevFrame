@@ -37,9 +37,9 @@ export default async function DashboardPage() {
           </p>
         </div>
 
-        <Card className="border-white/10 bg-surface-strong">
+        <Card className="border-border bg-surface-strong">
           <CardContent className="grid gap-4 p-6 sm:grid-cols-3">
-            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+            <div className="rounded-2xl border border-border bg-surface p-4">
               <p className="text-xs font-semibold uppercase tracking-[0.22em] text-foreground-soft">
                 Template
               </p>
@@ -47,7 +47,7 @@ export default async function DashboardPage() {
                 {templateName}
               </p>
             </div>
-            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+            <div className="rounded-2xl border border-border bg-surface p-4">
               <p className="text-xs font-semibold uppercase tracking-[0.22em] text-foreground-soft">
                 Route
               </p>
@@ -55,7 +55,7 @@ export default async function DashboardPage() {
                 {portfolio ? `/p/${portfolio.slug}` : "/p/your-slug"}
               </p>
             </div>
-            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+            <div className="rounded-2xl border border-border bg-surface p-4">
               <p className="text-xs font-semibold uppercase tracking-[0.22em] text-foreground-soft">
                 Access
               </p>
@@ -68,7 +68,7 @@ export default async function DashboardPage() {
       </section>
 
       {portfolio ? (
-        <Card className="border-white/10">
+        <Card className="border-border">
           <CardHeader>
             <div className="flex flex-wrap items-center gap-3">
               <Badge variant="success">Portfolio found</Badge>
@@ -84,7 +84,7 @@ export default async function DashboardPage() {
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="grid gap-4 md:grid-cols-3">
-              <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
+              <div className="rounded-[24px] border border-border bg-surface p-5">
                 <p className="text-xs font-semibold uppercase tracking-[0.22em] text-foreground-soft">
                   Public route
                 </p>
@@ -92,7 +92,7 @@ export default async function DashboardPage() {
                   /p/{portfolio.slug}
                 </p>
               </div>
-              <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
+              <div className="rounded-[24px] border border-border bg-surface p-5">
                 <p className="text-xs font-semibold uppercase tracking-[0.22em] text-foreground-soft">
                   Availability
                 </p>
@@ -100,7 +100,7 @@ export default async function DashboardPage() {
                   {portfolio.availability}
                 </p>
               </div>
-              <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
+              <div className="rounded-[24px] border border-border bg-surface p-5">
                 <p className="text-xs font-semibold uppercase tracking-[0.22em] text-foreground-soft">
                   Featured project
                 </p>
@@ -127,10 +127,10 @@ export default async function DashboardPage() {
           </CardContent>
         </Card>
       ) : (
-        <Card className="border-white/10 bg-surface-strong">
+        <Card className="border-border bg-surface-strong">
           <CardHeader>
             <div className="flex items-center gap-3">
-              <span className="flex size-12 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-accent">
+              <span className="flex size-12 items-center justify-center rounded-2xl border border-border bg-surface-strong text-accent">
                 <Sparkles className="size-5" />
               </span>
               <Badge>No portfolio yet</Badge>
