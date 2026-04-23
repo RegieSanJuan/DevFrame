@@ -1,12 +1,10 @@
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
-import { requireViewer } from "@/lib/auth";
 import { getSeedPortfolioByTemplate } from "@/lib/portfolio-storage";
 import { TEMPLATE_CATALOG } from "@/lib/template-catalog";
 
 export default async function TemplatesPage() {
-  await requireViewer();
 
   return (
     <div className="container-shell space-y-24 pt-16 pb-10">
@@ -70,7 +68,7 @@ export default async function TemplatesPage() {
                 <div className="mt-auto pt-10">
                   <div className="flex gap-3 border-t border-border pt-6">
                     <Button asChild variant="accent" className="flex-1">
-                      <Link href={`/builder?template=${template.slug}`}>
+                      <Link href={`/sign-in`}>
                         Use template
                       </Link>
                     </Button>

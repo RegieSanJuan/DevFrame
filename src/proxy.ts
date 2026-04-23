@@ -5,19 +5,18 @@ import { isClerkConfigured } from "@/lib/env";
 
 const isProtectedRoute = createRouteMatcher([
   "/dashboard(.*)",
-  "/templates(.*)",
   "/builder(.*)",
 ]);
 
 const proxy = isClerkConfigured
   ? clerkMiddleware(async (auth, request) => {
-      if (isProtectedRoute(request)) {
-        await auth.protect();
-      }
-    })
+    if (isProtectedRoute(request)) {
+      await auth.protect();
+    }
+  })
   : function proxyFallback() {
-      return NextResponse.next();
-    };
+    return NextResponse.next();
+  };
 
 export default proxy;
 

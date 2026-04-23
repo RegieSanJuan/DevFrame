@@ -242,7 +242,7 @@ export function HomepageExperience() {
             className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center"
           >
             <Button asChild size="sm" variant="accent">
-              <Link href="/builder">Open the builder</Link>
+              <Link href="/sign-in">Start building</Link>
             </Button>
             <Button asChild size="sm" variant="secondary">
               <Link href="/templates">Browse templates</Link>
@@ -583,7 +583,7 @@ export function HomepageExperience() {
             <div className="flex flex-col gap-3 sm:flex-row">
               <Button asChild size="lg" variant="accent">
                 <Link href="/builder">
-                  Open the builder
+                  Start building
                   <ArrowRight className="size-4" />
                 </Link>
               </Button>
