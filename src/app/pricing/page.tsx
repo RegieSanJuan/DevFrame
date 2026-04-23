@@ -1,6 +1,6 @@
+import { ArrowRight, Check, Minus } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Check, Minus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
@@ -150,11 +150,10 @@ export default function PricingPage() {
         {plans.map((plan) => (
           <div
             key={plan.name}
-            className={`relative flex flex-col rounded-[26px] border p-8 transition-all duration-200 ${
-              plan.highlighted
-                ? "border-accent/40 bg-accent-soft shadow-[0_0_60px_-20px_rgba(201,169,110,0.18)]"
-                : "border-border bg-surface hover:border-border-strong hover:bg-surface-strong"
-            }`}
+            className={`relative flex flex-col rounded-[26px] border p-8 transition-all duration-200 ${plan.highlighted
+              ? "border-accent/40 bg-accent-soft shadow-[0_0_60px_-20px_rgba(201,169,110,0.18)]"
+              : "border-border bg-surface hover:border-border-strong hover:bg-surface-strong"
+              }`}
           >
             {"badge" in plan && plan.badge && (
               <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full border border-accent/40 bg-accent-soft px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-accent">
@@ -242,9 +241,8 @@ export default function PricingPage() {
           {comparisonRows.map((row, i) => (
             <div
               key={row.label}
-              className={`grid grid-cols-4 items-center px-6 py-4 ${
-                i < comparisonRows.length - 1 ? "border-b border-white/[0.05]" : ""
-              }`}
+              className={`grid grid-cols-4 items-center px-6 py-4 ${i < comparisonRows.length - 1 ? "border-b border-white/[0.05]" : ""
+                }`}
             >
               <p className="text-sm text-foreground-muted">{row.label}</p>
               <Cell value={row.free} />
@@ -281,7 +279,7 @@ export default function PricingPage() {
 
       {/* ── CTA strip ──────────────────────────────────── */}
       <section className="pb-4">
-        <div className="relative overflow-hidden rounded-[28px] border border-border bg-surface-strong">
+        <div className="relative overflow-hidden rounded-[28px] border border-border bg-surface">
           <div className="relative flex flex-col items-center gap-6 px-8 py-14 text-center">
             <p className="text-3xl font-semibold tracking-[-0.06em] text-foreground md:text-4xl">
               Ready to publish?
