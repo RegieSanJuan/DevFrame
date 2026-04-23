@@ -30,9 +30,8 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 grid place-items-center">
       <div
-        className={`bg-background/82 backdrop-blur-xl w-full rounded grid place-items-center pt-2 ${
-          scrolled ? "border-b border-border" : ""
-        }`}
+        className={`bg-background/82 backdrop-blur-xl w-full rounded grid place-items-center pt-2 ${scrolled ? "border-b border-border" : ""
+          }`}
       >
         <div className="w-300 flex flex-col gap-4 py-4 md:flex-row md:items-center md:justify-between">
           <div className="flex items-center justify-center gap-16">
@@ -56,10 +55,10 @@ export function SiteHeader() {
             {!isClerkConfigured ? (
               <>
                 <Button asChild size="xs" variant="outline">
-                  <Link href="/builder">Sign up</Link>
+                  <Link href="/sign-in">Sign in</Link>
                 </Button>
                 <Button asChild size="xs" variant="accent">
-                  <Link href="/builder">Start building</Link>
+                  <Link href="/sign-up">Start building</Link>
                 </Button>
               </>
             ) : (

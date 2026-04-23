@@ -84,7 +84,7 @@ export default function RootLayout({
           <Providers>
             <div className="relative isolate min-h-screen ">
               <SiteHeader />
-              <main className="pb-24 px-60">{children}</main>
+              <main className="pb-24 px-84">{children}</main>
               <SiteFooter />
             </div>
           </Providers>
