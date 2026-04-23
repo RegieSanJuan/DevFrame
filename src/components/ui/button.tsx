@@ -1,26 +1,27 @@
-import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
+import * as React from "react";
 
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl border text-sm font-semibold transition-all duration-200 disabled:pointer-events-none disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/30",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md border text-sm font-semibold transition-all duration-200 disabled:pointer-events-none disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/30",
   {
     variants: {
       variant: {
         default:
-          "border-white/10 bg-white/[0.06] text-foreground hover:border-white/16 hover:bg-white/[0.08]",
+          "border-border bg-surface text-foreground hover:border-border-strong hover:bg-surface-strong",
         secondary:
-          "border-white/10 bg-white/[0.03] text-foreground hover:border-white/16 hover:bg-white/[0.05]",
+          "border-border bg-surface-soft text-foreground hover:border-border hover:bg-surface",
         accent:
-          "border-accent bg-accent text-[#04130c] shadow-[0_20px_40px_-24px_rgba(62,207,142,0.65)] hover:border-[#5fe0a4] hover:bg-[#5fe0a4]",
+          "border-accent bg-accent text-background shadow-[0_20px_40px_-24px_rgba(255,255,255,0.15)] hover:bg-accent-strong hover:border-accent-strong",
         ghost:
-          "border-transparent bg-transparent text-foreground-muted hover:text-foreground hover:bg-white/[0.05]",
+          "border-transparent bg-transparent text-foreground-muted hover:text-foreground hover:bg-surface-strong",
         outline:
-          "border-white/12 bg-transparent text-foreground hover:border-accent/40 hover:bg-accent/8",
+          "border-border bg-transparent text-foreground hover:border-border-strong hover:bg-surface",
       },
       size: {
+        xs: "h-8 px-3 text-xs",
         default: "h-11 px-5",
         sm: "h-9 px-4 text-sm",
         lg: "h-12 px-6 text-base",
@@ -35,7 +36,8 @@ const buttonVariants = cva(
 );
 
 export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+  extends
+    React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
 }

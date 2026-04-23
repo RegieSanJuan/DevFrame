@@ -41,7 +41,7 @@ export default async function BuilderPage({ searchParams }: BuilderPageProps) {
           </p>
         </div>
 
-        <Card className="border-white/10 bg-surface-strong">
+        <Card className="border-border bg-surface-strong">
           <CardHeader>
             <CardTitle className="text-2xl tracking-[-0.04em]">
               {existingPortfolio ? "Current portfolio state" : "New draft ready"}
@@ -53,7 +53,7 @@ export default async function BuilderPage({ searchParams }: BuilderPageProps) {
             </CardDescription>
           </CardHeader>
           <CardHeader className="grid gap-4 pt-0 sm:grid-cols-3">
-            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+            <div className="rounded-2xl border border-border bg-surface p-4">
               <p className="text-xs font-semibold uppercase tracking-[0.22em] text-foreground-soft">
                 Template
               </p>
@@ -61,7 +61,7 @@ export default async function BuilderPage({ searchParams }: BuilderPageProps) {
                 {defaultValues.templateSlug}
               </p>
             </div>
-            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+            <div className="rounded-2xl border border-border bg-surface p-4">
               <p className="text-xs font-semibold uppercase tracking-[0.22em] text-foreground-soft">
                 Route
               </p>
@@ -69,7 +69,7 @@ export default async function BuilderPage({ searchParams }: BuilderPageProps) {
                 /p/{defaultValues.slug || "your-slug"}
               </p>
             </div>
-            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+            <div className="rounded-2xl border border-border bg-surface p-4">
               <p className="text-xs font-semibold uppercase tracking-[0.22em] text-foreground-soft">
                 Access
               </p>
@@ -82,7 +82,7 @@ export default async function BuilderPage({ searchParams }: BuilderPageProps) {
       </section>
 
       {!existingPortfolio ? (
-        <Card className="border-white/10 bg-white/[0.02]">
+        <Card className="border-border bg-surface">
           <CardHeader>
             <CardTitle>Fresh portfolio draft</CardTitle>
             <CardDescription>

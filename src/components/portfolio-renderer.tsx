@@ -41,7 +41,7 @@ export function PortfolioRenderer({ portfolio }: PortfolioRendererProps) {
   if (template.slug === "atlas") {
     return (
       <section className="grid gap-8 lg:grid-cols-[1.16fr_0.84fr]">
-        <Card className="overflow-hidden border-white/10 bg-[radial-gradient(circle_at_top,rgba(62,207,142,0.08),transparent_48%)]">
+        <Card className="overflow-hidden border-border bg-[radial-gradient(circle_at_top,rgba(62,207,142,0.08),transparent_48%)]">
           <CardContent className="p-8 md:p-10">
             <div className="flex flex-wrap items-center gap-3">
               <Badge>{template.name}</Badge>
@@ -56,7 +56,7 @@ export function PortfolioRenderer({ portfolio }: PortfolioRendererProps) {
                   <h1 className="mt-3 text-4xl font-semibold tracking-[-0.05em] text-foreground md:text-5xl">
                     {portfolio.name}
                   </h1>
-                  <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-sm text-foreground-muted">
+                  <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-border bg-surface-strong px-4 py-2 text-sm text-foreground-muted">
                     <MapPin className="size-4" />
                     {portfolio.location}
                   </div>
@@ -76,7 +76,7 @@ export function PortfolioRenderer({ portfolio }: PortfolioRendererProps) {
               </div>
 
               <div className="space-y-6">
-                <div className="rounded-[28px] border border-white/10 bg-white/[0.03] p-6">
+                <div className="rounded-[28px] border border-border bg-surface p-6">
                   <p className="text-sm font-semibold uppercase tracking-[0.22em] text-foreground-soft">
                     About
                   </p>
@@ -84,7 +84,7 @@ export function PortfolioRenderer({ portfolio }: PortfolioRendererProps) {
                     {portfolio.about}
                   </p>
                 </div>
-                <div className="rounded-[28px] border border-white/10 bg-white/[0.03] p-6">
+                <div className="rounded-[28px] border border-border bg-surface p-6">
                   <p className="text-sm font-semibold uppercase tracking-[0.22em] text-foreground-soft">
                     Core skills
                   </p>
@@ -92,7 +92,7 @@ export function PortfolioRenderer({ portfolio }: PortfolioRendererProps) {
                     {portfolio.skills.map((skill) => (
                       <span
                         key={skill}
-                        className="rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-sm text-foreground-muted"
+                        className="rounded-full border border-border bg-surface-strong px-4 py-2 text-sm text-foreground-muted"
                       >
                         {skill}
                       </span>
@@ -104,7 +104,7 @@ export function PortfolioRenderer({ portfolio }: PortfolioRendererProps) {
           </CardContent>
         </Card>
 
-        <Card className="border-white/10 bg-surface-strong">
+        <Card className="border-border bg-surface-strong">
           <CardContent className="flex h-full flex-col justify-between gap-8 p-8">
             <div>
               <p className="text-sm font-semibold uppercase tracking-[0.24em] text-foreground-soft">
@@ -118,7 +118,7 @@ export function PortfolioRenderer({ portfolio }: PortfolioRendererProps) {
               </p>
             </div>
             <div className="space-y-4">
-              <div className="rounded-[24px] border border-white/10 bg-white/[0.04] p-5">
+              <div className="rounded-[24px] border border-border bg-surface-strong p-5">
                 <p className="text-sm font-semibold uppercase tracking-[0.22em] text-foreground-soft">
                   Stack
                 </p>
@@ -144,7 +144,7 @@ export function PortfolioRenderer({ portfolio }: PortfolioRendererProps) {
   if (template.slug === "pulse") {
     return (
       <section className="space-y-8">
-        <Card className="overflow-hidden border-white/10 bg-surface-strong">
+        <Card className="overflow-hidden border-border bg-surface-strong">
           <CardContent className="grid gap-8 p-8 md:p-10 lg:grid-cols-[1.16fr_0.84fr]">
             <div className="space-y-6">
               <div className="flex flex-wrap items-center gap-3">
@@ -169,7 +169,7 @@ export function PortfolioRenderer({ portfolio }: PortfolioRendererProps) {
                 {portfolio.skills.map((skill) => (
                   <span
                     key={skill}
-                    className="rounded-full border border-white/10 bg-white/[0.05] px-4 py-2 text-sm text-foreground-muted"
+                    className="rounded-full border border-border bg-surface-strong px-4 py-2 text-sm text-foreground-muted"
                   >
                     {skill}
                   </span>
@@ -178,7 +178,7 @@ export function PortfolioRenderer({ portfolio }: PortfolioRendererProps) {
             </div>
 
             <div className="grid gap-4">
-              <Card className="border-white/10 bg-white/[0.03] shadow-none">
+              <Card className="border-border bg-surface shadow-none">
                 <CardContent className="p-6">
                   <p className="font-mono text-xs uppercase tracking-[0.3em] text-foreground-soft">
                     Intro
@@ -189,7 +189,7 @@ export function PortfolioRenderer({ portfolio }: PortfolioRendererProps) {
                 </CardContent>
               </Card>
 
-              <Card className="border-white/10 bg-[linear-gradient(180deg,rgba(62,207,142,0.14),rgba(62,207,142,0.03))] shadow-none">
+              <Card className="border-border bg-[linear-gradient(180deg,rgba(62,207,142,0.14),rgba(62,207,142,0.03))] shadow-none">
                 <CardContent className="p-6">
                   <p className="font-mono text-xs uppercase tracking-[0.3em] text-foreground-soft">
                     Featured ship
@@ -236,7 +236,7 @@ export function PortfolioRenderer({ portfolio }: PortfolioRendererProps) {
 
   return (
     <section className="grid gap-8 lg:grid-cols-[1.12fr_0.88fr]">
-      <Card className="overflow-hidden border-white/10">
+      <Card className="overflow-hidden border-border">
         <CardContent className="p-8 md:p-10">
           <div className="grid gap-8 lg:grid-cols-[1.04fr_0.96fr]">
             <div className="space-y-6">
@@ -265,7 +265,7 @@ export function PortfolioRenderer({ portfolio }: PortfolioRendererProps) {
                 <LinkPill href={`mailto:${portfolio.email}`} label="Email" icon={Mail} />
               </div>
               <div className="grid gap-3 sm:grid-cols-2">
-                <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
+                <div className="rounded-[24px] border border-border bg-surface p-5">
                   <p className="text-sm font-semibold uppercase tracking-[0.22em] text-foreground-soft">
                     Location
                   </p>
@@ -273,7 +273,7 @@ export function PortfolioRenderer({ portfolio }: PortfolioRendererProps) {
                     {portfolio.location}
                   </p>
                 </div>
-                <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
+                <div className="rounded-[24px] border border-border bg-surface p-5">
                   <p className="text-sm font-semibold uppercase tracking-[0.22em] text-foreground-soft">
                     Public URL
                   </p>
@@ -285,7 +285,7 @@ export function PortfolioRenderer({ portfolio }: PortfolioRendererProps) {
             </div>
 
             <div className="rounded-[32px] border border-accent/20 bg-surface-strong p-6 shadow-[0_30px_80px_-48px_rgba(0,0,0,0.78)]">
-              <div className="rounded-full border border-white/10 bg-white/[0.05] px-4 py-2 text-sm font-medium text-foreground-muted">
+              <div className="rounded-full border border-border bg-surface-strong px-4 py-2 text-sm font-medium text-foreground-muted">
                 Featured build
               </div>
               <h2 className="mt-6 text-3xl font-semibold tracking-[-0.04em] text-foreground">
@@ -294,7 +294,7 @@ export function PortfolioRenderer({ portfolio }: PortfolioRendererProps) {
               <p className="mt-4 text-base leading-8 text-foreground-muted">
                 {portfolio.featuredProjectSummary}
               </p>
-              <div className="mt-6 rounded-[24px] border border-white/10 bg-white/[0.04] p-5">
+              <div className="mt-6 rounded-[24px] border border-border bg-surface-strong p-5">
                 <p className="text-sm font-semibold uppercase tracking-[0.22em] text-foreground-soft">
                   Stack
                 </p>
@@ -315,7 +315,7 @@ export function PortfolioRenderer({ portfolio }: PortfolioRendererProps) {
         </CardContent>
       </Card>
 
-      <Card className="border-white/10 bg-white/[0.02]">
+      <Card className="border-border bg-surface">
         <CardContent className="space-y-8 p-8">
           <div>
             <p className="text-sm font-semibold uppercase tracking-[0.24em] text-foreground-soft">
@@ -333,7 +333,7 @@ export function PortfolioRenderer({ portfolio }: PortfolioRendererProps) {
               {portfolio.skills.map((skill) => (
                 <span
                   key={skill}
-                  className="rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-sm text-foreground-muted"
+                  className="rounded-full border border-border bg-surface-strong px-4 py-2 text-sm text-foreground-muted"
                 >
                   {skill}
                 </span>

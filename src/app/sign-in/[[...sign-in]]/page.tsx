@@ -1,56 +1,57 @@
 import { SignIn } from "@clerk/nextjs";
+import { Key } from "lucide-react";
 
 import { SetupStatus } from "@/components/setup-status";
-import { Badge } from "@/components/ui/badge";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { isClerkConfigured } from "@/lib/env";
 
 export default function SignInPage() {
   return (
     <div className="container-shell grid gap-8 pt-10 lg:grid-cols-[0.92fr_1.08fr]">
-      <Card className="h-fit border-white/10 bg-surface-strong">
-        <CardHeader>
-          <Badge>Sign in</Badge>
-          <CardTitle className="text-3xl tracking-[-0.04em]">
+      <div className="flex h-fit flex-col gap-6 rounded-[28px] border border-border bg-surface-strong p-8 md:p-10">
+        <div>
+          <span className="section-label">Sign in</span>
+          <h2 className="mt-5 text-3xl font-semibold tracking-[-0.04em] text-foreground">
             Access your DevFrame dashboard.
-          </CardTitle>
-          <CardDescription>
+          </h2>
+          <p className="mt-3 text-base leading-7 text-foreground-muted">
             Use Clerk to manage sign-in, sessions, and user identity for your
             portfolio builder.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
+          </p>
+        </div>
+
+        <div>
           {isClerkConfigured ? (
-            <div className="rounded-[28px] border border-white/10 bg-surface-soft p-3">
+            <div className="flex justify-center rounded-[24px] border border-border bg-surface p-3">
               <SignIn path="/sign-in" routing="path" signUpUrl="/sign-up" />
             </div>
           ) : (
-            <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5 text-sm leading-7 text-foreground-muted">
-              Clerk keys are not added yet, so this screen stays in setup mode.
-              The rest of the app still works in preview mode while you finish
-              the environment setup.
+            <div className="flex flex-col items-center justify-center gap-4 rounded-[24px] border border-dashed border-border bg-surface p-10 text-center">
+              <div className="flex size-12 items-center justify-center rounded-full border border-border bg-surface-strong">
+                <Key className="size-5 text-foreground-muted" />
+              </div>
+              <div>
+                <p className="text-base font-medium text-foreground">Waiting for auth keys</p>
+                <p className="mx-auto mt-2 max-w-[280px] text-sm leading-relaxed text-foreground-muted">
+                  Clerk keys are missing from your environment variables. 
+                  The application remains in preview mode.
+                </p>
+              </div>
             </div>
           )}
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       <div className="space-y-6">
-        <Card className="border-white/10">
-          <CardHeader>
-            <Badge>Auth flow</Badge>
-            <CardTitle>Small, readable access surface</CardTitle>
-            <CardDescription>
-              The sign-in and setup area now matches the same dark platform
-              system used across the builder and dashboard.
-            </CardDescription>
-          </CardHeader>
-        </Card>
+        <div className="rounded-[28px] border border-border bg-surface p-8 md:p-10">
+          <span className="section-label">Auth flow</span>
+          <h2 className="mt-5 text-xl font-semibold text-foreground">
+            Small, readable access surface
+          </h2>
+          <p className="mt-3 text-sm leading-relaxed text-foreground-muted">
+            The sign-in and setup area now matches the same robust platform
+            system used across the builder and dashboard.
+          </p>
+        </div>
         <SetupStatus />
       </div>
     </div>

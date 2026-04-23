@@ -2,7 +2,9 @@ import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import { IBM_Plex_Mono, Manrope } from "next/font/google";
 
+import { SiteFooter } from "@/components/marketing/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { ThemeProvider } from "@/components/theme-provider";
 import { appEnv, isClerkConfigured } from "@/lib/env";
 
 import "./globals.css";
@@ -26,6 +28,12 @@ export const metadata: Metadata = {
   },
   description:
     "Create your developer portfolio in minutes using ready-made templates tailored to your style.",
+  icons: {
+    icon: [
+      { url: "/devframe-bg-icon.svg", type: "image/svg+xml" },
+      { url: "/devframe.ico" }, // fallback
+    ],
+  },
 };
 
 function Providers({ children }: Readonly<{ children: React.ReactNode }>) {
@@ -67,37 +75,20 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       data-scroll-behavior="smooth"
       className={`${manrope.variable} ${ibmPlexMono.variable} h-full antialiased`}
     >
       <body className="min-h-full bg-background text-foreground">
-        <Providers>
-          <div className="relative isolate min-h-screen overflow-x-hidden">
-            <div className="pointer-events-none absolute inset-0 -z-10 opacity-70 subtle-grid [mask-image:linear-gradient(to_bottom,white,transparent_88%)]" />
-            <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-64 bg-[radial-gradient(circle_at_top,rgba(62,207,142,0.22),transparent_58%)] blur-3xl" />
-            <SiteHeader />
-            <main className="pb-24">{children}</main>
-            <footer className="container-shell pb-10 text-sm text-foreground-muted">
-              <div className="surface-panel flex flex-col gap-4 px-6 py-6 md:flex-row md:items-center md:justify-between">
-                <div>
-                  <p className="text-sm font-semibold text-foreground">
-                    DevFrame
-                  </p>
-                  <p className="mt-1 max-w-2xl text-sm leading-6 text-foreground-muted">
-                    A polished developer portfolio platform with structured
-                    publishing, reusable templates, and a calmer, more premium
-                    builder experience.
-                  </p>
-                </div>
-                <div className="flex flex-wrap items-center gap-4 text-xs font-semibold uppercase tracking-[0.22em] text-foreground-soft">
-                  <span>Dark platform UI</span>
-                  <span>Reusable system</span>
-                  <span>Responsive by default</span>
-                </div>
-              </div>
-            </footer>
-          </div>
-        </Providers>
+        <ThemeProvider attribute="class" defaultTheme="dark" disableTransitionOnChange>
+          <Providers>
+            <div className="relative isolate min-h-screen flex flex-col items-center w-full">
+              <SiteHeader />
+              <main className="pb-24  max-w-6xl">{children}</main>
+              <SiteFooter />
+            </div>
+          </Providers>
+        </ThemeProvider>
       </body>
     </html>
   );

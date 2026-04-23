@@ -1,13 +1,5 @@
 import { Database, KeyRound, ServerCog } from "lucide-react";
 
-import { Badge } from "@/components/ui/badge";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import {
   isClerkConfigured,
   isSupabaseReadConfigured,
@@ -43,35 +35,47 @@ export function SetupStatus() {
   ];
 
   return (
-    <div className="grid gap-4 lg:grid-cols-3">
+    <div className="flex flex-col gap-4">
       {items.map((item) => {
         const Icon = item.icon;
 
         return (
-          <Card
+          <div
             key={item.title}
-            className="border-white/10 transition-transform duration-200 hover:-translate-y-1 hover:border-accent/24"
+            className="group flex flex-col gap-4 rounded-[26px] border border-border bg-surface p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-border-strong hover:bg-surface-strong"
           >
-            <CardHeader>
-              <div className="flex items-center justify-between gap-3">
-                <span className="flex size-12 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-accent">
-                  <Icon className="size-5" />
+            <div className="flex items-center justify-between gap-3">
+              <span className="flex size-12 items-center justify-center rounded-[18px] border border-border bg-surface-strong text-accent transition-colors group-hover:bg-surface">
+                <Icon className="size-5" />
+              </span>
+              {item.ready ? (
+                <span className="rounded-full bg-emerald-500/10 px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
+                  Ready
                 </span>
-                <Badge variant={item.ready ? "success" : "warning"}>
-                  {item.ready ? "Ready" : "Needs setup"}
-                </Badge>
-              </div>
-              <CardTitle>{item.title}</CardTitle>
-              <CardDescription>{item.description}</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-xs font-medium uppercase tracking-[0.22em] text-foreground-soft">
+              ) : (
+                <span className="rounded-full border border-warning/20 bg-warning/10 px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-warning">
+                  Needs setup
+                </span>
+              )}
+            </div>
+
+            <div>
+              <h3 className="text-lg font-semibold tracking-[-0.02em] text-foreground">
+                {item.title}
+              </h3>
+              <p className="mt-2 text-sm leading-relaxed text-foreground-muted">
+                {item.description}
+              </p>
+            </div>
+
+            <div className="mt-auto border-t border-border pt-4">
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-foreground-soft">
                 {item.ready
                   ? "Integrated into the app"
-                  : "Preview mode stays usable until this is added"}
+                  : "Preview mode stays usable"}
               </p>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         );
       })}
     </div>
