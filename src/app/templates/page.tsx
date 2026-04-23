@@ -89,7 +89,7 @@ export default async function TemplatesPage() {
 
       {/* ── Architecture Highlights ──────────────────────── */}
       <section className="mx-auto w-full max-w-5xl">
-        <div className="rounded-[28px] border border-border bg-surface-strong p-8 text-center md:p-12">
+        <div className="rounded-[28px] border border-border bg-surface p-8 text-center md:p-12">
           <h2 className="text-2xl font-semibold tracking-[-0.04em] text-foreground md:text-3xl">
             Write once, deploy anywhere.
           </h2>
