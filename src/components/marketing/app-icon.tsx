@@ -18,7 +18,7 @@ export function DevframeIcon({ className }: DevframeIconProps) {
 
   // Before mount, render with a neutral/transparent fill to match server output
   const isDark = mounted && resolvedTheme === "dark";
-  const color = isDark ? "white" : "#222831";
+  const color = isDark ? "white" : "#76899cff";
 
   return (
     <span
