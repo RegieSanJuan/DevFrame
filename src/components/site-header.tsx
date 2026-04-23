@@ -3,10 +3,10 @@
 import { Show, UserButton } from "@clerk/nextjs";
 import { ArrowRight, LayoutTemplate } from "lucide-react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { isClerkConfigured } from "@/lib/env";
-import { useEffect, useState } from "react";
 import { DevframeLogo } from "./marketing/app-icon";
 
 export function SiteHeader() {
@@ -17,14 +17,16 @@ export function SiteHeader() {
   ];
 
   const [scrolled, setScrolled] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 10);
-    };
-
+    const handleScroll = () => setScrolled(window.scrollY > 10);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    setMounted(true);
   }, []);
 
   return (
@@ -51,45 +53,50 @@ export function SiteHeader() {
             </nav>
           </div>
 
+          {/* Auth section: render nothing until mounted to avoid hydration mismatch */}
           <div className="flex flex-col gap-3 md:flex-row md:items-center">
-            {!isClerkConfigured ? (
+            {mounted && (
               <>
-                <Button asChild size="xs" variant="outline">
-                  <Link href="/sign-in">Sign in</Link>
-                </Button>
-                <Button asChild size="xs" variant="accent">
-                  <Link href="/sign-up">Start building</Link>
-                </Button>
-              </>
-            ) : (
-              <>
-                <Show when="signed-out">
-                  <div className="flex items-center gap-2">
-                    <Button asChild size="sm" variant="ghost">
+                {!isClerkConfigured ? (
+                  <>
+                    <Button asChild size="xs" variant="outline">
                       <Link href="/sign-in">Sign in</Link>
                     </Button>
-                    <Button asChild size="sm" variant="accent">
-                      <Link href="/sign-up">
-                        Start building
-                        <ArrowRight className="size-4" />
-                      </Link>
+                    <Button asChild size="xs" variant="accent">
+                      <Link href="/sign-up">Start building</Link>
                     </Button>
-                  </div>
-                </Show>
-                <Show when="signed-in">
-                  <div className="flex items-center gap-3">
-                    <Button asChild size="sm" variant="secondary">
-                      <Link href="/templates">
-                        Templates
-                        <LayoutTemplate className="size-4" />
-                      </Link>
-                    </Button>
-                    <Button asChild size="sm" variant="accent">
-                      <Link href="/builder">Edit portfolio</Link>
-                    </Button>
-                    <UserButton />
-                  </div>
-                </Show>
+                  </>
+                ) : (
+                  <>
+                    <Show when="signed-out">
+                      <div className="flex items-center gap-2">
+                        <Button asChild size="sm" variant="ghost">
+                          <Link href="/sign-in">Sign in</Link>
+                        </Button>
+                        <Button asChild size="sm" variant="accent">
+                          <Link href="/sign-up">
+                            Start building
+                            <ArrowRight className="size-4" />
+                          </Link>
+                        </Button>
+                      </div>
+                    </Show>
+                    <Show when="signed-in">
+                      <div className="flex items-center gap-3">
+                        <Button asChild size="sm" variant="secondary">
+                          <Link href="/templates">
+                            Templates
+                            <LayoutTemplate className="size-4" />
+                          </Link>
+                        </Button>
+                        <Button asChild size="sm" variant="accent">
+                          <Link href="/builder">Edit portfolio</Link>
+                        </Button>
+                        <UserButton />
+                      </div>
+                    </Show>
+                  </>
+                )}
               </>
             )}
           </div>
