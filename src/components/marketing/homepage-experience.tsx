@@ -1,8 +1,6 @@
 "use client";
 
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { TEMPLATE_CATALOG } from "@/lib/template-catalog";
 import {
   SiClerk,
@@ -16,7 +14,6 @@ import {
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
-  Activity,
   ArrowRight,
   Blocks,
   Braces,
@@ -27,6 +24,8 @@ import {
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import Marquee from "react-fast-marquee";
+import { Badge } from "../ui/badge";
+import { Card, CardContent } from "../ui/card";
 
 const platformCards = [
   {
@@ -220,7 +219,7 @@ export function HomepageExperience() {
   return (
     <div
       ref={rootRef}
-      className="flex flex-col items-center space-y-24 pt-10 md:space-y-28 md:pt-14 px-60"
+      className="flex flex-col items-center space-y-24 pt-10 md:space-y-28 md:pt-14"
     >
       <div className="relative space-y-12">
         <div className="mx-auto flex max-w-4xl flex-col items-center text-center">
@@ -366,222 +365,181 @@ export function HomepageExperience() {
         </div>
       </div>
 
-      <section data-reveal className="space-y-6">
-        <div className="max-w-2xl space-y-4">
+
+      {/* ── Platform features ───────────────────────────── */}
+      <section data-reveal className="space-y-14 w-full">
+        <div className="mx-auto flex max-w-2xl flex-col items-center text-center space-y-5">
           <span className="section-label">Platform features</span>
-          <h2 className="text-4xl font-semibold tracking-[-0.05em] text-foreground md:text-5xl">
-            Dark, breathable UI across the whole portfolio workflow.
+          <h2 className="text-4xl font-semibold tracking-[-0.07em] text-foreground md:text-5xl">
+            One dark system, every surface.
           </h2>
-          <p className="text-base leading-7 text-foreground-muted md:text-lg md:leading-8">
-            The redesign is not just a new hero. It sets the same dark system
-            underneath the navbar, builder, cards, auth, and public portfolio
-            pages so the product feels like one platform.
+          <p className="text-base leading-7 text-foreground-muted">
+            The same calm design language runs through the builder, templates,
+            auth flow, and every public portfolio route.
           </p>
         </div>
 
-        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           {platformCards.map((item) => {
             const Icon = item.icon;
-
             return (
-              <Card
+              <div
                 key={item.title}
-                className="group border-white/10 transition-transform duration-200 hover:-translate-y-1 hover:border-accent/28"
+                className="group rounded-[26px] border border-white/10 bg-white/[0.02] p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-white/20 hover:bg-white/[0.04]"
               >
-                <CardContent className="space-y-5 p-6">
-                  <span className="flex size-12 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-accent">
-                    <Icon className="size-5" />
-                  </span>
-                  <div className="space-y-3">
-                    <p className="text-xl font-semibold tracking-[-0.03em] text-foreground">
-                      {item.title}
-                    </p>
-                    <p className="text-sm leading-7 text-foreground-muted">
-                      {item.description}
-                    </p>
-                  </div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-foreground-soft">
-                    {item.detail}
-                  </p>
-                </CardContent>
-              </Card>
+                <span className="flex size-10 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-accent">
+                  <Icon className="size-4" />
+                </span>
+                <p className="mt-5 text-base font-semibold tracking-[-0.02em] text-foreground">
+                  {item.title}
+                </p>
+                <p className="mt-2 text-sm leading-6 text-foreground-muted">
+                  {item.description}
+                </p>
+                <p className="mt-5 text-xs font-semibold uppercase tracking-[0.22em] text-foreground-soft">
+                  {item.detail}
+                </p>
+              </div>
             );
           })}
         </div>
       </section>
 
+      {/* ── Workflow ─────────────────────────────────────── */}
       <section
         data-reveal
-        className="grid gap-6 lg:grid-cols-[0.92fr_1.08fr] lg:items-start"
+        className="w-full"
       >
-        <div className="space-y-5">
-          <span className="section-label">Workflow</span>
-          <h2 className="text-4xl font-semibold tracking-[-0.05em] text-foreground md:text-5xl">
-            Cleaner steps from setup to published route.
-          </h2>
-          <p className="text-base leading-7 text-foreground-muted md:text-lg md:leading-8">
-            The interface now centers around fewer, stronger panels so
-            developers can understand where they are, what is ready, and what
-            gets published next.
-          </p>
-
-          <div className="grid gap-4">
-            {workflow.map((item, index) => (
-              <Card
-                key={item.title}
-                className="border-white/10 bg-white/[0.02] shadow-none"
-              >
-                <CardContent className="flex gap-4 p-5">
-                  <span className="flex size-11 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] font-mono text-sm text-accent">
-                    0{index + 1}
-                  </span>
-                  <div>
-                    <p className="text-lg font-semibold text-foreground">
-                      {item.title}
-                    </p>
-                    <p className="mt-2 text-sm leading-6 text-foreground-muted">
-                      {item.description}
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-
-        <Card className="overflow-hidden border-white/10">
-          <CardContent className="p-0">
-            <div className="grid gap-0 md:grid-cols-[0.9fr_1.1fr]">
-              <div className="border-b border-white/8 p-6 md:border-b-0 md:border-r">
-                <span className="section-label">Builder preview</span>
-                <h3 className="mt-5 text-3xl font-semibold tracking-[-0.05em] text-foreground">
-                  A builder that looks closer to the final product.
-                </h3>
-                <p className="mt-4 text-sm leading-7 text-foreground-muted">
-                  Cards, route details, and setup feedback are treated like
-                  product surfaces, not placeholders.
+        <div className="rounded-[28px] border border-white/10 bg-white/[0.02] overflow-hidden">
+          <div className="grid gap-0 lg:grid-cols-[1fr_1.2fr]">
+            {/* Left — text + steps */}
+            <div className="border-b border-white/8 p-8 md:p-10 lg:border-b-0 lg:border-r space-y-6">
+              <div className="space-y-4">
+                <span className="section-label">Workflow</span>
+                <h2 className="text-3xl font-semibold tracking-[-0.06em] text-foreground md:text-4xl">
+                  From blank slate to live portfolio in four steps.
+                </h2>
+                <p className="text-sm leading-7 text-foreground-muted">
+                  No sprawling settings page. Pick a template, fill the fields,
+                  check setup status, then publish — done.
                 </p>
-                <div className="mt-6 flex flex-col gap-3 sm:flex-row md:flex-col">
-                  <Button asChild variant="accent">
-                    <Link href="/dashboard">
-                      Open dashboard
-                      <ArrowRight className="size-4" />
-                    </Link>
-                  </Button>
-                  <Button asChild variant="secondary">
-                    <Link href="/builder">Edit portfolio</Link>
-                  </Button>
-                </div>
               </div>
 
-              <div className="grid gap-4 bg-surface-soft p-6">
-                <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
-                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-foreground-soft">
-                    Summary
-                  </p>
-                  <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                    <div className="rounded-2xl border border-white/8 bg-black/15 px-4 py-3">
-                      <p className="text-xs uppercase tracking-[0.2em] text-foreground-soft">
-                        Status
-                      </p>
-                      <p className="mt-2 text-sm font-semibold text-accent">
-                        Ready to publish
-                      </p>
-                    </div>
-                    <div className="rounded-2xl border border-white/8 bg-black/15 px-4 py-3">
-                      <p className="text-xs uppercase tracking-[0.2em] text-foreground-soft">
-                        Template
-                      </p>
-                      <p className="mt-2 text-sm font-semibold text-foreground">
-                        Atlas
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="grid gap-4 md:grid-cols-2">
-                  <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
-                    <p className="text-xs font-semibold uppercase tracking-[0.24em] text-foreground-soft">
-                      Core skills
-                    </p>
-                    <div className="mt-4 flex flex-wrap gap-2">
-                      {["Next.js", "TypeScript", "Supabase", "UI systems"].map(
-                        (item) => (
-                          <span
-                            key={item}
-                            className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-2 text-sm text-foreground-muted"
-                          >
-                            {item}
-                          </span>
-                        ),
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
-                    <p className="text-xs font-semibold uppercase tracking-[0.24em] text-foreground-soft">
-                      Featured project
-                    </p>
-                    <p className="mt-4 text-sm font-semibold text-foreground">
-                      DevFrame system refresh
-                    </p>
-                    <p className="mt-2 text-sm leading-6 text-foreground-muted">
-                      Dark platform UI, reusable surfaces, builder consistency.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="rounded-[24px] border border-white/10 bg-surface-strong p-5">
-                  <div className="flex items-center justify-between gap-3">
+              <div className="grid gap-3">
+                {workflow.map((item, index) => (
+                  <div
+                    key={item.title}
+                    className="flex gap-4 rounded-2xl border border-white/8 bg-white/[0.02] px-4 py-4"
+                  >
+                    <span className="flex size-9 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] font-mono text-xs text-accent">
+                      0{index + 1}
+                    </span>
                     <div>
-                      <p className="text-xs font-semibold uppercase tracking-[0.24em] text-foreground-soft">
-                        Publish target
+                      <p className="text-sm font-semibold text-foreground">
+                        {item.title}
                       </p>
-                      <p className="mt-2 text-lg font-semibold text-foreground">
-                        devframe.app/p/regie-codes
+                      <p className="mt-1 text-sm leading-6 text-foreground-muted">
+                        {item.description}
                       </p>
                     </div>
-                    <Activity className="size-5 text-accent" />
                   </div>
-                </div>
+                ))}
               </div>
             </div>
-          </CardContent>
-        </Card>
+
+            {/* Right — quick stats panel */}
+            <div className="grid gap-4 p-8 md:p-10 bg-surface-soft/50 content-start">
+              <div className="rounded-[20px] border border-white/10 bg-white/[0.03] p-5">
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-foreground-soft">
+                  What you fill in once
+                </p>
+                <div className="mt-4 grid grid-cols-2 gap-2">
+                  {["Name & role", "Stack skills", "Featured project", "Social links", "Bio", "Public slug"].map((field) => (
+                    <div
+                      key={field}
+                      className="rounded-xl border border-white/8 bg-black/20 px-3 py-2.5 text-sm text-foreground-muted"
+                    >
+                      {field}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="grid gap-3 sm:grid-cols-2">
+                <div className="rounded-[20px] border border-white/10 bg-white/[0.03] p-5">
+                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-foreground-soft">
+                    Templates
+                  </p>
+                  <p className="mt-3 text-3xl font-semibold tracking-tight text-foreground">
+                    3
+                  </p>
+                  <p className="mt-1 text-sm text-foreground-muted">
+                    Directions, one system
+                  </p>
+                </div>
+                <div className="rounded-[20px] border border-white/10 bg-white/[0.03] p-5">
+                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-foreground-soft">
+                    Setup
+                  </p>
+                  <p className="mt-3 text-3xl font-semibold tracking-tight text-foreground">
+                    ~5<span className="text-lg text-foreground-muted">min</span>
+                  </p>
+                  <p className="mt-1 text-sm text-foreground-muted">
+                    To live portfolio
+                  </p>
+                </div>
+              </div>
+
+              <div className="rounded-[20px] border border-white/10 bg-white/[0.03] px-5 py-4 flex items-center justify-between gap-3">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-foreground-soft">
+                    Public at
+                  </p>
+                  <p className="mt-2 text-base font-semibold text-foreground">
+                    /p/your-username
+                  </p>
+                </div>
+                <Globe className="size-5 text-accent shrink-0" />
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
-      <section data-reveal className="space-y-6">
-        <div className="max-w-2xl space-y-4">
-          <span className="section-label">Template system</span>
-          <h2 className="text-4xl font-semibold tracking-[-0.05em] text-foreground md:text-5xl">
-            Three portfolio directions, one dark design language.
+      {/* ── Template system ──────────────────────────────── */}
+      <section data-reveal className="space-y-14 w-full">
+        <div className="mx-auto flex max-w-2xl flex-col items-center text-center space-y-5">
+          <span className="section-label">Templates</span>
+          <h2 className="text-4xl font-semibold tracking-[-0.07em] text-foreground md:text-5xl">
+            Three directions, one design system.
           </h2>
-          <p className="text-base leading-7 text-foreground-muted md:text-lg md:leading-8">
-            Each template keeps its own personality, but the surrounding system
-            now stays consistent with the same dark surfaces, spacing, and green
-            action states.
+          <p className="text-base leading-7 text-foreground-muted">
+            Signal, Atlas, or Pulse — each has its own personality but sits
+            on the same dark foundation.
           </p>
         </div>
 
-        <div className="grid gap-5 lg:grid-cols-3">
+        <div className="grid gap-4 lg:grid-cols-3">
           {TEMPLATE_CATALOG.map((template) => (
-            <Card
+            <div
               key={template.slug}
-              className="overflow-hidden border-white/10 transition-transform duration-200 hover:-translate-y-1 hover:border-accent/28"
+              className="group rounded-[26px] border border-white/10 bg-white/[0.02] overflow-hidden transition-all duration-200 hover:-translate-y-0.5 hover:border-white/20"
             >
               <div
-                className={`h-2 w-full bg-gradient-to-r ${template.accent}`}
+                className={`h-[3px] w-full bg-gradient-to-r ${template.accent}`}
               />
-              <CardContent className="space-y-5 p-6">
+              <div className="space-y-5 p-6">
                 <div className="flex items-center justify-between gap-3">
-                  <Badge>{template.name}</Badge>
-                  <Blocks className="size-5 text-accent" />
+                  <p className="text-xs font-semibold uppercase tracking-[0.22em] text-foreground-soft">
+                    {template.name}
+                  </p>
+                  <Blocks className="size-4 text-foreground-soft" />
                 </div>
                 <div>
-                  <p className="text-2xl font-semibold tracking-[-0.04em] text-foreground">
+                  <p className="text-xl font-semibold tracking-[-0.04em] text-foreground">
                     {template.tagline}
                   </p>
-                  <p className="mt-3 text-sm leading-7 text-foreground-muted">
+                  <p className="mt-2 text-sm leading-6 text-foreground-muted">
                     {template.description}
                   </p>
                 </div>
@@ -589,52 +547,57 @@ export function HomepageExperience() {
                   {template.highlights.map((highlight) => (
                     <span
                       key={highlight}
-                      className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-2 text-sm text-foreground-muted"
+                      className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 text-xs text-foreground-muted"
                     >
                       {highlight}
                     </span>
                   ))}
                 </div>
-                <Button asChild variant="secondary" className="w-full">
+                <Button asChild variant="secondary" size="sm" className="w-full">
                   <Link href={`/builder?template=${template.slug}`}>
                     Use {template.name}
-                    <ArrowRight className="size-4" />
+                    <ArrowRight className="size-3.5" />
                   </Link>
                 </Button>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           ))}
         </div>
       </section>
 
-      <section data-reveal>
-        <Card className="overflow-hidden border-white/10 bg-[radial-gradient(circle_at_top,rgba(62,207,142,0.14),transparent_42%)] bg-surface-strong">
-          <CardContent className="flex flex-col gap-8 p-8 md:flex-row md:items-center md:justify-between md:p-10">
-            <div className="max-w-2xl">
-              <span className="section-label">Start building</span>
-              <h2 className="mt-5 text-4xl font-semibold tracking-[-0.05em] text-foreground md:text-5xl">
-                Publish faster with a UI that already feels production-ready.
+      {/* ── CTA ──────────────────────────────────────────── */}
+      <section data-reveal className="w-full pb-10">
+        <div className="rounded-[28px] border border-white/10 bg-surface-strong overflow-hidden relative">
+          {/* Subtle radial glow */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_0%,rgba(201,169,110,0.10),transparent_60%)]"
+          />
+          <div className="relative flex flex-col items-center text-center gap-8 p-12 md:p-16">
+            <div className="max-w-2xl flex flex-col items-center gap-5">
+              <span className="section-label">Get started</span>
+              <h2 className="text-4xl font-semibold tracking-[-0.07em] text-foreground md:text-5xl">
+                Ship a portfolio that looks production-ready.
               </h2>
-              <p className="mt-4 text-base leading-7 text-foreground-muted md:text-lg md:leading-8">
-                DevFrame now looks and feels closer to the kind of developer
-                platform teams trust: dark, spacious, technical, and consistent
-                from marketing page to builder workflow.
+              <p className="text-base leading-7 text-foreground-muted">
+                Pick a template, fill your details, and publish to a live route
+                — no config sprawl, no blank-canvas paralysis.
               </p>
             </div>
 
-            <div className="flex flex-col gap-3 sm:flex-row md:flex-col">
+            <div className="flex flex-col gap-3 sm:flex-row">
               <Button asChild size="lg" variant="accent">
                 <Link href="/builder">
-                  Open builder
+                  Open the builder
                   <ArrowRight className="size-4" />
                 </Link>
               </Button>
               <Button asChild size="lg" variant="secondary">
-                <Link href="/templates">View template catalog</Link>
+                <Link href="/templates">Browse templates</Link>
               </Button>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </section>
     </div>
   );
