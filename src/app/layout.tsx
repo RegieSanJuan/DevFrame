@@ -80,15 +80,15 @@ export default function RootLayout({
       className={`${manrope.variable} ${ibmPlexMono.variable} h-full antialiased`}
     >
       <body className="min-h-full bg-background text-foreground">
-        <ThemeProvider attribute="class" defaultTheme="dark" disableTransitionOnChange>
-          <Providers>
+        <Providers>
+          <ThemeProvider attribute="class" defaultTheme="dark" disableTransitionOnChange>
             <div className="relative isolate min-h-screen flex flex-col items-center w-full">
               <SiteHeader />
               <main className="pb-24  max-w-6xl">{children}</main>
               <SiteFooter />
             </div>
-          </Providers>
-        </ThemeProvider>
+          </ThemeProvider>
+        </Providers>
       </body>
     </html>
   );
