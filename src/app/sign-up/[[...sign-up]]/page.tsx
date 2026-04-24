@@ -2,6 +2,7 @@ import { SignUp } from "@clerk/nextjs";
 import { Key } from "lucide-react";
 
 import { SetupStatus } from "@/components/setup-status";
+import { clerkAuthAppearance } from "@/lib/clerk-auth-appearance";
 import { isClerkConfigured } from "@/lib/env";
 
 export default function SignUpPage() {
@@ -22,7 +23,12 @@ export default function SignUpPage() {
         <div>
           {isClerkConfigured ? (
             <div className="flex justify-center rounded-[24px] border border-border bg-surface p-3">
-              <SignUp path="/sign-up" routing="path" signInUrl="/sign-in" />
+              <SignUp
+                path="/sign-up"
+                routing="path"
+                signInUrl="/sign-in"
+                appearance={clerkAuthAppearance}
+              />
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center gap-4 rounded-[24px] border border-dashed border-border bg-surface p-10 text-center">
