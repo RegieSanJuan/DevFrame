@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { PortfolioRenderer } from "@/components/portfolio-renderer";
 import { Button } from "@/components/ui/button";
 import { getSeedPortfolioByTemplate } from "@/lib/portfolio-storage";
 import { TEMPLATE_CATALOG } from "@/lib/template-catalog";
@@ -34,6 +35,23 @@ export default async function TemplatesPage() {
               <div
                 className={`h-[3px] w-full bg-gradient-to-r ${template.accent}`}
               />
+
+              {sample && (
+                <div
+                  className="relative h-[220px] w-full overflow-hidden bg-surface-strong/50"
+                  style={{
+                    maskImage: "linear-gradient(to bottom, black 40%, transparent 100%)",
+                  }}
+                >
+                  <div
+                    className="pointer-events-none absolute inset-0 origin-top scale-[0.45]"
+                    style={{ width: "222%", transformOrigin: "top left" }}
+                  >
+                    <PortfolioRenderer portfolio={sample} />
+                  </div>
+                </div>
+              )}
+
               <div className="flex flex-grow flex-col p-8">
                 <div>
                   <span className="section-label">{template.name}</span>

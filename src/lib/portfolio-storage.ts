@@ -43,31 +43,6 @@ type SavePortfolioResult = {
 
 const SEED_PORTFOLIOS: PortfolioRecord[] = [
   {
-    ownerId: "seed-pulse",
-    slug: "jules-ortega",
-    templateSlug: "pulse",
-    name: "Jules Ortega",
-    title: "Product Engineer",
-    location: "Manila, Philippines",
-    email: "jules@example.dev",
-    bio: "I love fast feedback loops, experimental products, and shipping things that people can actually use.",
-    about:
-      "My work sits between engineering and product. I prototype quickly, test ideas with users, and then harden the best concepts into systems that teams can scale. I care about speed, but not at the cost of taste or maintainability.",
-    availability: "Available for freelance work",
-    skills: ["React", "Framer Motion", "Node.js", "Growth", "Rapid Prototyping"],
-    githubUrl: "https://github.com/julesortega",
-    linkedinUrl: "https://linkedin.com/in/julesortega",
-    websiteUrl: "https://julesortega.dev",
-    featuredProjectName: "Pulse Labs",
-    featuredProjectSummary:
-      "A launchpad for side-project experiments with reusable growth loops, lightweight analytics, and fast deployment presets.",
-    featuredProjectStack: "Next.js, Neon, Tailwind CSS, Resend",
-    featuredProjectUrl: "https://julesortega.dev/projects/pulse-labs",
-    previewUrl: createPortfolioUrl("jules-ortega"),
-    updatedAt: "2026-04-15T08:00:00.000Z",
-    source: "seed",
-  },
-  {
     ownerId: "seed-nova",
     slug: "alex-vortex",
     templateSlug: "nova",

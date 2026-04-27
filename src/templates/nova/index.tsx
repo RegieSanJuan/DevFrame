@@ -1,8 +1,8 @@
 import { Badge } from "@/components/ui/badge";
-import { registerTemplate } from "@/templates/registry";
-import { SectionLabel, SkillBadge, LinkPill } from "@/templates/base-components";
-import { Code2, BriefcaseBusiness, Mail } from "lucide-react";
+import { LinkPill, SectionLabel, SkillBadge } from "@/templates/base-components";
 import type { TemplateComponentProps } from "@/templates/registry";
+import { registerTemplate } from "@/templates/registry";
+import { BriefcaseBusiness, Code2, Mail } from "lucide-react";
 
 function NovaTemplate({ portfolio }: TemplateComponentProps) {
   return (
@@ -18,9 +18,9 @@ function NovaTemplate({ portfolio }: TemplateComponentProps) {
           {portfolio.title} • {portfolio.location}
         </p>
         <div className="flex justify-center gap-4">
-          <LinkPill href={portfolio.githubUrl} label="GitHub" icon={Code2} />
-          <LinkPill href={portfolio.linkedinUrl} label="LinkedIn" icon={BriefcaseBusiness} />
-          <LinkPill href={`mailto:${portfolio.email}`} label="Email" icon={Mail} />
+          <LinkPill href={portfolio.githubUrl} label="GitHub" icon={<Code2 className="w-4 h-4" />} />
+          <LinkPill href={portfolio.linkedinUrl} label="LinkedIn" icon={<BriefcaseBusiness className="w-4 h-4" />} />
+          <LinkPill href={`mailto:${portfolio.email}`} label="Email" icon={<Mail className="w-4 h-4" />} />
         </div>
       </div>
 

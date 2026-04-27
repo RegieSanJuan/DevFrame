@@ -1,21 +1,18 @@
 "use client";
 
-import { BriefcaseBusiness, Code2, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-export function LinkPill({
-  href,
-  label,
-  icon: Icon,
-}: {
+interface LinkPillProps {
   href: string;
   label: string;
-  icon: typeof Code2 | typeof BriefcaseBusiness | typeof Mail;
-}) {
+  icon?: React.ReactNode;
+}
+
+export function LinkPill({ href, label, icon }: LinkPillProps) {
   return (
     <Button asChild variant="secondary" size="sm" className="rounded-full">
       <a href={href} target="_blank" rel="noreferrer">
-        <Icon className="size-4" />
+        {icon && <span className="w-4 h-4">{icon}</span>}
         {label}
       </a>
     </Button>
