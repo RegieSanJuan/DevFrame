@@ -376,34 +376,13 @@ function VertexTemplate({ portfolio }: TemplateComponentProps) {
               </p>
             </BentoCard>
           )}
-
-          <footer className="md:col-span-6 mt-2 flex flex-col gap-3 border-t border-[var(--vertex-border)] pt-5 text-sm sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <p className="font-semibold">{portfolio.name}</p>
-              <p
-                className="text-[10px] uppercase tracking-[0.22em]"
-                style={{ color: "var(--vertex-text-muted)" }}
-              >
-                {portfolio.title}
-              </p>
-            </div>
-            <div className="flex flex-wrap items-center gap-3 text-xs">
-              <a
-                href={`/p/${portfolio.slug}`}
-                className="transition-opacity hover:opacity-80"
-              >
-                Public resume
-              </a>
-              <a
-                href={`mailto:${portfolio.email}`}
-                className="transition-opacity hover:opacity-80"
-              >
-                {portfolio.email}
-              </a>
-            </div>
-          </footer>
         </section>
       </div>
+      <footer className="mt-12 md:col-span-6 flex justify-center items-center gap-1 border-t border-[var(--vertex-border)] py-5 text-sm">
+        <p className="text-xs" style={{ color: "var(--vertex-text-muted)" }}>
+          © {new Date().getFullYear()} {portfolio.name}. All rights reserved.
+        </p>
+      </footer>
     </div>
   );
 }

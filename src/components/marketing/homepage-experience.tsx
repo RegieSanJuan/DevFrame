@@ -193,8 +193,6 @@ export function HomepageExperience() {
           },
         });
       });
-
-
     }, rootRef);
 
     return () => ctx.revert();
@@ -349,7 +347,6 @@ export function HomepageExperience() {
         </div>
       </div>
 
-
       {/* ── Platform features ───────────────────────────── */}
       <section data-reveal className="space-y-14 w-full">
         <div className="mx-auto flex max-w-2xl flex-col items-center text-center space-y-5">
@@ -390,10 +387,7 @@ export function HomepageExperience() {
       </section>
 
       {/* ── Workflow ─────────────────────────────────────── */}
-      <section
-        data-reveal
-        className="w-full"
-      >
+      <section data-reveal className="w-full">
         <div className="rounded-[28px] border border-border bg-surface overflow-hidden">
           <div className="grid gap-0 lg:grid-cols-[1fr_1.2fr]">
             {/* Left — text + steps */}
@@ -438,7 +432,14 @@ export function HomepageExperience() {
                   What you fill in once
                 </p>
                 <div className="mt-4 grid grid-cols-2 gap-2">
-                  {["Name & role", "Stack skills", "Featured project", "Social links", "Bio", "Public slug"].map((field) => (
+                  {[
+                    "Name & role",
+                    "Stack skills",
+                    "Featured project",
+                    "Social links",
+                    "Bio",
+                    "Public slug",
+                  ].map((field) => (
                     <div
                       key={field}
                       className="rounded-xl border border-border bg-surface-strong px-3 py-2.5 text-sm text-foreground-muted"
@@ -498,8 +499,8 @@ export function HomepageExperience() {
             Three directions, one design system.
           </h2>
           <p className="text-base leading-7 text-foreground-muted">
-            Signal, Atlas, or Pulse — each has its own personality but sits
-            on the same dark foundation.
+            Signal, Atlas, or Pulse — each has its own personality but sits on
+            the same dark foundation.
           </p>
         </div>
 
@@ -537,8 +538,13 @@ export function HomepageExperience() {
                     </span>
                   ))}
                 </div>
-                <Button asChild variant="secondary" size="sm" className="w-full mt-auto">
-                  <Link href={`/builder?template=${template.slug}`}>
+                <Button
+                  asChild
+                  variant="secondary"
+                  size="sm"
+                  className="w-full mt-auto"
+                >
+                  <Link href={`/templates/preview/${template.slug}`}>
                     Use {template.name}
                     <ArrowRight className="size-3.5" />
                   </Link>
