@@ -194,23 +194,7 @@ export function HomepageExperience() {
         });
       });
 
-      gsap.to("[data-glow='one']", {
-        x: 20,
-        y: -18,
-        duration: 8,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-      });
 
-      gsap.to("[data-glow='two']", {
-        x: -16,
-        y: 22,
-        duration: 10,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-      });
     }, rootRef);
 
     return () => ctx.revert();

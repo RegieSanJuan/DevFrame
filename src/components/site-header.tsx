@@ -1,5 +1,6 @@
-import { UserButton } from "@clerk/nextjs";
-import { auth } from "@clerk/nextjs/server";
+"use client";
+
+import { UserButton, useAuth } from "@clerk/nextjs";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
@@ -9,19 +10,32 @@ import {
   clerkUserProfileAppearance,
 } from "@/lib/clerk-auth-appearance";
 import { isClerkConfigured } from "@/lib/env";
+import { useEffect, useState } from "react";
 import { DevframeLogo } from "./marketing/app-icon";
 
-export async function SiteHeader() {
+export function SiteHeader() {
   const navLinks = [
     { label: "Templates", href: "/templates" },
     { label: "Pricing", href: "/pricing" },
     { label: "Docs", href: "/docs" },
   ];
-  const userId = isClerkConfigured ? (await auth()).userId : null;
+  const { userId } = useAuth();
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <header className="sticky top-0 z-40 grid place-items-center w-full">
-      <div className="bg-background/82 backdrop-blur-xl w-full rounded grid place-items-center border-b border-border pt-2">
+      <div
+        className={`bg-background/82 backdrop-blur-xl w-full rounded grid place-items-center pt-2 ${scrolled ? "border-b border-border" : ""
+          }`}
+      >
         <div className="w-300 flex flex-col gap-4 py-4 md:flex-row md:items-center md:justify-between">
           <div className="flex items-center justify-center gap-16">
             <DevframeLogo />
