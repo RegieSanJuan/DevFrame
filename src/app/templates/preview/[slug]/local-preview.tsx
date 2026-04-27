@@ -1,5 +1,6 @@
 import { PortfolioRenderer } from "@/components/portfolio-renderer";
 import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import type { PortfolioRecord } from "@/lib/portfolio-schema";
 import type { TemplateCatalogItem } from "@/lib/template-catalog";
 import { Check } from "lucide-react";
@@ -21,19 +22,18 @@ export function TemplateLocalPreview({ portfolio, template, viewMode }: Template
       {/* Dynamic Content Layout */}
       <div className={`grid gap-12 ${isMobile ? "lg:grid-cols-[1fr_400px]" : "grid-cols-1"}`}>
         {/* Preview Container */}
-        <div className={`flex justify-center w-full min-h-[750px] bg-surface-strong/50 rounded-[40px] p-4 border border-border/50 order-1`}>
-          <div
+        <div className={`flex justify-center w-full h-[800px] max-h-[85vh] bg-surface-strong/50 rounded-[40px] p-4 border border-border/50 order-1`}>
+          <ScrollArea
             className={`
-              ${mode} 
-              w-full
+              ${mode}
+              w-full h-full
               transition-all duration-500 ease-in-out
-              rounded-[32px] overflow-hidden 
+              rounded-[32px]
               border border-border shadow-2xl bg-background
-              h-full min-h-[600px]
             `}
           >
             <PortfolioRenderer portfolio={portfolio} />
-          </div>
+          </ScrollArea>
         </div>
 
         {/* Info Area */}
