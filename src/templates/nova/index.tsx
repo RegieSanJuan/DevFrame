@@ -2,13 +2,13 @@ import { Badge } from "@/components/ui/badge";
 import { registerTemplate } from "@/templates/registry";
 import { SectionLabel, SkillBadge, LinkPill } from "@/templates/base-components";
 import { Code2, BriefcaseBusiness, Mail, MapPin } from "lucide-react";
-import type { TemplateComponentProps } from "../registry";
+import type { TemplateComponentProps } from "@/templates/registry";
 
 function NovaTemplate({ portfolio }: TemplateComponentProps) {
   return (
     <section className="space-y-12 py-12">
       <div className="text-center space-y-4">
-        <Badge variant="outline" className="rounded-full border-accent/50 text-accent">
+        <Badge variant="default" className="rounded-full border-accent/50 text-accent">
           {portfolio.availability}
         </Badge>
         <h1 className="text-5xl md:text-7xl font-bold tracking-tighter bg-gradient-to-b from-foreground to-foreground/50 bg-clip-text text-transparent">

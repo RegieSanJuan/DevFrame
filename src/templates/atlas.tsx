@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { registerTemplate } from "@/templates/registry";
 import { LinkPill, SkillBadge, SectionLabel } from "@/templates/base-components";
 import { BriefcaseBusiness, Code2, Mail, MapPin, ArrowUpRight } from "lucide-react";
-import type { TemplateComponentProps } from "../registry";
+import type { TemplateComponentProps } from "@/templates/registry";
 
 function AtlasTemplate({ portfolio }: TemplateComponentProps) {
   return (
