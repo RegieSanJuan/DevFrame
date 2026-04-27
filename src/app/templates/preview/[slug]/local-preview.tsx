@@ -4,7 +4,6 @@ import type { PortfolioRecord } from "@/lib/portfolio-schema";
 import type { TemplateCatalogItem } from "@/lib/template-catalog";
 import { Check } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
 
 interface TemplateLocalPreviewProps {
   portfolio: PortfolioRecord;
@@ -13,8 +12,7 @@ interface TemplateLocalPreviewProps {
 }
 
 export function TemplateLocalPreview({ portfolio, template, viewMode }: TemplateLocalPreviewProps) {
-  const [mode, setMode] = useState<"light" | "dark">("dark");
-  const toggleMode = () => setMode((m) => (m === "dark" ? "light" : "dark"));
+  const [mode] = ["dark"];
 
   const isMobile = viewMode === "mobile";
 
@@ -34,9 +32,7 @@ export function TemplateLocalPreview({ portfolio, template, viewMode }: Template
               h-full min-h-[600px]
             `}
           >
-            <div className="bg-background text-foreground h-full overflow-y-auto">
-              <PortfolioRenderer portfolio={portfolio} />
-            </div>
+            <PortfolioRenderer portfolio={portfolio} />
           </div>
         </div>
 

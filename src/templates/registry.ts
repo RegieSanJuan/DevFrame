@@ -13,8 +13,6 @@ export const TEMPLATE_REGISTRY: Record<
   TemplateSlug,
   React.ComponentType<TemplateComponentProps>
 > = {
-  signal: dynamic(() => import("./signal").then((m) => m.default)),
-  atlas: dynamic(() => import("./atlas").then((m) => m.default)),
   pulse: dynamic(() => import("./pulse").then((m) => m.default)),
   nova: dynamic(() => import("./nova").then((m) => m.default)),
   vertex: dynamic(() => import("./vertex").then((m) => m.default)),

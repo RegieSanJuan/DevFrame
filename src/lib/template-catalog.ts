@@ -46,6 +46,7 @@ export const TEMPLATE_CATALOG = [
 
 export type TemplateSlug = (typeof TEMPLATE_SLUGS)[number];
 export type PortfolioTemplate = (typeof TEMPLATE_CATALOG)[number];
+export type TemplateCatalogItem = PortfolioTemplate;
 
 export function isTemplateSlug(value: string | undefined): value is TemplateSlug {
   return TEMPLATE_SLUGS.includes(value as TemplateSlug);
