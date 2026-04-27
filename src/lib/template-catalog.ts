@@ -1,17 +1,6 @@
-export const TEMPLATE_SLUGS = ["pulse", "nova", "vertex", "drift"] as const;
+export const TEMPLATE_SLUGS = ["nova", "vertex", "drift"] as const;
 
 export const TEMPLATE_CATALOG = [
-  {
-    slug: "pulse",
-    name: "Pulse",
-    tagline: "Bold and high-energy for builders shipping fast.",
-    description:
-      "A visually expressive template with layered panels, ideal for showcasing experiments, launches, and fast-moving side projects.",
-    accent:
-      "from-[#1c1c1c] via-[#3d3d3d] to-[#6b6b6b]",
-    idealFor: "Startup-minded devs, hackers, and product engineers",
-    highlights: ["Launch-focused layout", "Stronger visual personality", "Built for momentum"],
-  },
   {
     slug: "nova",
     name: "Nova",
