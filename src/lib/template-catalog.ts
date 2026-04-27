@@ -9,7 +9,7 @@ export const TEMPLATE_CATALOG = [
       "A bold, center-aligned template that focuses on typography and high-impact storytelling for elite builders.",
     accent: "from-[#ff6b6b] via-[#f06595] to-[#cc5de8]",
     idealFor: "Creative developers, designers-who-code, and minimalists",
-    highlights: ["Bold typography", "Center-aligned hero", "Gradient accents"],
+    highlights: ["Bold typography", "Center-aligned hero", "Image gallery + resume"],
   },
   {
     slug: "vertex",
@@ -19,7 +19,7 @@ export const TEMPLATE_CATALOG = [
       "A sophisticated, block-based layout inspired by modern developer portfolios. Perfect for showcasing projects, skills, and testimonials in a structured grid.",
     accent: "from-[#3b82f6] via-[#2563eb] to-[#1d4ed8]",
     idealFor: "Senior engineers, consultants, and community leaders",
-    highlights: ["Bento grid layout", "Rich information density", "Social-proof focused"],
+    highlights: ["Bento grid layout", "Rich information density", "Image gallery + resume"],
   },
   {
     slug: "drift",
@@ -29,7 +29,7 @@ export const TEMPLATE_CATALOG = [
       "A dynamic portfolio template featuring a central-aligned layout, strong typography, and smooth micro-interactions.",
     accent: "from-[#3b82f6] via-[#6366f1] to-[#8b5cf6]",
     idealFor: "Frontend developers, designers-who-code, and tech enthusiasts",
-    highlights: ["Clean serif typography", "Floating card design", "Built-in theme toggle"],
+    highlights: ["Clean serif typography", "Floating card design", "Image gallery + resume"],
   },
 ] as const;
 

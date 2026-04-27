@@ -1,7 +1,7 @@
 import type { PortfolioRecord } from "@/lib/portfolio-schema";
 import { getTemplateBySlug } from "@/lib/template-catalog";
-import { TEMPLATE_REGISTRY } from "@/templates";
 import "@/templates";
+import { TEMPLATE_REGISTRY } from "@/templates";
 
 type PortfolioRendererProps = {
   portfolio: PortfolioRecord;
