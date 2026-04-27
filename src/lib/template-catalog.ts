@@ -1,4 +1,4 @@
-export const TEMPLATE_SLUGS = ["signal", "atlas", "pulse"] as const;
+export const TEMPLATE_SLUGS = ["signal", "atlas", "pulse", "nova"] as const;
 
 export const TEMPLATE_CATALOG = [
   {
@@ -33,6 +33,16 @@ export const TEMPLATE_CATALOG = [
       "from-[#1c1c1c] via-[#3d3d3d] to-[#6b6b6b]",
     idealFor: "Startup-minded devs, hackers, and product engineers",
     highlights: ["Launch-focused layout", "Stronger visual personality", "Built for momentum"],
+  },
+  {
+    slug: "nova",
+    name: "Nova",
+    tagline: "Minimalist and high-impact.",
+    description:
+      "A bold, center-aligned template that focuses on typography and high-impact storytelling for elite builders.",
+    accent: "from-[#ff6b6b] via-[#f06595] to-[#cc5de8]",
+    idealFor: "Creative developers, designers-who-code, and minimalists",
+    highlights: ["Bold typography", "Center-aligned hero", "Gradient accents"],
   },
 ] as const;
 

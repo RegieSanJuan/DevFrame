@@ -117,6 +117,31 @@ const SEED_PORTFOLIOS: PortfolioRecord[] = [
     updatedAt: "2026-04-15T08:00:00.000Z",
     source: "seed",
   },
+  {
+    ownerId: "seed-nova",
+    slug: "alex-vortex",
+    templateSlug: "nova",
+    name: "Alex Vortex",
+    title: "Creative Technologist",
+    location: "Berlin, Germany",
+    email: "alex@vortex.dev",
+    bio: "Exploring the intersection of code, motion, and minimalist design.",
+    about:
+      "I believe that software should be as beautiful as it is functional. My work focuses on creating high-impact digital experiences that leverage modern web technologies and bold typography. I don't just build features; I craft digital narratives.",
+    availability: "Available for freelance work",
+    skills: ["React", "Three.js", "GSAP", "Typography", "Shaders"],
+    githubUrl: "https://github.com/vortex",
+    linkedinUrl: "https://linkedin.com/in/vortex",
+    websiteUrl: "https://vortex.dev",
+    featuredProjectName: "Lumina UI",
+    featuredProjectSummary:
+      "A motion-first design system for spatial computing interfaces, focusing on gesture-based navigation and glassmorphic surfaces.",
+    featuredProjectStack: "React, Three.js, R3F, Tailwind",
+    featuredProjectUrl: "https://lumina.vortex.dev",
+    previewUrl: createPortfolioUrl("alex-vortex"),
+    updatedAt: "2026-04-15T08:00:00.000Z",
+    source: "seed",
+  },
 ];
 
 function toPortfolioRecord(
