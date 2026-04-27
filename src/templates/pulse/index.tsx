@@ -2,7 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { registerTemplate } from "@/templates/registry";
-import { LinkPill, SkillBadge, SectionLabel } from "@/templates/base-components";
+import { LinkPill, SkillBadge } from "@/templates/base-components";
 import { BriefcaseBusiness, Code2, Mail, ArrowUpRight } from "lucide-react";
 import type { TemplateComponentProps } from "@/templates/registry";
 
@@ -95,3 +95,5 @@ function PulseTemplate({ portfolio }: TemplateComponentProps) {
 }
 
 registerTemplate("pulse", PulseTemplate);
+
+export default PulseTemplate;

@@ -103,3 +103,5 @@ function SignalTemplate({ portfolio }: TemplateComponentProps) {
 }
 
 registerTemplate("signal", SignalTemplate);
+
+export default SignalTemplate;

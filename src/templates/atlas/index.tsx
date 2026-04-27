@@ -91,3 +91,5 @@ function AtlasTemplate({ portfolio }: TemplateComponentProps) {
 }
 
 registerTemplate("atlas", AtlasTemplate);
+
+export default AtlasTemplate;

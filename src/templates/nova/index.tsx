@@ -1,7 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { registerTemplate } from "@/templates/registry";
 import { SectionLabel, SkillBadge, LinkPill } from "@/templates/base-components";
-import { Code2, BriefcaseBusiness, Mail, MapPin } from "lucide-react";
+import { Code2, BriefcaseBusiness, Mail } from "lucide-react";
 import type { TemplateComponentProps } from "@/templates/registry";
 
 function NovaTemplate({ portfolio }: TemplateComponentProps) {
@@ -61,3 +61,5 @@ function NovaTemplate({ portfolio }: TemplateComponentProps) {
 }
 
 registerTemplate("nova", NovaTemplate);
+
+export default NovaTemplate;

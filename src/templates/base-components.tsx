@@ -1,3 +1,5 @@
+"use client";
+
 import { BriefcaseBusiness, Code2, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 

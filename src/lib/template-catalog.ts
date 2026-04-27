@@ -1,28 +1,6 @@
-export const TEMPLATE_SLUGS = ["signal", "atlas", "pulse", "nova"] as const;
+export const TEMPLATE_SLUGS = ["pulse", "nova", "vertex", "drift"] as const;
 
 export const TEMPLATE_CATALOG = [
-  {
-    slug: "signal",
-    name: "Signal",
-    tagline: "Sharp, modern, and recruiter-friendly.",
-    description:
-      "A clean SaaS-inspired portfolio with a confident hero, quick credibility signals, and a strong project spotlight.",
-    accent:
-      "from-[#7c5c2e] via-[#c9a96e] to-[#e2c488]",
-    idealFor: "Frontend, full-stack, and product-focused developers",
-    highlights: ["Fast scan layout", "Strong intro section", "Great for job applications"],
-  },
-  {
-    slug: "atlas",
-    name: "Atlas",
-    tagline: "Editorial and story-driven.",
-    description:
-      "A more narrative template for developers who want to explain their process, craft, and impact with more depth.",
-    accent:
-      "from-[#1a1a2e] via-[#4a4e69] to-[#9a8c98]",
-    idealFor: "Senior engineers, indie makers, and technical writers",
-    highlights: ["Long-form about section", "Case-study feel", "Calm visual hierarchy"],
-  },
   {
     slug: "pulse",
     name: "Pulse",
@@ -43,6 +21,26 @@ export const TEMPLATE_CATALOG = [
     accent: "from-[#ff6b6b] via-[#f06595] to-[#cc5de8]",
     idealFor: "Creative developers, designers-who-code, and minimalists",
     highlights: ["Bold typography", "Center-aligned hero", "Gradient accents"],
+  },
+  {
+    slug: "vertex",
+    name: "Vertex",
+    tagline: "High-density bento grid for multi-faceted builders.",
+    description:
+      "A sophisticated, block-based layout inspired by modern developer portfolios. Perfect for showcasing projects, skills, and testimonials in a structured grid.",
+    accent: "from-[#3b82f6] via-[#2563eb] to-[#1d4ed8]",
+    idealFor: "Senior engineers, consultants, and community leaders",
+    highlights: ["Bento grid layout", "Rich information density", "Social-proof focused"],
+  },
+  {
+    slug: "drift",
+    name: "Drift",
+    tagline: "A bold, high-contrast template for modern developers.",
+    description:
+      "A dynamic portfolio template featuring a central-aligned layout, strong typography, and smooth micro-interactions.",
+    accent: "from-[#3b82f6] via-[#6366f1] to-[#8b5cf6]",
+    idealFor: "Frontend developers, designers-who-code, and tech enthusiasts",
+    highlights: ["Clean serif typography", "Floating card design", "Built-in theme toggle"],
   },
 ] as const;
 

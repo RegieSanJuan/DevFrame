@@ -1,6 +1,7 @@
 import type { PortfolioRecord } from "@/lib/portfolio-schema";
 import { getTemplateBySlug } from "@/lib/template-catalog";
 import { TEMPLATE_REGISTRY } from "@/templates";
+import "@/templates";
 
 type PortfolioRendererProps = {
   portfolio: PortfolioRecord;
@@ -13,7 +14,7 @@ export function PortfolioRenderer({ portfolio }: PortfolioRendererProps) {
   if (!TemplateComponent) {
     return (
       <div className="p-8 text-center border-2 border-dashed border-border rounded-xl">
-        <p className="text-foreground-muted">Template "{template.slug}" not found in registry.</p>
+        <p className="text-foreground-muted">Template &quot;{template.slug}&quot; not found in registry.</p>
       </div>
     );
   }

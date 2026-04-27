@@ -74,7 +74,7 @@ export default async function TemplatesPage() {
                     </Button>
                     {sample ? (
                       <Button asChild variant="secondary">
-                        <Link href={`/p/${sample.slug}`}>Preview</Link>
+                        <Link href={`/templates/preview/${template.slug}`}>Preview</Link>
                       </Button>
                     ) : null}
                   </div>
