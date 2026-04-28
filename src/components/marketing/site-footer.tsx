@@ -71,7 +71,7 @@ export function SiteFooter() {
         <div className="grid grid-cols-2 gap-x-8 gap-y-12 md:grid-cols-[1fr_repeat(4,_auto)] md:gap-x-12">
           {/* Brand block */}
           <div className="col-span-2 flex flex-col gap-5 md:col-span-1">
-            <DevframeLogo className="opacity-90 transition hover:opacity-100" />
+            <DevframeLogo className="opacity-90 transition hover:opacity-100 w-fit" />
 
             <p className="max-w-xs text-sm leading-relaxed text-foreground-muted">
               Build, publish, and iterate on your developer portfolio — with a

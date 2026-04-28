@@ -1,11 +1,11 @@
 import Link from "next/link";
 
+import { PortfolioRenderer } from "@/components/portfolio-renderer";
 import { Button } from "@/components/ui/button";
 import { getSeedPortfolioByTemplate } from "@/lib/portfolio-storage";
 import { TEMPLATE_CATALOG } from "@/lib/template-catalog";
 
 export default async function TemplatesPage() {
-
   return (
     <div className="container-shell space-y-24 pt-16 pb-10">
       {/* ── Header ─────────────────────────────────────── */}
@@ -15,9 +15,9 @@ export default async function TemplatesPage() {
           Pick the direction that fits your style.
         </h1>
         <p className="text-base leading-7 text-foreground-muted md:text-lg">
-          Each starter layout connects to the same structured portfolio data,
-          so you can change presentation without rebuilding the underlying
-          content model.
+          Each starter layout connects to the same structured portfolio data, so
+          you can change presentation without rebuilding the underlying content
+          model.
         </p>
       </div>
 
@@ -34,6 +34,24 @@ export default async function TemplatesPage() {
               <div
                 className={`h-[3px] w-full bg-gradient-to-r ${template.accent}`}
               />
+
+              {sample && (
+                <div
+                  className="relative h-[220px] w-full overflow-hidden bg-surface-strong/50"
+                  style={{
+                    maskImage:
+                      "linear-gradient(to bottom, black 40%, transparent 100%)",
+                  }}
+                >
+                  <div
+                    className="pointer-events-none absolute inset-0 origin-top scale-[0.45]"
+                    style={{ width: "222%", transformOrigin: "top left" }}
+                  >
+                    <PortfolioRenderer portfolio={sample} />
+                  </div>
+                </div>
+              )}
+
               <div className="flex flex-grow flex-col p-8">
                 <div>
                   <span className="section-label">{template.name}</span>
@@ -68,13 +86,13 @@ export default async function TemplatesPage() {
                 <div className="mt-auto pt-10">
                   <div className="flex gap-3 border-t border-border pt-6">
                     <Button asChild variant="accent" className="flex-1">
-                      <Link href={`/sign-in`}>
-                        Use template
-                      </Link>
+                      <Link href={`/sign-in`}>Use template</Link>
                     </Button>
                     {sample ? (
                       <Button asChild variant="secondary">
-                        <Link href={`/p/${sample.slug}`}>Preview</Link>
+                        <Link href={`/templates/preview/${template.slug}`}>
+                          Preview
+                        </Link>
                       </Button>
                     ) : null}
                   </div>
@@ -93,8 +111,8 @@ export default async function TemplatesPage() {
           </h2>
           <p className="mx-auto mt-3 max-w-2xl text-base text-foreground-muted">
             Our single-dataset approach means your portfolio data is entirely
-            decoupled from its presentation. Swap templates anytime with zero data
-            loss.
+            decoupled from its presentation. Swap templates anytime with zero
+            data loss.
           </p>
           <div className="mt-10 grid gap-4 text-left sm:grid-cols-3">
             <div className="rounded-2xl border border-border bg-surface p-5">

@@ -81,3 +81,23 @@ Source:
 - Add a custom domain workflow
 - Add an editor for multiple projects, testimonials, and blog posts
 - Add billing once the core product flow feels good
+
+## Customizing & Adding Templates
+
+DevFrame uses a modular template system. Each template is a standalone React component registered in a central registry.
+
+### How to customize a template
+1. **Specific Template**: Edit the file in `src/templates/`. For example, to change the "Nova" template, edit `src/templates/nova/index.tsx`.
+2. **Shared Components**: Common elements like `LinkPill` or `SkillBadge` are located in `src/templates/base-components.tsx`. Changing these will update all templates simultaneously.
+3. **Global Styles**: Core design tokens (colors, fonts) are defined as CSS variables in `src/app/globals.css`.
+
+### How to add a new template
+1. **Create the component**: Create a new file (e.g., `src/templates/my-new-template.tsx`).
+2. **Register it**: Call `registerTemplate("my-slug", MyComponent)` at the bottom of your file.
+3. **Import it**: Add an import for your new template in `src/templates/index.ts`.
+4. **Update Catalog**: Add your template metadata (slug, name, tagline, etc.) to `src/lib/template-catalog.ts` so it appearing in the builder.
+5. **(Optional) Add Seed Data**: Add a sample portfolio for your template in `src/lib/portfolio-storage.ts` to enable instant previews.
+
+### Template Architecture
+- `src/templates/registry.ts`: The central registry mapping slugs to components.
+- `src/components/portfolio-renderer.tsx`: The main renderer that dynamically loads the correct template.

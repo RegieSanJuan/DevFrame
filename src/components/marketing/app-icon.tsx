@@ -12,7 +12,9 @@ export function DevframeIcon({ className }: DevframeIconProps) {
   const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
+  // Intentional: setMounted() on mount detects hydration to avoid SSR/CSR mismatch
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
   }, []);
 

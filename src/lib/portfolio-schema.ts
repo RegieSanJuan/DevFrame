@@ -65,6 +65,18 @@ export const portfolioFormSchema = z.object({
 
 export type PortfolioFormValues = z.infer<typeof portfolioFormSchema>;
 
+export type ExperienceItem = {
+  year: string;
+  role: string;
+  company: string;
+};
+
+export type RecommendationItem = {
+  quote: string;
+  author: string;
+  role: string;
+};
+
 export type PortfolioRecord = {
   ownerId: string;
   slug: string;
@@ -87,6 +99,8 @@ export type PortfolioRecord = {
   previewUrl: string;
   updatedAt: string;
   source: "seed" | "preview" | "supabase";
+  experience?: ExperienceItem[];
+  recommendation?: RecommendationItem;
 };
 
 export function parsePortfolioFormData(
@@ -124,7 +138,7 @@ export function parsePortfolioFormData(
 }
 
 export function getEmptyPortfolioForm(
-  templateSlug: TemplateSlug = "signal",
+  templateSlug: TemplateSlug = "drift",
 ): PortfolioFormValues {
   return {
     templateSlug,
