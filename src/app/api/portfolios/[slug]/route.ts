@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { getPublicPortfolio } from "@/lib/portfolio-storage";
+import { getPublicPortfolioBySlug } from "@/services/portfolio-service";
 
 type PortfolioRouteProps = {
   params: Promise<{
@@ -10,7 +10,7 @@ type PortfolioRouteProps = {
 
 export async function GET(_request: Request, { params }: PortfolioRouteProps) {
   const { slug } = await params;
-  const portfolio = await getPublicPortfolio(slug);
+  const portfolio = await getPublicPortfolioBySlug(slug);
 
   if (!portfolio) {
     return NextResponse.json(

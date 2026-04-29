@@ -2,14 +2,17 @@ import Link from "next/link";
 
 import { PortfolioRenderer } from "@/components/portfolio-renderer";
 import { Button } from "@/components/ui/button";
-import { getSeedPortfolioByTemplate } from "@/lib/portfolio-storage";
-import { TEMPLATE_CATALOG } from "@/lib/template-catalog";
+import {
+  getTemplatePreviewPortfolio,
+  getTemplates,
+} from "@/services/template-service";
 
-export default async function TemplatesPage() {
+export default function TemplatesPage() {
+  const templates = getTemplates();
+
   return (
-    <div className="container-shell space-y-24 pt-16 pb-10">
-      {/* ── Header ─────────────────────────────────────── */}
-      <div className="mx-auto flex max-w-2xl flex-col items-center text-center space-y-5">
+    <div className="container-shell space-y-24 pb-10 pt-16">
+      <div className="mx-auto flex max-w-2xl flex-col items-center space-y-5 text-center">
         <span className="section-label">Templates</span>
         <h1 className="text-5xl font-semibold tracking-[-0.07em] text-foreground md:text-6xl">
           Pick the direction that fits your style.
@@ -21,10 +24,9 @@ export default async function TemplatesPage() {
         </p>
       </div>
 
-      {/* ── Template Catalog ───────────────────────────── */}
       <div className="grid gap-6 lg:grid-cols-3">
-        {TEMPLATE_CATALOG.map((template) => {
-          const sample = getSeedPortfolioByTemplate(template.slug);
+        {templates.map((template) => {
+          const sample = getTemplatePreviewPortfolio(template.slug);
 
           return (
             <div
@@ -35,7 +37,7 @@ export default async function TemplatesPage() {
                 className={`h-[3px] w-full bg-gradient-to-r ${template.accent}`}
               />
 
-              {sample && (
+              {sample ? (
                 <div
                   className="relative h-[220px] w-full overflow-hidden bg-surface-strong/50"
                   style={{
@@ -50,7 +52,7 @@ export default async function TemplatesPage() {
                     <PortfolioRenderer portfolio={sample} />
                   </div>
                 </div>
-              )}
+              ) : null}
 
               <div className="flex flex-grow flex-col p-8">
                 <div>
@@ -86,7 +88,9 @@ export default async function TemplatesPage() {
                 <div className="mt-auto pt-10">
                   <div className="flex gap-3 border-t border-border pt-6">
                     <Button asChild variant="accent" className="flex-1">
-                      <Link href={`/builder?template=${template.slug}`}>Use template</Link>
+                      <Link href={`/builder?template=${template.slug}`}>
+                        Use template
+                      </Link>
                     </Button>
                     {sample ? (
                       <Button asChild variant="secondary">
@@ -103,7 +107,6 @@ export default async function TemplatesPage() {
         })}
       </div>
 
-      {/* ── Architecture Highlights ──────────────────────── */}
       <section className="mx-auto w-full max-w-5xl">
         <div className="rounded-[28px] border border-border bg-surface p-8 text-center md:p-12">
           <h2 className="text-2xl font-semibold tracking-[-0.04em] text-foreground md:text-3xl">
@@ -128,7 +131,7 @@ export default async function TemplatesPage() {
                 Presentation
               </p>
               <p className="mt-2 text-lg font-semibold text-foreground">
-                {TEMPLATE_CATALOG.length} templates
+                {templates.length} templates
               </p>
             </div>
             <div className="rounded-2xl border border-border bg-surface p-5">

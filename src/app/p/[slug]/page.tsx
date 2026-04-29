@@ -6,8 +6,8 @@ import { notFound } from "next/navigation";
 import { PortfolioRenderer } from "@/components/portfolio-renderer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { getPublicPortfolio } from "@/lib/portfolio-storage";
 import { getTemplateBySlug } from "@/lib/template-catalog";
+import { getPublicPortfolioBySlug } from "@/services/portfolio-service";
 
 type PublicPortfolioPageProps = {
   params: Promise<{
@@ -19,7 +19,7 @@ export async function generateMetadata({
   params,
 }: PublicPortfolioPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const portfolio = await getPublicPortfolio(slug);
+  const portfolio = await getPublicPortfolioBySlug(slug);
 
   if (!portfolio) {
     return {
@@ -37,7 +37,7 @@ export default async function PublicPortfolioPage({
   params,
 }: PublicPortfolioPageProps) {
   const { slug } = await params;
-  const portfolio = await getPublicPortfolio(slug);
+  const portfolio = await getPublicPortfolioBySlug(slug);
 
   if (!portfolio) {
     notFound();

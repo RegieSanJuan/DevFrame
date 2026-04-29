@@ -4,8 +4,9 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardHeader, CardDescription, CardTitle } from "@/components/ui/card";
 import { requireViewer } from "@/lib/auth";
 import { getEmptyPortfolioForm, toFormValues } from "@/lib/portfolio-schema";
-import { getPortfolioForOwner } from "@/lib/portfolio-storage";
-import { isTemplateSlug, TEMPLATE_CATALOG } from "@/lib/template-catalog";
+import { isTemplateSlug } from "@/lib/template-catalog";
+import { getPortfolioByOwner } from "@/services/portfolio-service";
+import { getTemplates } from "@/services/template-service";
 
 type BuilderPageProps = {
   searchParams: Promise<{
@@ -17,7 +18,8 @@ export default async function BuilderPage({ searchParams }: BuilderPageProps) {
   const viewer = await requireViewer();
   const { template } = await searchParams;
   const selectedTemplate = isTemplateSlug(template) ? template : "drift";
-  const existingPortfolio = await getPortfolioForOwner(viewer.userId!);
+  const existingPortfolio = await getPortfolioByOwner(viewer.userId!);
+  const templates = getTemplates();
   const defaultValues = existingPortfolio
     ? {
         ...toFormValues(existingPortfolio),
@@ -31,7 +33,7 @@ export default async function BuilderPage({ searchParams }: BuilderPageProps) {
     <div className="container-shell space-y-10 pt-10">
       <section className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr] lg:items-end">
         <div className="space-y-4">
-        <Badge>{viewer.demoMode ? "Demo builder" : "Builder"}</Badge>
+          <Badge>{viewer.demoMode ? "Demo builder" : "Builder"}</Badge>
           <h1 className="text-4xl font-semibold tracking-[-0.05em] text-foreground md:text-5xl">
             Shape your portfolio without rebuilding the whole site.
           </h1>
@@ -95,7 +97,7 @@ export default async function BuilderPage({ searchParams }: BuilderPageProps) {
 
       <PortfolioBuilderForm
         defaultValues={defaultValues}
-        templates={TEMPLATE_CATALOG}
+        templates={templates}
         demoMode={viewer.demoMode}
       />
 

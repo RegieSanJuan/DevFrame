@@ -1,12 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { AlertCircle, ArrowUpRight, CheckCircle2, Sparkles } from "lucide-react";
-import { useState, useTransition } from "react";
-import { useForm } from "react-hook-form";
 
-import { savePortfolioAction, type BuilderFormState } from "@/app/actions";
+import { BuilderStepCard } from "@/components/builder/builder-step-card";
+import { TemplateOptionCard } from "@/components/builder/template-option-card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,9 +16,9 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { usePortfolioBuilderForm } from "@/hooks/use-portfolio-builder-form";
 import {
   availabilityOptions,
-  portfolioFormSchema,
   type PortfolioFormValues,
 } from "@/lib/portfolio-schema";
 import type { PortfolioTemplate } from "@/lib/template-catalog";
@@ -45,32 +43,18 @@ export function PortfolioBuilderForm({
   templates,
   demoMode,
 }: PortfolioBuilderFormProps) {
-  const [state, setState] = useState<BuilderFormState>({ status: "idle" });
-  const [isPending, startTransition] = useTransition();
-  const [selectedTemplate, setSelectedTemplate] = useState(
-    defaultValues.templateSlug,
-  );
   const {
-    register,
-    handleSubmit,
-    setValue,
-    formState: { errors },
-  } = useForm<PortfolioFormValues>({
-    resolver: zodResolver(portfolioFormSchema),
+    form: {
+      register,
+      formState: { errors },
+    },
+    isPending,
+    selectTemplate,
+    selectedTemplate,
+    submissionState,
+    submit,
+  } = usePortfolioBuilderForm({
     defaultValues,
-  });
-
-  const onSubmit = handleSubmit((values) => {
-    startTransition(async () => {
-      const formData = new FormData();
-
-      Object.entries(values).forEach(([key, value]) => {
-        formData.set(key, value);
-      });
-
-      const result = await savePortfolioAction(state, formData);
-      setState(result);
-    });
   });
 
   return (
@@ -91,7 +75,7 @@ export function PortfolioBuilderForm({
           </div>
         </CardHeader>
         <CardContent>
-          <form className="space-y-8" onSubmit={onSubmit}>
+          <form className="space-y-8" onSubmit={submit}>
             <input type="hidden" {...register("templateSlug")} />
             <section className="space-y-4">
               <div>
@@ -105,33 +89,12 @@ export function PortfolioBuilderForm({
               </div>
               <div className="grid gap-4 md:grid-cols-3">
                 {templates.map((template) => (
-                  <button
+                  <TemplateOptionCard
                     key={template.slug}
-                    type="button"
-                    onClick={() => {
-                      setSelectedTemplate(template.slug);
-                      setValue("templateSlug", template.slug, { shouldValidate: true });
-                    }}
-                    className={cn(
-                      "rounded-[24px] border p-4 text-left transition duration-200",
-                      selectedTemplate === template.slug
-                        ? "border-accent bg-accent/10 shadow-[0_22px_50px_-34px_rgba(62,207,142,0.72)]"
-                        : "border-border bg-surface hover:border-white/16 hover:bg-surface-strong",
-                    )}
-                  >
-                    <div
-                      className={cn(
-                        "h-2 w-full rounded-full bg-gradient-to-r",
-                        template.accent,
-                      )}
-                    />
-                    <p className="mt-4 text-base font-semibold text-foreground">
-                      {template.name}
-                    </p>
-                    <p className="mt-2 text-sm leading-6 text-foreground-muted">
-                      {template.tagline}
-                    </p>
-                  </button>
+                    template={template}
+                    isSelected={selectedTemplate === template.slug}
+                    onSelect={selectTemplate}
+                  />
                 ))}
               </div>
             </section>
@@ -347,9 +310,9 @@ export function PortfolioBuilderForm({
               <Button type="submit" variant="accent" size="lg" disabled={isPending}>
                 {isPending ? "Saving portfolio..." : "Save portfolio"}
               </Button>
-              {state.previewUrl ? (
+              {submissionState.previewUrl ? (
                 <Button asChild variant="secondary" size="lg">
-                  <Link href={new URL(state.previewUrl).pathname}>
+                  <Link href={new URL(submissionState.previewUrl).pathname}>
                     Open public preview
                     <ArrowUpRight className="size-4" />
                   </Link>
@@ -357,26 +320,26 @@ export function PortfolioBuilderForm({
               ) : null}
             </div>
 
-            {state.status !== "idle" ? (
+            {submissionState.status !== "idle" ? (
               <div
                 className={cn(
                   "rounded-[24px] border px-5 py-4 text-sm leading-6",
-                  state.status === "success"
+                  submissionState.status === "success"
                     ? "border-accent/30 bg-accent/10 text-accent"
                     : "border-danger/30 bg-danger/10 text-danger",
                 )}
               >
                 <div className="flex items-start gap-3">
-                  {state.status === "success" ? (
+                  {submissionState.status === "success" ? (
                     <CheckCircle2 className="mt-0.5 size-5 shrink-0" />
                   ) : (
                     <AlertCircle className="mt-0.5 size-5 shrink-0" />
                   )}
                   <div>
-                    <p className="font-semibold">{state.message}</p>
-                    {state.previewUrl ? (
+                    <p className="font-semibold">{submissionState.message}</p>
+                    {submissionState.previewUrl ? (
                       <p className="mt-1 text-xs uppercase tracking-[0.2em]">
-                        Public route: {new URL(state.previewUrl).pathname}
+                        Public route: {new URL(submissionState.previewUrl).pathname}
                       </p>
                     ) : null}
                   </div>
@@ -404,31 +367,18 @@ export function PortfolioBuilderForm({
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-              <div className="rounded-[24px] border border-border bg-surface p-5">
-              <p className="text-sm font-semibold uppercase tracking-[0.22em] text-foreground-soft">
-                1. Pick your look
-              </p>
-              <p className="mt-2 text-sm leading-6 text-foreground-muted">
-                Start with Nova, Vertex, or Drift depending on how bold,
-                structured, or editorial you want your portfolio to feel.
-              </p>
-            </div>
-            <div className="rounded-[24px] border border-border bg-surface p-5">
-              <p className="text-sm font-semibold uppercase tracking-[0.22em] text-foreground-soft">
-                2. Fill in your profile
-              </p>
-              <p className="mt-2 text-sm leading-6 text-foreground-muted">
-                Add your intro, about section, links, and featured project details.
-              </p>
-            </div>
-            <div className="rounded-[24px] border border-border bg-surface p-5">
-              <p className="text-sm font-semibold uppercase tracking-[0.22em] text-foreground-soft">
-                3. Publish to a clean URL
-              </p>
-              <p className="mt-2 text-sm leading-6 text-foreground-muted">
-                Your public portfolio lives at a route like `/p/your-name`.
-              </p>
-            </div>
+            <BuilderStepCard
+              step="1. Pick your look"
+              description="Start with Nova, Vertex, or Drift depending on how bold, structured, or editorial you want your portfolio to feel."
+            />
+            <BuilderStepCard
+              step="2. Fill in your profile"
+              description="Add your intro, about section, links, and featured project details."
+            />
+            <BuilderStepCard
+              step="3. Publish to a clean URL"
+              description="Your public portfolio lives at a route like `/p/your-name`."
+            />
           </CardContent>
         </Card>
 
