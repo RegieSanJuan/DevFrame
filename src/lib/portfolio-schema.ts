@@ -107,7 +107,7 @@ export function parsePortfolioFormData(
   formData: FormData,
 ): PortfolioFormValues {
   return {
-    templateSlug: String(formData.get("templateSlug") ?? "signal") as TemplateSlug,
+    templateSlug: String(formData.get("templateSlug") ?? "drift") as TemplateSlug,
     slug: String(formData.get("slug") ?? "")
       .trim()
       .toLowerCase(),

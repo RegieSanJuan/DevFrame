@@ -12,6 +12,13 @@
 - **Catalog Metadata**: `src/lib/template-catalog.ts` (Add metadata here)
 - **Seed Data**: `src/lib/portfolio-storage.ts` (Add preview records here)
 
+## Persistence Architecture
+
+- Auth comes from Clerk. Do not model passwords or auth sessions in Supabase.
+- Persist portfolio ownership through `public.profiles` keyed by `clerk_user_id`.
+- `public.portfolios` is now a one-to-many child of `profiles`, with `is_primary` representing the portfolio the current builder edits by default.
+- Future content belongs in child tables of `portfolios` such as `portfolio_projects`, `portfolio_experience`, `portfolio_recommendations`, `portfolio_assets`, and `portfolio_domains`.
+
 ## 🚦 Verification Protocols
 
 After any modification to templates or the registry:

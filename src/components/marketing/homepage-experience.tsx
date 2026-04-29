@@ -224,7 +224,7 @@ export function HomepageExperience() {
             className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center"
           >
             <Button asChild size="sm" variant="accent">
-              <Link href="/sign-in">Start building</Link>
+              <Link href="/sign-up">Start building</Link>
             </Button>
             <Button asChild size="sm" variant="secondary">
               <Link href="/templates">Browse templates</Link>
@@ -265,7 +265,7 @@ export function HomepageExperience() {
                           Current template
                         </p>
                         <p className="mt-2 text-lg font-semibold text-foreground">
-                          Signal
+                          Drift
                         </p>
                       </div>
                     </div>
@@ -499,7 +499,7 @@ export function HomepageExperience() {
             Three directions, one design system.
           </h2>
           <p className="text-base leading-7 text-foreground-muted">
-            Signal, Atlas, or Pulse — each has its own personality but sits on
+            Nova, Vertex, or Drift - each has its own personality but sits on
             the same dark foundation.
           </p>
         </div>
@@ -572,7 +572,7 @@ export function HomepageExperience() {
 
             <div className="flex flex-col gap-3 sm:flex-row">
               <Button asChild size="lg" variant="accent">
-                <Link href="/builder">
+                <Link href="/sign-up">
                   Start building
                   <ArrowRight className="size-4" />
                 </Link>

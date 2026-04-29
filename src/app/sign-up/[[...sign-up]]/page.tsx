@@ -1,11 +1,17 @@
+import { auth } from "@clerk/nextjs/server";
 import { SignUp } from "@clerk/nextjs";
 import { Key } from "lucide-react";
+import { redirect } from "next/navigation";
 
 import { SetupStatus } from "@/components/setup-status";
 import { clerkAuthAppearance } from "@/lib/clerk-auth-appearance";
 import { isClerkConfigured } from "@/lib/env";
 
-export default function SignUpPage() {
+export default async function SignUpPage() {
+  if (isClerkConfigured && (await auth()).userId) {
+    redirect("/dashboard");
+  }
+
   return (
     <div className="container-shell grid gap-8 pt-10 lg:grid-cols-[0.92fr_1.08fr]">
       <div className="flex h-fit flex-col gap-6 rounded-[28px] border border-border bg-surface-strong p-8 md:p-10">

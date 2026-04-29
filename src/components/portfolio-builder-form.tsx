@@ -404,13 +404,13 @@ export function PortfolioBuilderForm({
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="rounded-[24px] border border-border bg-surface p-5">
+              <div className="rounded-[24px] border border-border bg-surface p-5">
               <p className="text-sm font-semibold uppercase tracking-[0.22em] text-foreground-soft">
                 1. Pick your look
               </p>
               <p className="mt-2 text-sm leading-6 text-foreground-muted">
-                Start with Signal, Atlas, or Pulse depending on how bold or
-                editorial you want your portfolio to feel.
+                Start with Nova, Vertex, or Drift depending on how bold,
+                structured, or editorial you want your portfolio to feel.
               </p>
             </div>
             <div className="rounded-[24px] border border-border bg-surface p-5">

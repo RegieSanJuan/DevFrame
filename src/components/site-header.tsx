@@ -1,6 +1,5 @@
-"use client";
-
-import { UserButton, useAuth } from "@clerk/nextjs";
+import { UserButton } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
@@ -10,33 +9,20 @@ import {
   clerkUserProfileAppearance,
 } from "@/lib/clerk-auth-appearance";
 import { isClerkConfigured } from "@/lib/env";
-import { useEffect, useState } from "react";
 import { DevframeLogo } from "./marketing/app-icon";
+import { SiteHeaderSurface } from "./site-header-surface";
 
-export function SiteHeader() {
+export async function SiteHeader() {
   const navLinks = [
     { label: "Templates", href: "/templates" },
     { label: "Pricing", href: "/pricing" },
     { label: "Docs", href: "/docs" },
   ];
-  const { userId } = useAuth();
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  const userId = isClerkConfigured ? (await auth()).userId : null;
 
   return (
     <header className="sticky top-0 z-50 grid place-items-center w-full">
-      <div
-        className={`bg-background/82 backdrop-blur-xl w-full rounded grid place-items-center pt-2 ${
-          scrolled ? "border-b border-border" : ""
-        }`}
-      >
+      <SiteHeaderSurface>
         <div className="w-300 flex flex-col gap-4 py-4 md:flex-row md:items-center md:justify-between">
           <div className="flex items-center justify-center gap-16">
             <DevframeLogo />
@@ -83,7 +69,7 @@ export function SiteHeader() {
             )}
           </div>
         </div>
-      </div>
+      </SiteHeaderSurface>
     </header>
   );
 }

@@ -16,7 +16,7 @@ type BuilderPageProps = {
 export default async function BuilderPage({ searchParams }: BuilderPageProps) {
   const viewer = await requireViewer();
   const { template } = await searchParams;
-  const selectedTemplate = isTemplateSlug(template) ? template : "signal";
+  const selectedTemplate = isTemplateSlug(template) ? template : "drift";
   const existingPortfolio = await getPortfolioForOwner(viewer.userId!);
   const defaultValues = existingPortfolio
     ? {
