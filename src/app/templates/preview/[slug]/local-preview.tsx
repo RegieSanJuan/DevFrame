@@ -96,7 +96,7 @@ export function TemplateLocalPreview({
                   size="lg"
                   className="w-full rounded-2xl h-14 text-base font-bold shadow-lg shadow-accent/20"
                 >
-                  <Link href="/sign-in">Use this template</Link>
+                  <Link href={`/builder?template=${template.slug}`}>Use this template</Link>
                 </Button>
                 <Button
                   asChild

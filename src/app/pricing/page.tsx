@@ -22,7 +22,7 @@ const plans = [
     highlighted: false,
     features: [
       "1 portfolio",
-      "Signal template",
+      "1 starter template",
       "Public /p/slug route",
       "Builder workspace",
       "Setup health check",
@@ -73,7 +73,7 @@ const plans = [
 
 const comparisonRows = [
   { label: "Portfolios", free: "1", pro: "Unlimited", team: "Unlimited" },
-  { label: "Templates", free: "Signal only", pro: "All 3", team: "All 3" },
+  { label: "Templates", free: "1 starter", pro: "All 3", team: "All 3" },
   { label: "Custom domain", free: false, pro: true, team: true },
   { label: "Analytics", free: false, pro: true, team: true },
   { label: "Team members", free: false, pro: false, team: "Up to 10" },

@@ -86,7 +86,7 @@ export default async function TemplatesPage() {
                 <div className="mt-auto pt-10">
                   <div className="flex gap-3 border-t border-border pt-6">
                     <Button asChild variant="accent" className="flex-1">
-                      <Link href={`/sign-in`}>Use template</Link>
+                      <Link href={`/builder?template=${template.slug}`}>Use template</Link>
                     </Button>
                     {sample ? (
                       <Button asChild variant="secondary">
