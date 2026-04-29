@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 
-import { getTemplates } from "@/services/template-service";
+import { getSetupStatusItems } from "@/lib/setup-status";
 
 export function GET() {
   return NextResponse.json({
-    templates: getTemplates(),
+    items: getSetupStatusItems(),
   });
 }

@@ -12,12 +12,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { requireViewer } from "@/lib/auth";
-import { getPortfolioForOwner } from "@/lib/portfolio-storage";
 import { getTemplateBySlug } from "@/lib/template-catalog";
+import { getPortfolioByOwner } from "@/services/portfolio-service";
 
 export default async function DashboardPage() {
   const viewer = await requireViewer();
-  const portfolio = await getPortfolioForOwner(viewer.userId!);
+  const portfolio = await getPortfolioByOwner(viewer.userId!);
   const templateName = portfolio
     ? getTemplateBySlug(portfolio.templateSlug).name
     : "No template selected";

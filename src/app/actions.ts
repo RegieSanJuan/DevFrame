@@ -5,7 +5,7 @@ import {
   parsePortfolioFormData,
   portfolioFormSchema,
 } from "@/lib/portfolio-schema";
-import { savePortfolio } from "@/lib/portfolio-storage";
+import { savePortfolioDraft } from "@/services/portfolio-service";
 
 export type BuilderFormState = {
   status: "idle" | "success" | "error";
@@ -28,7 +28,7 @@ export async function savePortfolioAction(
     };
   }
 
-  const result = await savePortfolio(parsed.data, viewer.userId!);
+  const result = await savePortfolioDraft(parsed.data, viewer.userId!);
 
   if (!result.persisted) {
     return {
