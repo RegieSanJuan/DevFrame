@@ -9,15 +9,19 @@ const isProtectedRoute = createRouteMatcher([
 ]);
 
 const proxy = isClerkConfigured
-  ? clerkMiddleware(async (auth, request) => {
-    if (isProtectedRoute(request)) {
-      await auth.protect();
+  ? clerkMiddleware(
+    async (auth, request) => {
+      if (isProtectedRoute(request)) {
+        await auth.protect();
+      }
+    },
+    {
+      clockSkewInMs: 60000,
     }
-  })
+  )
   : function proxyFallback() {
     return NextResponse.next();
   };
-
 export default proxy;
 
 export const config = {
