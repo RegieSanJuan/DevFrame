@@ -3,6 +3,7 @@ import "server-only";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
 
+import { createPortfolioUrl } from "@/lib/app-url";
 import {
   normalizeSkills,
   type PortfolioFormValues,
@@ -12,7 +13,6 @@ import {
   createSupabaseAdminClient,
   createSupabasePublicClient,
 } from "@/lib/supabase";
-import { createPortfolioUrl } from "@/lib/utils";
 
 const PREVIEW_COOKIE_NAME = "devframe-preview";
 const SCHEMA_NOT_READY_MESSAGE =
