@@ -1,22 +1,6 @@
-const appUrl = process.env.NEXT_PUBLIC_APP_URL?.trim() || "http://localhost:3000";
+import { getAppUrl, normalizeOrigin } from "@/lib/app-url";
 
-function normalizeOrigin(value: string) {
-  const trimmed = value.trim();
-
-  if (!trimmed) {
-    return null;
-  }
-
-  const candidate = /^[a-zA-Z][a-zA-Z\d+.-]*:\/\//.test(trimmed)
-    ? trimmed
-    : `https://${trimmed}`;
-
-  try {
-    return new URL(candidate).origin;
-  } catch {
-    return null;
-  }
-}
+const appUrl = getAppUrl();
 
 function getClerkAuthorizedParties() {
   const configuredOrigins = (process.env.CLERK_AUTHORIZED_PARTIES?.trim() || "")
