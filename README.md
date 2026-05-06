@@ -77,6 +77,16 @@ Open `http://localhost:3000`.
 | `staging` | Testing | Preview |
 | `feature/*` | Dev | Preview |
 
+### If you want a real `staging` custom environment
+
+- This requires a Vercel `Pro` or `Enterprise` plan.
+- In Vercel, go to `Project Settings -> Environments -> Create Environment`.
+- Create a custom environment named `staging`.
+- Enable `Branch Tracking` and point it at the Git branch named `staging`.
+- Add your `staging` environment variables there.
+- Optionally attach a staging domain like `staging.your-domain.com`.
+- After that, every push to the Git branch `staging` will automatically deploy to the Vercel environment `staging`, so `vercel deploy --target=staging` becomes optional.
+
 ### Dashboard setup
 
 1. Import the repo into Vercel and keep `main` as the Production Branch.
