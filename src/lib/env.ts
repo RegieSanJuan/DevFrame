@@ -1,5 +1,50 @@
+const appUrl = process.env.NEXT_PUBLIC_APP_URL?.trim() || "http://localhost:3000";
+
+function normalizeOrigin(value: string) {
+  const trimmed = value.trim();
+
+  if (!trimmed) {
+    return null;
+  }
+
+  const candidate = /^[a-zA-Z][a-zA-Z\d+.-]*:\/\//.test(trimmed)
+    ? trimmed
+    : `https://${trimmed}`;
+
+  try {
+    return new URL(candidate).origin;
+  } catch {
+    return null;
+  }
+}
+
+function getClerkAuthorizedParties() {
+  const configuredOrigins = (process.env.CLERK_AUTHORIZED_PARTIES?.trim() || "")
+    .split(",")
+    .map((origin) => normalizeOrigin(origin))
+    .filter((origin): origin is string => Boolean(origin));
+
+  if (configuredOrigins.length > 0) {
+    return Array.from(new Set(configuredOrigins));
+  }
+
+  return Array.from(
+    new Set(
+      [
+        appUrl,
+        process.env.VERCEL_PROJECT_PRODUCTION_URL?.trim() || "",
+        process.env.VERCEL_BRANCH_URL?.trim() || "",
+        process.env.VERCEL_URL?.trim() || "",
+      ]
+        .map((origin) => normalizeOrigin(origin))
+        .filter((origin): origin is string => Boolean(origin)),
+    ),
+  );
+}
+
 export const appEnv = {
-  appUrl: process.env.NEXT_PUBLIC_APP_URL?.trim() || "http://localhost:3000",
+  appUrl,
+  clerkAuthorizedParties: getClerkAuthorizedParties(),
   clerkPublishableKey:
     process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY?.trim() || "",
   clerkSecretKey: process.env.CLERK_SECRET_KEY?.trim() || "",

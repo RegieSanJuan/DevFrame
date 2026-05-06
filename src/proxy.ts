@@ -1,7 +1,7 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
-import { isClerkConfigured } from "@/lib/env";
+import { appEnv, isClerkConfigured } from "@/lib/env";
 
 const isProtectedRoute = createRouteMatcher([
   "/dashboard(.*)",
@@ -9,11 +9,16 @@ const isProtectedRoute = createRouteMatcher([
 ]);
 
 const proxy = isClerkConfigured
-  ? clerkMiddleware(async (auth, request) => {
-    if (isProtectedRoute(request)) {
-      await auth.protect();
-    }
-  })
+  ? clerkMiddleware(
+    async (auth, request) => {
+      if (isProtectedRoute(request)) {
+        await auth.protect();
+      }
+    },
+    {
+      authorizedParties: appEnv.clerkAuthorizedParties,
+    },
+  )
   : function proxyFallback() {
     return NextResponse.next();
   };

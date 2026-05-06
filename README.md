@@ -43,6 +43,7 @@ cp .env.example .env.local
 
 - `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`
 - `CLERK_SECRET_KEY`
+- `CLERK_AUTHORIZED_PARTIES` if you want to override the default origin allowlist
 
 4. Create a Supabase project and add:
 
@@ -59,6 +60,13 @@ npm run dev
 ```
 
 Open `http://localhost:3000`.
+
+## Before deploying to Vercel
+
+- Set `NEXT_PUBLIC_APP_URL` to your production origin, for example `https://your-domain.com`.
+- Clerk `authorizedParties` is now enforced in `src/proxy.ts`.
+- By default it allows `NEXT_PUBLIC_APP_URL` plus the current Vercel deployment URL(s).
+- If you want an explicit fixed allowlist, set `CLERK_AUTHORIZED_PARTIES` as a comma-separated list such as `https://your-domain.com,https://your-project.vercel.app`.
 
 ## Auth choice
 
