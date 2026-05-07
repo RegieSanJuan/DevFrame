@@ -1,5 +1,3 @@
-type FormDataValue = string | Blob;
-
 export function createFormData(values: Record<string, unknown>) {
   const formData = new FormData();
 

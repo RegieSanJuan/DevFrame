@@ -48,7 +48,7 @@ export async function SiteHeader() {
                   <Link href="/sign-in">Sign in</Link>
                 </Button>
                 <Button asChild size="xs" variant="accent">
-                  <Link href="/sign-up">Start building</Link>
+                  <Link href="/templates">Start building</Link>
                 </Button>
               </>
             ) : (
