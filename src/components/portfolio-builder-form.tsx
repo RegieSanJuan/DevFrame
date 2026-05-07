@@ -5,6 +5,7 @@ import { AlertCircle, ArrowUpRight, CheckCircle2, Sparkles } from "lucide-react"
 
 import { BuilderStepCard } from "@/components/builder/builder-step-card";
 import { TemplateOptionCard } from "@/components/builder/template-option-card";
+import { TemplateSettingsFields } from "@/components/builder/template-settings-fields";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -21,6 +22,7 @@ import {
   availabilityOptions,
   type PortfolioFormValues,
 } from "@/lib/portfolio-schema";
+import { getTemplateFields } from "@/lib/template-field-registry";
 import type { PortfolioTemplate } from "@/lib/template-catalog";
 import { cn } from "@/lib/utils";
 
@@ -51,6 +53,8 @@ export function PortfolioBuilderForm({
     isPending,
     selectTemplate,
     selectedTemplate,
+    templateSettings,
+    setTemplateSettings,
     submissionState,
     submit,
   } = usePortfolioBuilderForm({
@@ -305,6 +309,15 @@ export function PortfolioBuilderForm({
                 <FieldError message={errors.featuredProjectUrl?.message} />
               </div>
             </section>
+
+            {/* ── Template-specific settings ──────────────────────── */}
+            <TemplateSettingsFields
+              fields={getTemplateFields(selectedTemplate)}
+              values={templateSettings}
+              onChange={(key, value) =>
+                setTemplateSettings((prev) => ({ ...prev, [key]: value }))
+              }
+            />
 
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
               <Button type="submit" variant="accent" size="lg" disabled={isPending}>

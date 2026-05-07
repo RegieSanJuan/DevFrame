@@ -6,6 +6,9 @@ import { useForm } from "react-hook-form";
 
 import { savePortfolioAction, type BuilderFormState } from "@/app/actions";
 import {
+  getTemplateSettingsDefaults,
+} from "@/lib/template-field-registry";
+import {
   portfolioFormSchema,
   type PortfolioFormValues,
 } from "@/lib/portfolio-schema";
@@ -25,16 +28,26 @@ export function usePortfolioBuilderForm({
   const [selectedTemplate, setSelectedTemplate] = useState(
     defaultValues.templateSlug,
   );
+  const [templateSettings, setTemplateSettings] = useState<Record<string, unknown>>(
+    defaultValues.templateSettings ?? {},
+  );
+
   const form = useForm<PortfolioFormValues>({
+    // @ts-expect-error: zodResolver + Zod 4 .default() infers templateSettings as
+    // optional in the resolver types but required in PortfolioFormValues. At runtime,
+    // Zod's .default({}) guarantees it is always a Record — this is a type-inference gap only.
     resolver: zodResolver(portfolioFormSchema),
-    defaultValues,
+    defaultValues: {
+      ...defaultValues,
+      templateSettings: defaultValues.templateSettings ?? {},
+    },
   });
 
   const submit = form.handleSubmit((values) => {
     startTransition(async () => {
       const result = await savePortfolioAction(
         submissionState,
-        createFormData(values),
+        createFormData({ ...values, templateSettings }),
       );
       setSubmissionState(result);
     });
@@ -45,6 +58,8 @@ export function usePortfolioBuilderForm({
   ) => {
     setSelectedTemplate(templateSlug);
     form.setValue("templateSlug", templateSlug, { shouldValidate: true });
+    // Reset template settings to sensible defaults for the new template
+    setTemplateSettings(getTemplateSettingsDefaults(templateSlug));
   };
 
   return {
@@ -52,7 +67,10 @@ export function usePortfolioBuilderForm({
     isPending,
     selectTemplate,
     selectedTemplate,
+    templateSettings,
+    setTemplateSettings,
     submissionState,
     submit,
   };
 }
+

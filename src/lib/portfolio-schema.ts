@@ -61,6 +61,11 @@ export const portfolioFormSchema = z.object({
     .trim()
     .min(3, "Share the stack used for the project"),
   featuredProjectUrl: optionalUrl,
+  /**
+   * Template-specific settings stored in the template_settings JSONB column.
+   * Each template declares its own field schema in template-field-registry.ts.
+   */
+  templateSettings: z.record(z.string(), z.unknown()).default({}),
 });
 
 export type PortfolioFormValues = z.infer<typeof portfolioFormSchema>;
@@ -75,6 +80,31 @@ export type RecommendationItem = {
   quote: string;
   author: string;
   role: string;
+};
+
+/**
+ * Loosely typed JSONB bag for template-specific UI/presentation preferences
+ * (e.g. defaultMode, accentOverride, heroLayout). Each template casts this
+ * to its own local type with safe defaults. Never put user content here.
+ */
+export type TemplateSettings = Record<string, unknown>;
+
+/**
+ * A single optional content section that only some templates surface.
+ * Templates query only the section_type values they support and ignore the rest.
+ */
+export type PortfolioSection = {
+  id: string;
+  sectionType: string;
+  displayOrder: number;
+  isEnabled: boolean;
+  data: Record<string, unknown>;
+};
+
+/** A gallery image sourced from portfolio_assets (kind = 'gallery-image'). */
+export type GalleryImage = {
+  src: string;
+  alt: string;
 };
 
 export type PortfolioRecord = {
@@ -99,8 +129,16 @@ export type PortfolioRecord = {
   previewUrl: string;
   updatedAt: string;
   source: "seed" | "preview" | "supabase";
+  /** Template-specific presentation config (JSONB). Cast to a local type per template. */
+  templateSettings: TemplateSettings;
+  /** Optional experience entries from portfolio_experience. */
   experience?: ExperienceItem[];
+  /** Single featured recommendation from portfolio_recommendations. */
   recommendation?: RecommendationItem;
+  /** Optional structured content sections from portfolio_sections. */
+  sections?: PortfolioSection[];
+  /** Gallery images from portfolio_assets (kind = 'gallery-image'). Falls back to [] when none uploaded. */
+  galleryImages?: GalleryImage[];
 };
 
 export function parsePortfolioFormData(
@@ -134,6 +172,15 @@ export function parsePortfolioFormData(
       formData.get("featuredProjectStack") ?? "",
     ).trim(),
     featuredProjectUrl: String(formData.get("featuredProjectUrl") ?? "").trim(),
+    templateSettings: (() => {
+      const raw = formData.get("templateSettings");
+      if (!raw) return {};
+      try {
+        return JSON.parse(String(raw)) as Record<string, unknown>;
+      } catch {
+        return {};
+      }
+    })(),
   };
 }
 
@@ -158,6 +205,7 @@ export function getEmptyPortfolioForm(
     featuredProjectSummary: "",
     featuredProjectStack: "",
     featuredProjectUrl: "",
+    templateSettings: {},
   };
 }
 
@@ -180,6 +228,7 @@ export function toFormValues(record: PortfolioRecord): PortfolioFormValues {
     featuredProjectSummary: record.featuredProjectSummary,
     featuredProjectStack: record.featuredProjectStack,
     featuredProjectUrl: record.featuredProjectUrl,
+    templateSettings: record.templateSettings ?? {},
   };
 }
 

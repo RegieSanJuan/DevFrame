@@ -17,7 +17,20 @@
 - Auth comes from Clerk. Do not model passwords or auth sessions in Supabase.
 - Persist portfolio ownership through `public.profiles` keyed by `clerk_user_id`.
 - `public.portfolios` is now a one-to-many child of `profiles`, with `is_primary` representing the portfolio the current builder edits by default.
-- Future content belongs in child tables of `portfolios` such as `portfolio_projects`, `portfolio_experience`, `portfolio_recommendations`, `portfolio_assets`, and `portfolio_domains`.
+- Content child tables: `portfolio_projects`, `portfolio_experience`, `portfolio_recommendations`, `portfolio_assets`, `portfolio_domains`, `portfolio_sections`.
+
+### Template-Specific Data — Settled Architecture
+
+> [!IMPORTANT]
+> **NEVER create per-template tables** (e.g., `portfolio_nova_config`). This creates O(n) migration debt and breaks the registry abstraction.
+
+Use two additive mechanisms instead:
+
+1. **`template_settings JSONB`** (column on `portfolios`): Stores UI/presentation preferences that are template-specific but do not affect content — e.g., `defaultMode`, `accentOverride`, `heroLayout`. Each template casts this to its own local type with safe defaults. This column is NOT part of `portfolioFormSchema`; it is managed by a separate template-config UI.
+
+2. **`portfolio_sections` table**: For optional structured content sections that only some templates surface (e.g., `stat_bar`, `cta_block`, `certifications`). Each row has `section_type text`, `display_order`, `is_enabled`, and `data jsonb`. Templates query only the `section_type` values they support and ignore the rest. New AI-generated templates can declare new `section_type` strings without any migration.
+
+**Gallery images** are served from `portfolio_assets WHERE kind = 'gallery-image'`. Templates must fall back to placeholder SVGs when the asset list is empty. Do NOT hardcode gallery image arrays inside template files.
 
 ## 🚦 Verification Protocols
 
@@ -55,6 +68,9 @@ registerTemplate("slug-name", MyTemplate);
 - Do NOT use relative paths (`../`) for template imports; always use `@/templates/`.
 - Do NOT create custom "Pill" or "Badge" styles; use the `base-components.tsx` primitives **unless** the template is marked as "Isolated."
 - Do NOT bypass the `TEMPLATE_REGISTRY` in the renderer.
+- Do NOT create per-template Supabase tables (e.g., `portfolio_nova_config`). Use `template_settings JSONB` + `portfolio_sections` instead.
+- Do NOT hardcode gallery image arrays inside template files. Read from `portfolio_assets WHERE kind = 'gallery-image'` with SVG fallbacks.
+- Do NOT add template-specific fields to `portfolioFormSchema` in `portfolio-schema.ts`. Template settings have their own separate config surface.
 
 ## 🧠 Agent Self-Correction & Evolution
 

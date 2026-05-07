@@ -8,7 +8,15 @@ import { ExternalLink, Mail, Moon, Sun } from "lucide-react";
 import { useState } from "react";
 
 function DriftTemplate({ portfolio }: TemplateComponentProps) {
-  const [mode, setMode] = useState<"dark" | "light">("dark");
+  // ── Template-specific settings (safe defaults = existing visual) ──
+  type DriftSettings = {
+    defaultMode?: "dark" | "light";
+    sidebarTagline?: string;
+    accentColor?: string;
+  };
+  const ts = (portfolio.templateSettings ?? {}) as DriftSettings;
+
+  const [mode, setMode] = useState<"dark" | "light">(ts.defaultMode ?? "dark");
   const toggleTheme = () => setMode((m) => (m === "dark" ? "light" : "dark"));
 
   const galleryImages = [
@@ -24,20 +32,20 @@ function DriftTemplate({ portfolio }: TemplateComponentProps) {
           "--drift-bg": "#0f172a",
           "--drift-text": "#94a3b8",
           "--drift-heading": "#e2e8f0",
-          "--drift-accent": "#5eead4",
+          "--drift-accent": ts.accentColor ?? "#5eead4",
           "--drift-nav": "#e2e8f0",
           "--drift-badge-bg": "rgba(45, 212, 191, 0.1)",
-          "--drift-badge-text": "#5eead4",
+          "--drift-badge-text": ts.accentColor ?? "#5eead4",
           "--drift-hover": "rgba(30, 41, 59, 0.5)",
         } as React.CSSProperties)
       : ({
           "--drift-bg": "#f8fafc",
           "--drift-text": "#475569",
           "--drift-heading": "#0f172a",
-          "--drift-accent": "#0d9488",
+          "--drift-accent": ts.accentColor ?? "#0d9488",
           "--drift-nav": "#0f1419",
           "--drift-badge-bg": "rgba(13, 148, 136, 0.1)",
-          "--drift-badge-text": "#0d9488",
+          "--drift-badge-text": ts.accentColor ?? "#0d9488",
           "--drift-hover": "rgba(241, 245, 249, 0.8)",
         } as React.CSSProperties);
 
@@ -74,7 +82,8 @@ function DriftTemplate({ portfolio }: TemplateComponentProps) {
                 {portfolio.title}
               </h2>
               <p className="mt-4 max-w-xs leading-normal">
-                {portfolio.bio ||
+                {ts.sidebarTagline ||
+                  portfolio.bio ||
                   "Crafting pixel-perfect, accessible user interfaces for the modern web."}
               </p>
 
