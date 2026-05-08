@@ -3,8 +3,10 @@ import "server-only";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
 
+import { createPortfolioUrl } from "@/lib/app-url";
 import {
   normalizeSkills,
+  type GalleryImage,
   type PortfolioFormValues,
   type PortfolioRecord,
 } from "@/lib/portfolio-schema";
@@ -12,7 +14,6 @@ import {
   createSupabaseAdminClient,
   createSupabasePublicClient,
 } from "@/lib/supabase";
-import { createPortfolioUrl } from "@/lib/utils";
 
 const PREVIEW_COOKIE_NAME = "devframe-preview";
 const SCHEMA_NOT_READY_MESSAGE =
@@ -38,7 +39,14 @@ type PortfolioRow = {
   featured_project_summary: string;
   featured_project_stack: string;
   featured_project_url: string | null;
+  template_settings: Record<string, unknown> | null;
   updated_at: string;
+};
+
+type PortfolioAssetRow = {
+  public_url: string | null;
+  alt_text: string | null;
+  display_order: number;
 };
 
 type PortfolioExperienceRow = {
@@ -57,7 +65,10 @@ type PortfolioRecommendationRow = {
   is_featured: boolean;
 };
 
-type PortfolioRelations = Pick<PortfolioRecord, "experience" | "recommendation">;
+type PortfolioRelations = Pick<
+  PortfolioRecord,
+  "experience" | "recommendation" | "galleryImages"
+>;
 
 type SavePortfolioResult = {
   record: PortfolioRecord;
@@ -127,6 +138,8 @@ const BASE_PORTFOLIO: Omit<
     author: "Chris Militante",
     role: "ICT Director at GCM",
   },
+  templateSettings: {},
+  galleryImages: [],
 };
 
 const SEED_PORTFOLIOS: PortfolioRecord[] = [
@@ -180,8 +193,10 @@ function toPortfolioRecord(
     previewUrl: createPortfolioUrl(row.slug),
     updatedAt: row.updated_at,
     source,
+    templateSettings: row.template_settings ?? {},
     experience: relations.experience,
     recommendation: relations.recommendation,
+    galleryImages: relations.galleryImages,
   };
 }
 
@@ -212,6 +227,8 @@ function buildPortfolioRecord(
     previewUrl: createPortfolioUrl(values.slug),
     updatedAt: new Date().toISOString(),
     source,
+    templateSettings: {},
+    galleryImages: [],
   };
 }
 
@@ -276,23 +293,31 @@ async function loadPortfolioRelations(
   supabase: SupabaseClient,
   portfolioId: string,
 ): Promise<PortfolioRelations> {
-  const [experienceResult, recommendationResult] = await Promise.all([
-    supabase
-      .from("portfolio_experience")
-      .select("display_order, year_label, role, company")
-      .eq("portfolio_id", portfolioId)
-      .order("display_order", { ascending: true }),
-    supabase
-      .from("portfolio_recommendations")
-      .select("display_order, quote, author, role, company, is_featured")
-      .eq("portfolio_id", portfolioId)
-      .order("is_featured", { ascending: false })
-      .order("display_order", { ascending: true }),
-  ]);
+  const [experienceResult, recommendationResult, assetsResult] =
+    await Promise.all([
+      supabase
+        .from("portfolio_experience")
+        .select("display_order, year_label, role, company")
+        .eq("portfolio_id", portfolioId)
+        .order("display_order", { ascending: true }),
+      supabase
+        .from("portfolio_recommendations")
+        .select("display_order, quote, author, role, company, is_featured")
+        .eq("portfolio_id", portfolioId)
+        .order("is_featured", { ascending: false })
+        .order("display_order", { ascending: true }),
+      supabase
+        .from("portfolio_assets")
+        .select("public_url, alt_text, display_order")
+        .eq("portfolio_id", portfolioId)
+        .eq("kind", "gallery-image")
+        .order("display_order", { ascending: true }),
+    ]);
 
   const experienceRows = (experienceResult.data ?? []) as PortfolioExperienceRow[];
   const recommendationRows = (recommendationResult.data ??
     []) as PortfolioRecommendationRow[];
+  const assetRows = (assetsResult.data ?? []) as PortfolioAssetRow[];
 
   const experience =
     experienceRows.length > 0
@@ -306,6 +331,13 @@ async function loadPortfolioRelations(
   const featuredRecommendation =
     recommendationRows.find((row) => row.is_featured) ?? recommendationRows[0];
 
+  const galleryImages: GalleryImage[] = assetRows
+    .filter((row) => Boolean(row.public_url))
+    .map((row) => ({
+      src: row.public_url!,
+      alt: row.alt_text ?? "Portfolio gallery image",
+    }));
+
   return {
     experience,
     recommendation: featuredRecommendation
@@ -317,6 +349,7 @@ async function loadPortfolioRelations(
             : featuredRecommendation.role,
         }
       : undefined,
+    galleryImages: galleryImages.length > 0 ? galleryImages : undefined,
   };
 }
 
@@ -386,6 +419,7 @@ export async function savePortfolio(
     featured_project_summary: values.featuredProjectSummary,
     featured_project_stack: values.featuredProjectStack,
     featured_project_url: values.featuredProjectUrl || null,
+    template_settings: values.templateSettings ?? {},
     is_primary: true,
   };
 

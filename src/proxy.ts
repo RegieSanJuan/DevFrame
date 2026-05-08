@@ -1,7 +1,7 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
-import { isClerkConfigured } from "@/lib/env";
+import { appEnv, isClerkConfigured } from "@/lib/env";
 
 const isProtectedRoute = createRouteMatcher([
   "/dashboard(.*)",
@@ -16,8 +16,8 @@ const proxy = isClerkConfigured
       }
     },
     {
-      clockSkewInMs: 60000,
-    }
+      authorizedParties: appEnv.clerkAuthorizedParties,
+    },
   )
   : function proxyFallback() {
     return NextResponse.next();

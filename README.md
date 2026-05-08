@@ -43,6 +43,7 @@ cp .env.example .env.local
 
 - `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`
 - `CLERK_SECRET_KEY`
+- `CLERK_AUTHORIZED_PARTIES` if you want to override the default origin allowlist
 
 4. Create a Supabase project and add:
 
@@ -59,6 +60,50 @@ npm run dev
 ```
 
 Open `http://localhost:3000`.
+
+## Before deploying to Vercel
+
+- Set `NEXT_PUBLIC_APP_URL` to your production origin, for example `https://your-domain.com`.
+- Clerk `authorizedParties` is now enforced in `src/proxy.ts`.
+- By default it allows `NEXT_PUBLIC_APP_URL` plus the current Vercel deployment URL(s).
+- If you want an explicit fixed allowlist, set `CLERK_AUTHORIZED_PARTIES` as a comma-separated list such as `https://your-domain.com,https://your-project.vercel.app`.
+- Leave Vercel's `Automatically expose System Environment Variables` setting enabled so preview deployments can use `VERCEL_BRANCH_URL`, `VERCEL_URL`, and `VERCEL_PROJECT_PRODUCTION_URL`.
+
+## Recommended Vercel branch flow
+
+| Branch | Purpose | Vercel deployment |
+| --- | --- | --- |
+| `main` | Production | Live site |
+| `staging` | Testing | Preview |
+| `feature/*` | Dev | Preview |
+
+### If you want a real `staging` custom environment
+
+- This requires a Vercel `Pro` or `Enterprise` plan.
+- In Vercel, go to `Project Settings -> Environments -> Create Environment`.
+- Create a custom environment named `staging`.
+- Enable `Branch Tracking` and point it at the Git branch named `staging`.
+- Add your `staging` environment variables there.
+- Optionally attach a staging domain like `staging.your-domain.com`.
+- After that, every push to the Git branch `staging` will automatically deploy to the Vercel environment `staging`, so `vercel deploy --target=staging` becomes optional.
+
+### Dashboard setup
+
+1. Import the repo into Vercel and keep `main` as the Production Branch.
+2. Add your shared secrets to the correct Vercel environments:
+   - Production: real production values, including `NEXT_PUBLIC_APP_URL=https://your-domain.com`
+   - Preview: shared preview values for non-production branches
+   - Development: local `vercel dev` / `vercel env pull` usage
+3. For `staging`, add branch-specific Preview overrides only for values that should differ from other preview branches.
+   - Example: set `NEXT_PUBLIC_APP_URL=https://staging.your-domain.com` only for the `staging` preview branch if you want a stable staging URL
+4. If you want a stable `staging` domain, assign that domain to the `staging` Git branch in Vercel.
+5. Let `feature/*` branches use the default generated Preview URLs unless you have a specific reason to override them.
+
+### Repo behavior
+
+- Production deploys use `NEXT_PUBLIC_APP_URL` when you set it.
+- Preview deploys now automatically fall back to the active Vercel branch/deployment URL when `NEXT_PUBLIC_APP_URL` is not set for Preview.
+- That means `staging` and `feature/*` previews no longer fall back to `http://localhost:3000` for metadata and generated portfolio links.
 
 ## Auth choice
 

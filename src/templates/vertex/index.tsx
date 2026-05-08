@@ -33,7 +33,16 @@ function BentoCard({
 }
 
 function VertexTemplate({ portfolio }: TemplateComponentProps) {
-  const [mode, setMode] = useState<"dark" | "light">("dark");
+  // ── Template-specific settings (safe defaults = existing visual) ──
+  type VertexSettings = {
+    defaultMode?: "dark" | "light";
+    yearsOfExperience?: string;
+    openSourceStars?: string;
+    showVerifiedBadge?: boolean;
+  };
+  const ts = (portfolio.templateSettings ?? {}) as VertexSettings;
+
+  const [mode, setMode] = useState<"dark" | "light">(ts.defaultMode ?? "dark");
 
   const toggleTheme = () => {
     setMode((value) => (value === "dark" ? "light" : "dark"));
@@ -82,8 +91,12 @@ function VertexTemplate({ portfolio }: TemplateComponentProps) {
                   style={{ color: "var(--vertex-text-main)" }}
                 />
               </div>
-              <div className="absolute -bottom-1 -right-1">
-                <CheckCircle2 className="h-6 w-6 fill-[#1d9bf0]/10 text-[#1d9bf0]" />
+              <div
+                className="absolute -bottom-1 -right-1"
+              >
+                {(ts.showVerifiedBadge ?? true) && (
+                  <CheckCircle2 className="h-6 w-6 fill-[#1d9bf0]/10 text-[#1d9bf0]" />
+                )}
               </div>
             </div>
 
@@ -274,6 +287,28 @@ function VertexTemplate({ portfolio }: TemplateComponentProps) {
                   {portfolio.skills.slice(0, 4).join(" • ")}
                 </p>
               </div>
+              {ts.yearsOfExperience && (
+                <div>
+                  <p
+                    className="text-[10px] font-semibold uppercase tracking-[0.22em]"
+                    style={{ color: "var(--vertex-text-muted)" }}
+                  >
+                    Years of exp.
+                  </p>
+                  <p className="mt-1 text-sm font-semibold">{ts.yearsOfExperience}</p>
+                </div>
+              )}
+              {ts.openSourceStars && (
+                <div>
+                  <p
+                    className="text-[10px] font-semibold uppercase tracking-[0.22em]"
+                    style={{ color: "var(--vertex-text-muted)" }}
+                  >
+                    Open source ★
+                  </p>
+                  <p className="mt-1 text-sm font-semibold">{ts.openSourceStars}</p>
+                </div>
+              )}
             </div>
           </BentoCard>
 

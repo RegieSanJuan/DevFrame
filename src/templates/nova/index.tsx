@@ -19,7 +19,15 @@ import {
 import { useState } from "react";
 
 function NovaTemplate({ portfolio }: TemplateComponentProps) {
-  const [mode, setMode] = useState<"dark" | "light">("dark");
+  // ── Template-specific settings (safe defaults = existing visual) ──
+  type NovaSettings = {
+    defaultMode?: "dark" | "light";
+    heroTagline?: string;
+    accentColor?: string;
+  };
+  const ts = (portfolio.templateSettings ?? {}) as NovaSettings;
+
+  const [mode, setMode] = useState<"dark" | "light">(ts.defaultMode ?? "dark");
   const toggleTheme = () => setMode((m) => (m === "dark" ? "light" : "dark"));
 
   const galleryImages = [
@@ -42,7 +50,7 @@ function NovaTemplate({ portfolio }: TemplateComponentProps) {
           "--nova-soft": "#4a4a4a",
           "--nova-border": "#222222",
           "--nova-border-strong": "#2e2e2e",
-          "--nova-accent": "#c9a96e",
+          "--nova-accent": ts.accentColor ?? "#c9a96e",
           "--nova-accent-strong": "#e2c488",
           "--nova-accent-soft": "#1e1a12",
         } as React.CSSProperties)
@@ -57,7 +65,7 @@ function NovaTemplate({ portfolio }: TemplateComponentProps) {
           "--nova-soft": "#a1a1aa",
           "--nova-border": "#e4e4e7",
           "--nova-border-strong": "#d4d4d8",
-          "--nova-accent": "#b48e4b",
+          "--nova-accent": ts.accentColor ?? "#b48e4b",
           "--nova-accent-strong": "#8f6e33",
           "--nova-accent-soft": "#fdfaf2",
         } as React.CSSProperties);
@@ -113,6 +121,14 @@ function NovaTemplate({ portfolio }: TemplateComponentProps) {
               {portfolio.title}
               {portfolio.location && <> &nbsp;•&nbsp; {portfolio.location}</>}
             </p>
+            {ts.heroTagline && (
+              <p
+                className="text-base max-w-xl mx-auto italic"
+                style={{ color: "var(--nova-soft)" }}
+              >
+                {ts.heroTagline}
+              </p>
+            )}
             <div className="flex justify-center gap-4 flex-wrap pt-2">
               <LinkPill
                 href={portfolio.githubUrl}
