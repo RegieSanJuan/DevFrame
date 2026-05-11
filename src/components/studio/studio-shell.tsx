@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuth, useClerk } from "@clerk/nextjs";
-import { ArrowUpRight, Eye, Layers, SlidersHorizontal } from "lucide-react";
+import { ArrowUpRight, Eye, Layers, Monitor, PanelLeftClose, PanelLeftOpen, SlidersHorizontal, Smartphone } from "lucide-react";
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
@@ -123,6 +123,9 @@ export function StudioShell({
 
   const [isSaving, setIsSaving] = useState(false);
   const [mobilePanel, setMobilePanel] = useState<"editor" | "preview">("editor");
+  const [showSidebar, setShowSidebar] = useState(true);
+  const [device, setDevice] = useState<"desktop" | "mobile">("desktop");
+  const [scale, setScale] = useState(1);
   const [saveState, setSaveState] = useState<BuilderFormState>({
     status: "idle",
   });
@@ -210,6 +213,40 @@ export function StudioShell({
         </Link>
 
         <div className="flex items-center gap-2">
+
+          <div className="hidden items-center gap-3 lg:flex">
+            <div className="flex items-center gap-1 rounded-full border border-white/10 bg-white/5 p-1">
+              <button
+                type="button"
+                onClick={() => setDevice("desktop")}
+                className={`flex items-center gap-2 rounded-full px-3 py-1.5 text-[11px] font-semibold transition ${device === "desktop"
+                    ? "bg-white/10 text-white"
+                    : "text-white/40 hover:text-white/70"
+                  }`}
+              >
+                <Monitor className="size-3.5" />
+                Desktop
+              </button>
+              <button
+                type="button"
+                onClick={() => setDevice("mobile")}
+                className={`flex items-center gap-2 rounded-full px-3 py-1.5 text-[11px] font-semibold transition ${device === "mobile"
+                    ? "bg-white/10 text-white"
+                    : "text-white/40 hover:text-white/70"
+                  }`}
+              >
+                <Smartphone className="size-3.5" />
+                Mobile
+              </button>
+
+              <div className="mx-1 h-4 w-px bg-white/10" />
+
+              <span className="px-2 font-mono text-[10px] font-medium tracking-tight text-white/30">
+                {Math.round(scale * 100)}%
+              </span>
+            </div>
+          </div>
+
           {livePortfolio.slug && livePortfolio.slug !== "preview" ? (
             <Link
               href={`/p/${livePortfolio.slug}`}
@@ -226,8 +263,8 @@ export function StudioShell({
               type="button"
               onClick={() => setMobilePanel("editor")}
               className={`rounded-full px-3 py-1 text-[11px] font-semibold transition ${mobilePanel === "editor"
-                  ? "bg-white/10 text-white"
-                  : "text-white/45 hover:text-white/70"
+                ? "bg-white/10 text-white"
+                : "text-white/45 hover:text-white/70"
                 }`}
             >
               <span className="flex items-center gap-1.5">
@@ -239,8 +276,8 @@ export function StudioShell({
               type="button"
               onClick={() => setMobilePanel("preview")}
               className={`rounded-full px-3 py-1 text-[11px] font-semibold transition ${mobilePanel === "preview"
-                  ? "bg-white/10 text-white"
-                  : "text-white/45 hover:text-white/70"
+                ? "bg-white/10 text-white"
+                : "text-white/45 hover:text-white/70"
                 }`}
             >
               <span className="flex items-center gap-1.5">
@@ -256,30 +293,58 @@ export function StudioShell({
         </div>
       </header>
 
-      <div className="flex min-h-0 flex-1 flex-col lg:flex-row">
+      <div className="relative flex min-h-0 flex-1 flex-col lg:flex-row">
         <aside
-          className={`min-h-0 overflow-hidden border-white/5 bg-[#0d0d0d] ${mobilePanel === "preview" ? "hidden lg:flex" : "flex"
-            } w-full lg:w-[28rem] xl:w-[31rem] lg:shrink-0 lg:border-r lg:flex-none ${mobilePanel === "preview" ? "" : "lg:flex"
-            }`}
+          className={`relative min-h-0 ${mobilePanel === "preview" ? "hidden lg:flex" : "flex"
+            } ${showSidebar ? "lg:w-[28rem] xl:w-[31rem]" : "lg:w-0"
+            } w-full lg:shrink-0 lg:flex-none transition-all duration-300 ease-in-out`}
         >
-          {clerkEnabled ? (
-            <ClerkSaveBridge
-              canResumeSave={isHydrated}
-              onSave={executeSave}
-              onValidate={validateBeforeAuth}
-            >
-              {(onSave) => <StudioSidebar {...sidebarProps} onSave={onSave} />}
-            </ClerkSaveBridge>
-          ) : (
-            <StudioSidebar {...sidebarProps} onSave={() => void executeSave()} />
-          )}
+          {/* Pull-tab trigger */}
+          <button
+            type="button"
+            onClick={() => setShowSidebar(!showSidebar)}
+            className="absolute -right-6 top-4 z-50 flex h-12 w-6 items-center justify-center rounded-r-xl border border-l-0 border-white/10 bg-[#0d0d0d] text-white/40 shadow-xl transition hover:text-white focus:outline-none lg:flex"
+            title={showSidebar ? "Hide sidebar" : "Show sidebar"}
+          >
+            {showSidebar ? (
+              <PanelLeftClose className="size-4" />
+            ) : (
+              <PanelLeftOpen className="size-4" />
+            )}
+          </button>
+
+          <div className={`h-full w-[28rem] xl:w-[31rem] shrink-0 overflow-hidden border-white/5 bg-[#0d0d0d] lg:border-r transition-opacity duration-300 ${showSidebar ? "opacity-100" : "opacity-0"
+            }`}>
+            <div className="h-full w-full overflow-y-auto">
+              {clerkEnabled ? (
+                <ClerkSaveBridge
+                  canResumeSave={isHydrated}
+                  onSave={executeSave}
+                  onValidate={validateBeforeAuth}
+                >
+                  {(onSave) => (
+                    <StudioSidebar {...sidebarProps} onSave={onSave} />
+                  )}
+                </ClerkSaveBridge>
+              ) : (
+                <StudioSidebar
+                  {...sidebarProps}
+                  onSave={() => void executeSave()}
+                />
+              )}
+            </div>
+          </div>
         </aside>
 
         <main
           className={`min-h-0 flex-1 overflow-hidden lg:min-w-0 ${mobilePanel === "editor" ? "hidden lg:block" : "block"
             }`}
         >
-          <StudioPreview portfolio={livePortfolio} />
+          <StudioPreview
+            portfolio={livePortfolio}
+            device={device}
+            onScaleChange={setScale}
+          />
         </main>
       </div>
     </div>

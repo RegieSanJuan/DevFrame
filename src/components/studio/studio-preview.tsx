@@ -29,10 +29,15 @@ const DEVICE_CONFIG: Record<DeviceSize, DeviceConfig> = {
 
 type StudioPreviewProps = {
   portfolio: PortfolioRecord;
+  device: DeviceSize;
+  onScaleChange?: (scale: number) => void;
 };
 
-export function StudioPreview({ portfolio }: StudioPreviewProps) {
-  const [device, setDevice] = useState<DeviceSize>("desktop");
+export function StudioPreview({
+  portfolio,
+  device,
+  onScaleChange,
+}: StudioPreviewProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
@@ -83,6 +88,10 @@ export function StudioPreview({ portfolio }: StudioPreviewProps) {
     return Math.min(Math.max(nextScale, 0.42), 1);
   }, [config.width, containerSize.width, device]);
 
+  useEffect(() => {
+    onScaleChange?.(scale);
+  }, [scale, onScaleChange]);
+
   const scaledWidth = config.width * scale;
   const measuredContentHeight =
     contentHeight > 0 ? contentHeight : config.viewportHeight;
@@ -93,54 +102,7 @@ export function StudioPreview({ portfolio }: StudioPreviewProps) {
   );
 
   return (
-    <div className="flex h-full flex-col bg-[#101010]">
-      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/5 bg-[#0f0f0f] px-4 py-3">
-        <div className="space-y-1">
-          <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-white/30">
-            Live Preview
-          </p>
-          <div className="flex flex-wrap items-center gap-2 text-sm">
-            <span className="font-medium text-white">{config.label}</span>
-            <span className="rounded-full border border-white/10 bg-white/[0.04] px-2 py-0.5 text-[11px] text-white/45">
-              {portfolio.templateSlug}
-            </span>
-            <span className="text-xs text-white/35">
-              Scroll inside the frame to inspect the full page
-            </span>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-2">
-          <span className="hidden rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[11px] text-white/45 sm:inline-flex">
-            {Math.round(scale * 100)}% zoom
-          </span>
-
-          <div className="flex items-center gap-1 rounded-full border border-white/10 bg-white/[0.04] p-1">
-            <button
-              type="button"
-              onClick={() => setDevice("desktop")}
-              className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition ${device === "desktop"
-                ? "bg-white/10 text-white"
-                : "text-white/40 hover:text-white/70"
-                }`}
-            >
-              <Monitor className="size-3.5" />
-              Desktop
-            </button>
-            <button
-              type="button"
-              onClick={() => setDevice("mobile")}
-              className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition ${device === "mobile"
-                ? "bg-white/10 text-white"
-                : "text-white/40 hover:text-white/70"
-                }`}
-            >
-              <Smartphone className="size-3.5" />
-              Mobile
-            </button>
-          </div>
-        </div>
-      </div>
+    <div className="relative flex h-full flex-col bg-[#101010]">
 
       <div
         ref={containerRef}
