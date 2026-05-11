@@ -58,23 +58,23 @@ function VertexTemplate({ portfolio }: TemplateComponentProps) {
   const themeStyles =
     mode === "dark"
       ? ({
-          "--vertex-root-bg": "#000000",
-          "--vertex-bg": "#16181c",
-          "--vertex-border": "rgba(255,255,255,0.1)",
-          "--vertex-text-main": "#ffffff",
-          "--vertex-text-muted": "#71767b",
-          "--vertex-accent": "#1d9bf0",
-          "--vertex-toggle-bg": "#333639",
-        } as React.CSSProperties)
+        "--vertex-root-bg": "#000000",
+        "--vertex-bg": "#16181c",
+        "--vertex-border": "rgba(255,255,255,0.1)",
+        "--vertex-text-main": "#ffffff",
+        "--vertex-text-muted": "#71767b",
+        "--vertex-accent": "#1d9bf0",
+        "--vertex-toggle-bg": "#333639",
+      } as React.CSSProperties)
       : ({
-          "--vertex-root-bg": "#ffffff",
-          "--vertex-bg": "#f7f9f9",
-          "--vertex-border": "rgba(0,0,0,0.08)",
-          "--vertex-text-main": "#0f1419",
-          "--vertex-text-muted": "#536471",
-          "--vertex-accent": "#1d9bf0",
-          "--vertex-toggle-bg": "#eff3f4",
-        } as React.CSSProperties);
+        "--vertex-root-bg": "#ffffff",
+        "--vertex-bg": "#f7f9f9",
+        "--vertex-border": "rgba(0,0,0,0.08)",
+        "--vertex-text-main": "#0f1419",
+        "--vertex-text-muted": "#536471",
+        "--vertex-accent": "#1d9bf0",
+        "--vertex-toggle-bg": "#eff3f4",
+      } as React.CSSProperties);
 
   return (
     <div
