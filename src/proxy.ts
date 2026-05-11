@@ -22,7 +22,6 @@ const proxy = isClerkConfigured
   : function proxyFallback() {
     return NextResponse.next();
   };
-
 export default proxy;
 
 export const config = {

@@ -1,8 +1,9 @@
 "use client";
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import Image from "next/image";
 import { useEffect, useState } from "react";
+
+import { filterRenderableGalleryImages } from "@/lib/portfolio-image-uploads";
 
 export type GalleryImage = {
   src: string;
@@ -97,17 +98,17 @@ export function TemplateGallery({
   navButtonClassName = "",
   transitionClassName = "transition-all duration-500 ease-in-out",
   visibleCount = 3,
-  imageSizes = "(max-width: 640px) 100vw, 33vw",
 }: TemplateGalleryProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const safeImages = filterRenderableGalleryImages(images);
 
-  const carouselEnabled = images.length > visibleCount;
-  const maxIndex = Math.max(images.length - visibleCount, 0);
+  const carouselEnabled = safeImages.length > visibleCount;
+  const maxIndex = Math.max(safeImages.length - visibleCount, 0);
   const currentIndex = Math.min(activeIndex, maxIndex);
   const visibleImages = carouselEnabled
-    ? images.slice(currentIndex, currentIndex + visibleCount)
-    : images;
+    ? safeImages.slice(currentIndex, currentIndex + visibleCount)
+    : safeImages;
 
   useEffect(() => {
     if (!isTransitioning) {
@@ -121,7 +122,7 @@ export function TemplateGallery({
     return () => window.clearTimeout(timeoutId);
   }, [isTransitioning]);
 
-  if (!images.length) {
+  if (!safeImages.length) {
     return null;
   }
 
@@ -149,25 +150,24 @@ export function TemplateGallery({
 
   if (!carouselEnabled) {
     const gridColumnsClassName =
-      images.length === 1
+      safeImages.length === 1
         ? "sm:grid-cols-1"
-        : images.length === 2
+        : safeImages.length === 2
           ? "sm:grid-cols-2"
           : "sm:grid-cols-3";
 
     return (
       <div className={`grid gap-4 ${gridColumnsClassName} ${className}`}>
-        {visibleImages.map((image) => (
+        {visibleImages.map((image, index) => (
           <div
-            key={image.src}
+            key={`${image.src}-${index}`}
             className={`relative aspect-square overflow-hidden rounded-2xl  ${transitionClassName} ${tileClassName} ${tileAnimationClassName}`}
           >
-            <Image
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
               src={image.src}
               alt={image.alt}
-              fill
-              className={`object-contain p-6 ${imageClassName}`}
-              sizes={imageSizes}
+              className={`absolute inset-0 h-full w-full object-contain p-6 ${imageClassName}`}
             />
           </div>
         ))}
@@ -189,17 +189,16 @@ export function TemplateGallery({
         <ChevronLeft className="h-4 w-4" />
       </button>
       <div className={`grid gap-4 sm:grid-cols-3 ${galleryClassName}`}>
-        {visibleImages.map((image) => (
+        {visibleImages.map((image, index) => (
           <div
-            key={image.src}
+            key={`${image.src}-${index}`}
             className={`relative aspect-square overflow-hidden rounded-2xl  ${transitionClassName} ${tileClassName} ${tileAnimationClassName}`}
           >
-            <Image
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
               src={image.src}
               alt={image.alt}
-              fill
-              className={`object-contain p-6 ${imageClassName}`}
-              sizes={imageSizes}
+              className={`absolute inset-0 h-full w-full object-contain p-6 ${imageClassName}`}
             />
           </div>
         ))}

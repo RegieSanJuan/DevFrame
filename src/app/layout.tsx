@@ -2,8 +2,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import { IBM_Plex_Mono, Manrope } from "next/font/google";
 
-import { SiteFooter } from "@/components/marketing/site-footer";
-import { SiteHeader } from "@/components/site-header";
+
 import { ThemeProvider } from "@/components/theme-provider";
 import { appEnv, isClerkConfigured } from "@/lib/env";
 
@@ -47,20 +46,6 @@ function Providers({ children }: Readonly<{ children: React.ReactNode }>) {
       signUpUrl="/sign-up"
       signInFallbackRedirectUrl="/dashboard"
       signUpFallbackRedirectUrl="/dashboard"
-      appearance={{
-        cssLayerName: "clerk",
-        variables: {
-          colorPrimary: "#3ecf8e",
-          colorBackground: "#111614",
-          colorInputBackground: "#0e1211",
-          colorInputText: "#f3f5f4",
-          colorText: "#f3f5f4",
-          colorTextSecondary: "#a3ada8",
-          colorNeutral: "#1a211f",
-          colorDanger: "#ff7b72",
-          borderRadius: "1rem",
-        },
-      }}
     >
       {children}
     </ClerkProvider>
@@ -87,9 +72,7 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <div className="relative isolate min-h-screen flex flex-col items-center w-full">
-              <SiteHeader />
-              <main className="pb-8 max-w-6xl">{children}</main>
-              <SiteFooter />
+              {children}
             </div>
           </ThemeProvider>
         </Providers>

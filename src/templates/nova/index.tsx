@@ -6,6 +6,7 @@ import {
   SkillBadge,
   TemplateGallery,
 } from "@/templates/base-components";
+import { filterRenderableGalleryImages } from "@/lib/portfolio-image-uploads";
 import type { TemplateComponentProps } from "@/templates/registry";
 import { registerTemplate } from "@/templates/registry";
 import {
@@ -19,48 +20,58 @@ import {
 import { useState } from "react";
 
 function NovaTemplate({ portfolio }: TemplateComponentProps) {
-  const [mode, setMode] = useState<"dark" | "light">("dark");
+  // ── Template-specific settings (safe defaults = existing visual) ──
+  type NovaSettings = {
+    defaultMode?: "dark" | "light";
+    heroTagline?: string;
+    accentColor?: string;
+  };
+  const ts = (portfolio.templateSettings ?? {}) as NovaSettings;
+
+  const [mode, setMode] = useState<"dark" | "light">(ts.defaultMode ?? "dark");
   const toggleTheme = () => setMode((m) => (m === "dark" ? "light" : "dark"));
 
-  const galleryImages = [
-    { src: "/devframe-bg-icon.svg", alt: "Portfolio visual 1" },
-    { src: "/window.svg", alt: "Portfolio visual 2" },
-    { src: "/globe.svg", alt: "Portfolio visual 3" },
-    { src: "/vercel.svg", alt: "Portfolio visual 4" },
-  ];
+  const galleryImages = filterRenderableGalleryImages(portfolio.galleryImages);
+  const resumeHref =
+    portfolio.resumeLink?.url ||
+    portfolio.websiteUrl ||
+    portfolio.featuredProjectUrl ||
+    `/p/${portfolio.slug}`;
+  const resumeLabel = portfolio.resumeLink?.label || "Open resume";
+  const portfolioLinkHref = portfolio.websiteUrl || portfolio.featuredProjectUrl;
 
   const theme =
     mode === "dark"
       ? ({
-          "--nova-bg": "#0f0f0f",
-          "--nova-bg-alt": "#0a0a0a",
-          "--nova-surface": "#161616",
-          "--nova-surface-strong": "#1e1e1e",
-          "--nova-text": "#ededed",
-          "--nova-text-strong": "#ffffff",
-          "--nova-muted": "#7a7a7a",
-          "--nova-soft": "#4a4a4a",
-          "--nova-border": "#222222",
-          "--nova-border-strong": "#2e2e2e",
-          "--nova-accent": "#c9a96e",
-          "--nova-accent-strong": "#e2c488",
-          "--nova-accent-soft": "#1e1a12",
-        } as React.CSSProperties)
+        "--nova-bg": "#0f0f0f",
+        "--nova-bg-alt": "#0a0a0a",
+        "--nova-surface": "#161616",
+        "--nova-surface-strong": "#1e1e1e",
+        "--nova-text": "#ededed",
+        "--nova-text-strong": "#ffffff",
+        "--nova-muted": "#7a7a7a",
+        "--nova-soft": "#4a4a4a",
+        "--nova-border": "#222222",
+        "--nova-border-strong": "#2e2e2e",
+        "--nova-accent": ts.accentColor ?? "#c9a96e",
+        "--nova-accent-strong": "#e2c488",
+        "--nova-accent-soft": "#1e1a12",
+      } as React.CSSProperties)
       : ({
-          "--nova-bg": "#ffffff",
-          "--nova-bg-alt": "#fafafa",
-          "--nova-surface": "#f4f4f5",
-          "--nova-surface-strong": "#e4e4e7",
-          "--nova-text": "#18181b",
-          "--nova-text-strong": "#000000",
-          "--nova-muted": "#71717a",
-          "--nova-soft": "#a1a1aa",
-          "--nova-border": "#e4e4e7",
-          "--nova-border-strong": "#d4d4d8",
-          "--nova-accent": "#b48e4b",
-          "--nova-accent-strong": "#8f6e33",
-          "--nova-accent-soft": "#fdfaf2",
-        } as React.CSSProperties);
+        "--nova-bg": "#ffffff",
+        "--nova-bg-alt": "#fafafa",
+        "--nova-surface": "#f4f4f5",
+        "--nova-surface-strong": "#e4e4e7",
+        "--nova-text": "#18181b",
+        "--nova-text-strong": "#000000",
+        "--nova-muted": "#71717a",
+        "--nova-soft": "#a1a1aa",
+        "--nova-border": "#e4e4e7",
+        "--nova-border-strong": "#d4d4d8",
+        "--nova-accent": ts.accentColor ?? "#b48e4b",
+        "--nova-accent-strong": "#8f6e33",
+        "--nova-accent-soft": "#fdfaf2",
+      } as React.CSSProperties);
 
   return (
     <div
@@ -113,6 +124,14 @@ function NovaTemplate({ portfolio }: TemplateComponentProps) {
               {portfolio.title}
               {portfolio.location && <> &nbsp;•&nbsp; {portfolio.location}</>}
             </p>
+            {ts.heroTagline && (
+              <p
+                className="text-base max-w-xl mx-auto italic"
+                style={{ color: "var(--nova-soft)" }}
+              >
+                {ts.heroTagline}
+              </p>
+            )}
             <div className="flex justify-center gap-4 flex-wrap pt-2">
               <LinkPill
                 href={portfolio.githubUrl}
@@ -194,8 +213,8 @@ function NovaTemplate({ portfolio }: TemplateComponentProps) {
                 border: "1px solid var(--nova-border)",
               }}
               onMouseEnter={(e) =>
-                (e.currentTarget.style.borderColor =
-                  "var(--nova-border-strong)")
+              (e.currentTarget.style.borderColor =
+                "var(--nova-border-strong)")
               }
               onMouseLeave={(e) =>
                 (e.currentTarget.style.borderColor = "var(--nova-border)")
@@ -282,27 +301,31 @@ function NovaTemplate({ portfolio }: TemplateComponentProps) {
                 </p>
                 <div className="mt-5 flex flex-wrap gap-2">
                   <a
-                    href={`/p/${portfolio.slug}`}
+                    href={resumeHref}
+                    target={resumeHref.startsWith("http") ? "_blank" : undefined}
+                    rel={resumeHref.startsWith("http") ? "noreferrer" : undefined}
                     className="rounded-full border px-4 py-2 text-sm transition-colors hover:opacity-80"
                     style={{
                       borderColor: "var(--nova-border-strong)",
                       color: "var(--nova-text)",
                     }}
                   >
-                    Open public resume
+                    {resumeLabel}
                   </a>
-                  <a
-                    href={portfolio.websiteUrl || portfolio.featuredProjectUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="rounded-full border px-4 py-2 text-sm transition-colors hover:opacity-80"
-                    style={{
-                      borderColor: "var(--nova-border-strong)",
-                      color: "var(--nova-text)",
-                    }}
-                  >
-                    View portfolio link
-                  </a>
+                  {portfolioLinkHref ? (
+                    <a
+                      href={portfolioLinkHref}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="rounded-full border px-4 py-2 text-sm transition-colors hover:opacity-80"
+                      style={{
+                        borderColor: "var(--nova-border-strong)",
+                        color: "var(--nova-text)",
+                      }}
+                    >
+                      View portfolio link
+                    </a>
+                  ) : null}
                 </div>
               </div>
               <div
@@ -441,21 +464,23 @@ function NovaTemplate({ portfolio }: TemplateComponentProps) {
         )}
 
         {/* ── Gallery ─────────────────────────────────── */}
-        <section className="space-y-8">
-          <SectionLabel style={{ color: "var(--nova-soft)" }}>
-            Gallery
-          </SectionLabel>
-          <TemplateGallery
-            images={galleryImages}
-            className="grid gap-4"
-            galleryClassName="sm:grid-cols-3"
-            tileClassName="rounded-3xl"
-            imageClassName="p-8 opacity-90"
-            navButtonClassName="border-[var(--nova-border-strong)] text-[var(--nova-text)] bg-[var(--nova-surface)]"
-            transitionClassName="transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
-            imageSizes="(max-width: 640px) 100vw, 33vw"
-          />
-        </section>
+        {galleryImages.length > 0 ? (
+          <section className="space-y-8">
+            <SectionLabel style={{ color: "var(--nova-soft)" }}>
+              Gallery
+            </SectionLabel>
+            <TemplateGallery
+              images={galleryImages}
+              className="grid gap-4"
+              galleryClassName="sm:grid-cols-3"
+              tileClassName="rounded-3xl"
+              imageClassName="p-8 opacity-90"
+              navButtonClassName="border-[var(--nova-border-strong)] text-[var(--nova-text)] bg-[var(--nova-surface)]"
+              transitionClassName="transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
+              imageSizes="(max-width: 640px) 100vw, 33vw"
+            />
+          </section>
+        ) : null}
 
         {/* ── Footer ───────────────────────────────────── */}
         <footer
