@@ -40,35 +40,35 @@ function NovaTemplate({ portfolio }: TemplateComponentProps) {
   const theme =
     mode === "dark"
       ? ({
-          "--nova-bg": "#0f0f0f",
-          "--nova-bg-alt": "#0a0a0a",
-          "--nova-surface": "#161616",
-          "--nova-surface-strong": "#1e1e1e",
-          "--nova-text": "#ededed",
-          "--nova-text-strong": "#ffffff",
-          "--nova-muted": "#7a7a7a",
-          "--nova-soft": "#4a4a4a",
-          "--nova-border": "#222222",
-          "--nova-border-strong": "#2e2e2e",
-          "--nova-accent": ts.accentColor ?? "#c9a96e",
-          "--nova-accent-strong": "#e2c488",
-          "--nova-accent-soft": "#1e1a12",
-        } as React.CSSProperties)
+        "--nova-bg": "#0f0f0f",
+        "--nova-bg-alt": "#0a0a0a",
+        "--nova-surface": "#161616",
+        "--nova-surface-strong": "#1e1e1e",
+        "--nova-text": "#ededed",
+        "--nova-text-strong": "#ffffff",
+        "--nova-muted": "#7a7a7a",
+        "--nova-soft": "#4a4a4a",
+        "--nova-border": "#222222",
+        "--nova-border-strong": "#2e2e2e",
+        "--nova-accent": ts.accentColor ?? "#c9a96e",
+        "--nova-accent-strong": "#e2c488",
+        "--nova-accent-soft": "#1e1a12",
+      } as React.CSSProperties)
       : ({
-          "--nova-bg": "#ffffff",
-          "--nova-bg-alt": "#fafafa",
-          "--nova-surface": "#f4f4f5",
-          "--nova-surface-strong": "#e4e4e7",
-          "--nova-text": "#18181b",
-          "--nova-text-strong": "#000000",
-          "--nova-muted": "#71717a",
-          "--nova-soft": "#a1a1aa",
-          "--nova-border": "#e4e4e7",
-          "--nova-border-strong": "#d4d4d8",
-          "--nova-accent": ts.accentColor ?? "#b48e4b",
-          "--nova-accent-strong": "#8f6e33",
-          "--nova-accent-soft": "#fdfaf2",
-        } as React.CSSProperties);
+        "--nova-bg": "#ffffff",
+        "--nova-bg-alt": "#fafafa",
+        "--nova-surface": "#f4f4f5",
+        "--nova-surface-strong": "#e4e4e7",
+        "--nova-text": "#18181b",
+        "--nova-text-strong": "#000000",
+        "--nova-muted": "#71717a",
+        "--nova-soft": "#a1a1aa",
+        "--nova-border": "#e4e4e7",
+        "--nova-border-strong": "#d4d4d8",
+        "--nova-accent": ts.accentColor ?? "#b48e4b",
+        "--nova-accent-strong": "#8f6e33",
+        "--nova-accent-soft": "#fdfaf2",
+      } as React.CSSProperties);
 
   return (
     <div
@@ -210,8 +210,8 @@ function NovaTemplate({ portfolio }: TemplateComponentProps) {
                 border: "1px solid var(--nova-border)",
               }}
               onMouseEnter={(e) =>
-                (e.currentTarget.style.borderColor =
-                  "var(--nova-border-strong)")
+              (e.currentTarget.style.borderColor =
+                "var(--nova-border-strong)")
               }
               onMouseLeave={(e) =>
                 (e.currentTarget.style.borderColor = "var(--nova-border)")

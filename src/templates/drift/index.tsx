@@ -29,25 +29,25 @@ function DriftTemplate({ portfolio }: TemplateComponentProps) {
   const themeStyles =
     mode === "dark"
       ? ({
-          "--drift-bg": "#0f172a",
-          "--drift-text": "#94a3b8",
-          "--drift-heading": "#e2e8f0",
-          "--drift-accent": ts.accentColor ?? "#5eead4",
-          "--drift-nav": "#e2e8f0",
-          "--drift-badge-bg": "rgba(45, 212, 191, 0.1)",
-          "--drift-badge-text": ts.accentColor ?? "#5eead4",
-          "--drift-hover": "rgba(30, 41, 59, 0.5)",
-        } as React.CSSProperties)
+        "--drift-bg": "#0f172a",
+        "--drift-text": "#94a3b8",
+        "--drift-heading": "#e2e8f0",
+        "--drift-accent": ts.accentColor ?? "#5eead4",
+        "--drift-nav": "#e2e8f0",
+        "--drift-badge-bg": "rgba(45, 212, 191, 0.1)",
+        "--drift-badge-text": ts.accentColor ?? "#5eead4",
+        "--drift-hover": "rgba(30, 41, 59, 0.5)",
+      } as React.CSSProperties)
       : ({
-          "--drift-bg": "#f8fafc",
-          "--drift-text": "#475569",
-          "--drift-heading": "#0f172a",
-          "--drift-accent": ts.accentColor ?? "#0d9488",
-          "--drift-nav": "#0f1419",
-          "--drift-badge-bg": "rgba(13, 148, 136, 0.1)",
-          "--drift-badge-text": ts.accentColor ?? "#0d9488",
-          "--drift-hover": "rgba(241, 245, 249, 0.8)",
-        } as React.CSSProperties);
+        "--drift-bg": "#f8fafc",
+        "--drift-text": "#475569",
+        "--drift-heading": "#0f172a",
+        "--drift-accent": ts.accentColor ?? "#0d9488",
+        "--drift-nav": "#0f1419",
+        "--drift-badge-bg": "rgba(13, 148, 136, 0.1)",
+        "--drift-badge-text": ts.accentColor ?? "#0d9488",
+        "--drift-hover": "rgba(241, 245, 249, 0.8)",
+      } as React.CSSProperties);
 
   return (
     <div

@@ -11,8 +11,8 @@ import {
   parsePortfolioFormData,
   portfolioFormSchema,
 } from "@/lib/portfolio-schema";
-import type { PortfolioTemplate, TemplateSlug } from "@/lib/template-catalog";
 import { formValuesToRecord } from "@/lib/studio-utils";
+import type { PortfolioTemplate, TemplateSlug } from "@/lib/template-catalog";
 import { createFormData } from "@/utils/form-data";
 
 import { StudioPreview } from "./studio-preview";
@@ -225,11 +225,10 @@ export function StudioShell({
             <button
               type="button"
               onClick={() => setMobilePanel("editor")}
-              className={`rounded-full px-3 py-1 text-[11px] font-semibold transition ${
-                mobilePanel === "editor"
+              className={`rounded-full px-3 py-1 text-[11px] font-semibold transition ${mobilePanel === "editor"
                   ? "bg-white/10 text-white"
                   : "text-white/45 hover:text-white/70"
-              }`}
+                }`}
             >
               <span className="flex items-center gap-1.5">
                 <SlidersHorizontal className="size-3" />
@@ -239,11 +238,10 @@ export function StudioShell({
             <button
               type="button"
               onClick={() => setMobilePanel("preview")}
-              className={`rounded-full px-3 py-1 text-[11px] font-semibold transition ${
-                mobilePanel === "preview"
+              className={`rounded-full px-3 py-1 text-[11px] font-semibold transition ${mobilePanel === "preview"
                   ? "bg-white/10 text-white"
                   : "text-white/45 hover:text-white/70"
-              }`}
+                }`}
             >
               <span className="flex items-center gap-1.5">
                 <Eye className="size-3" />
@@ -260,11 +258,9 @@ export function StudioShell({
 
       <div className="flex min-h-0 flex-1 flex-col lg:flex-row">
         <aside
-          className={`min-h-0 overflow-hidden border-white/5 bg-[#0d0d0d] ${
-            mobilePanel === "preview" ? "hidden lg:flex" : "flex"
-          } w-full lg:w-[28rem] xl:w-[31rem] lg:shrink-0 lg:border-r lg:flex-none ${
-            mobilePanel === "preview" ? "" : "lg:flex"
-          }`}
+          className={`min-h-0 overflow-hidden border-white/5 bg-[#0d0d0d] ${mobilePanel === "preview" ? "hidden lg:flex" : "flex"
+            } w-full lg:w-[28rem] xl:w-[31rem] lg:shrink-0 lg:border-r lg:flex-none ${mobilePanel === "preview" ? "" : "lg:flex"
+            }`}
         >
           {clerkEnabled ? (
             <ClerkSaveBridge
@@ -280,9 +276,8 @@ export function StudioShell({
         </aside>
 
         <main
-          className={`min-h-0 flex-1 overflow-hidden lg:min-w-0 ${
-            mobilePanel === "editor" ? "hidden lg:block" : "block"
-          }`}
+          className={`min-h-0 flex-1 overflow-hidden lg:min-w-0 ${mobilePanel === "editor" ? "hidden lg:block" : "block"
+            }`}
         >
           <StudioPreview portfolio={livePortfolio} />
         </main>

@@ -119,11 +119,10 @@ export function StudioPreview({ portfolio }: StudioPreviewProps) {
             <button
               type="button"
               onClick={() => setDevice("desktop")}
-              className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition ${
-                device === "desktop"
-                  ? "bg-white/10 text-white"
-                  : "text-white/40 hover:text-white/70"
-              }`}
+              className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition ${device === "desktop"
+                ? "bg-white/10 text-white"
+                : "text-white/40 hover:text-white/70"
+                }`}
             >
               <Monitor className="size-3.5" />
               Desktop
@@ -131,11 +130,10 @@ export function StudioPreview({ portfolio }: StudioPreviewProps) {
             <button
               type="button"
               onClick={() => setDevice("mobile")}
-              className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition ${
-                device === "mobile"
-                  ? "bg-white/10 text-white"
-                  : "text-white/40 hover:text-white/70"
-              }`}
+              className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition ${device === "mobile"
+                ? "bg-white/10 text-white"
+                : "text-white/40 hover:text-white/70"
+                }`}
             >
               <Smartphone className="size-3.5" />
               Mobile
@@ -175,7 +173,7 @@ export function StudioPreview({ portfolio }: StudioPreviewProps) {
             </div>
 
             <div
-              className="overflow-auto rounded-[22px] border border-white/8 bg-black/30"
+              className="overflow-auto rounded-[22px] border border-white/8 bg-black/30 overflow-x-hidden"
               style={{
                 width: scaledWidth,
                 height: frameHeight,
@@ -190,7 +188,7 @@ export function StudioPreview({ portfolio }: StudioPreviewProps) {
               >
                 <div
                   ref={contentRef}
-                  className="pointer-events-none absolute left-0 top-0 overflow-hidden"
+                  className="pointer-events-none absolute left-0 top-0 overflow-hidden "
                   style={{
                     width: config.width,
                     transform: `scale(${scale})`,
