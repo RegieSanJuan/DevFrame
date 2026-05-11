@@ -2,8 +2,10 @@
 
 import Link from "next/link";
 import { AlertCircle, ArrowUpRight, CheckCircle2, Sparkles } from "lucide-react";
+import { useCallback, useEffect } from "react";
 
 import { BuilderStepCard } from "@/components/builder/builder-step-card";
+import { PortfolioContentFields } from "@/components/portfolio-content-fields";
 import { TemplateOptionCard } from "@/components/builder/template-option-card";
 import { TemplateSettingsFields } from "@/components/builder/template-settings-fields";
 import { Badge } from "@/components/ui/badge";
@@ -18,6 +20,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { usePortfolioBuilderForm } from "@/hooks/use-portfolio-builder-form";
+import { usePortfolioImageUploads } from "@/hooks/use-portfolio-image-uploads";
 import {
   availabilityOptions,
   type PortfolioFormValues,
@@ -25,6 +28,7 @@ import {
 import { getTemplateFields } from "@/lib/template-field-registry";
 import type { PortfolioTemplate } from "@/lib/template-catalog";
 import { cn } from "@/lib/utils";
+import { createFormData } from "@/utils/form-data";
 
 type PortfolioBuilderFormProps = {
   defaultValues: PortfolioFormValues;
@@ -46,20 +50,57 @@ export function PortfolioBuilderForm({
   demoMode,
 }: PortfolioBuilderFormProps) {
   const {
-    form: {
-      register,
-      formState: { errors },
-    },
+    form,
     isPending,
     selectTemplate,
     selectedTemplate,
     templateSettings,
     setTemplateSettings,
     submissionState,
+    setSubmissionState,
     submit,
   } = usePortfolioBuilderForm({
     defaultValues,
+    buildFormData: (values, nextTemplateSettings) => {
+      const formData = createFormData({
+        ...values,
+        templateSettings: nextTemplateSettings,
+      });
+      return imageUploads.appendToFormData(formData);
+    },
   });
+  const {
+    register,
+    setValue,
+    watch,
+    formState: { errors },
+  } = form;
+  const handleFieldChange = useCallback(
+    <K extends keyof PortfolioFormValues>(key: K, value: PortfolioFormValues[K]) => {
+      setValue(key as never, value as never, {
+        shouldDirty: true,
+        shouldTouch: true,
+        shouldValidate: true,
+      });
+    },
+    [setValue],
+  );
+  const liveValues = watch();
+  const imageUploads = usePortfolioImageUploads(liveValues, handleFieldChange);
+
+  useEffect(() => {
+    if (!submissionState.persisted || !submissionState.savedValues) {
+      return;
+    }
+
+    form.reset(submissionState.savedValues);
+    setTemplateSettings(submissionState.savedValues.templateSettings ?? {});
+    imageUploads.clearPendingUploads();
+    setSubmissionState((current) => ({
+      ...current,
+      savedValues: undefined,
+    }));
+  }, [form, imageUploads, setSubmissionState, setTemplateSettings, submissionState]);
 
   return (
     <div className="grid gap-6 xl:grid-cols-[1.05fr_0.95fr]">
@@ -311,6 +352,13 @@ export function PortfolioBuilderForm({
             </section>
 
             {/* ── Template-specific settings ──────────────────────── */}
+            <PortfolioContentFields
+              templateSlug={selectedTemplate}
+              values={liveValues}
+              onFieldChange={handleFieldChange}
+              imageUploads={imageUploads}
+            />
+
             <TemplateSettingsFields
               fields={getTemplateFields(selectedTemplate)}
               values={templateSettings}

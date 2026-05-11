@@ -1,6 +1,11 @@
 "use client";
 
 import { GitHubIcon, LinkedInIcon } from "@/components/brand-icons";
+import { getDisplayProjects } from "@/lib/portfolio-schema";
+import {
+  filterRenderableGalleryImages,
+  isRenderableImageSrc,
+} from "@/lib/portfolio-image-uploads";
 import { TemplateGallery } from "@/templates/base-components";
 import type { TemplateComponentProps } from "@/templates/registry";
 import { registerTemplate } from "@/templates/registry";
@@ -48,12 +53,12 @@ function VertexTemplate({ portfolio }: TemplateComponentProps) {
     setMode((value) => (value === "dark" ? "light" : "dark"));
   };
 
-  const galleryImages = [
-    { src: "/devframe-bg-icon.svg", alt: "Portfolio visual 1" },
-    { src: "/vercel.svg", alt: "Portfolio visual 2" },
-    { src: "/next.svg", alt: "Portfolio visual 3" },
-    { src: "/globe.svg", alt: "Portfolio visual 4" },
-  ];
+  const galleryImages = filterRenderableGalleryImages(portfolio.galleryImages);
+  const projectCards = getDisplayProjects(portfolio);
+  const scheduleCallHref = portfolio.scheduleCall?.href || `mailto:${portfolio.email}`;
+  const scheduleCallLabel = portfolio.scheduleCall?.label || "Schedule a Call";
+  const hasExperience = Boolean(portfolio.experience?.length);
+  const profileImage = portfolio.profileImage;
 
   const themeStyles =
     mode === "dark"
@@ -86,10 +91,21 @@ function VertexTemplate({ portfolio }: TemplateComponentProps) {
           <div className="flex items-center gap-4 md:gap-6">
             <div className="relative flex-shrink-0">
               <div className="flex h-32 w-32 items-center justify-center overflow-hidden rounded-xl border border-[var(--vertex-border)] bg-[var(--vertex-bg)] md:h-40 md:w-40">
-                <Code2
-                  className="h-12 w-12 opacity-20"
-                  style={{ color: "var(--vertex-text-main)" }}
-                />
+                {profileImage && isRenderableImageSrc(profileImage.src) ? (
+                  <>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={profileImage.src}
+                      alt={profileImage.alt}
+                      className="h-full w-full object-cover"
+                    />
+                  </>
+                ) : (
+                  <Code2
+                    className="h-12 w-12 opacity-20"
+                    style={{ color: "var(--vertex-text-main)" }}
+                  />
+                )}
               </div>
               <div
                 className="absolute -bottom-1 -right-1"
@@ -142,7 +158,9 @@ function VertexTemplate({ portfolio }: TemplateComponentProps) {
 
               <div className="mt-4 flex flex-wrap gap-2">
                 <a
-                  href={`mailto:${portfolio.email}`}
+                  href={scheduleCallHref}
+                  target={scheduleCallHref.startsWith("http") ? "_blank" : undefined}
+                  rel={scheduleCallHref.startsWith("http") ? "noreferrer" : undefined}
                   className="inline-flex h-9 items-center gap-1.5 rounded-lg px-4 text-xs font-semibold transition-opacity hover:opacity-90"
                   style={{
                     backgroundColor: "var(--vertex-text-main)",
@@ -150,7 +168,7 @@ function VertexTemplate({ portfolio }: TemplateComponentProps) {
                   }}
                 >
                   <Calendar className="h-3.5 w-3.5" />
-                  Schedule a Call
+                  {scheduleCallLabel}
                   <ArrowRight className="h-3.5 w-3.5" />
                 </a>
                 <a
@@ -192,49 +210,51 @@ function VertexTemplate({ portfolio }: TemplateComponentProps) {
             </p>
           </BentoCard>
 
-          <BentoCard className="md:col-span-2 md:row-span-2 flex flex-col justify-between">
-            <div>
-              <h2 className="mb-4 text-lg font-bold">Experience</h2>
-              <div className="relative space-y-5">
-                <div
-                  className="absolute left-[5px] top-2 bottom-2 w-px"
-                  style={{ backgroundColor: "var(--vertex-border)" }}
-                />
-                {(portfolio.experience ?? []).map((entry, index) => (
-                  <div key={index} className="relative pl-6">
-                    <div
-                      className="absolute left-0 top-1.5 h-2.5 w-2.5 rounded-full"
-                      style={{
-                        backgroundColor:
-                          index === 0 ? "#1d9bf0" : "var(--vertex-border)",
-                      }}
-                    />
-                    <h3
-                      className="text-xs font-semibold"
-                      style={{
-                        color:
-                          index === 0 ? "#1d9bf0" : "var(--vertex-text-main)",
-                      }}
-                    >
-                      {entry.role}
-                    </h3>
-                    <p
-                      className="text-[10px]"
-                      style={{ color: "var(--vertex-text-muted)" }}
-                    >
-                      {entry.company}
-                    </p>
-                    <p
-                      className="text-[10px]"
-                      style={{ color: "var(--vertex-text-muted)" }}
-                    >
-                      {entry.year}
-                    </p>
-                  </div>
-                ))}
+          {hasExperience ? (
+            <BentoCard className="md:col-span-2 md:row-span-2 flex flex-col justify-between">
+              <div>
+                <h2 className="mb-4 text-lg font-bold">Experience</h2>
+                <div className="relative space-y-5">
+                  <div
+                    className="absolute left-[5px] top-2 bottom-2 w-px"
+                    style={{ backgroundColor: "var(--vertex-border)" }}
+                  />
+                  {(portfolio.experience ?? []).map((entry, index) => (
+                    <div key={index} className="relative pl-6">
+                      <div
+                        className="absolute left-0 top-1.5 h-2.5 w-2.5 rounded-full"
+                        style={{
+                          backgroundColor:
+                            index === 0 ? "#1d9bf0" : "var(--vertex-border)",
+                        }}
+                      />
+                      <h3
+                        className="text-xs font-semibold"
+                        style={{
+                          color:
+                            index === 0 ? "#1d9bf0" : "var(--vertex-text-main)",
+                        }}
+                      >
+                        {entry.role}
+                      </h3>
+                      <p
+                        className="text-[10px]"
+                        style={{ color: "var(--vertex-text-muted)" }}
+                      >
+                        {entry.company}
+                      </p>
+                      <p
+                        className="text-[10px]"
+                        style={{ color: "var(--vertex-text-muted)" }}
+                      >
+                        {entry.year}
+                      </p>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-          </BentoCard>
+            </BentoCard>
+          ) : null}
 
           <BentoCard className="md:col-span-2">
             <h2 className="mb-3 text-sm font-bold">Professional Resume</h2>
@@ -333,28 +353,51 @@ function VertexTemplate({ portfolio }: TemplateComponentProps) {
 
           <BentoCard className="md:col-span-4">
             <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-lg font-bold">Recent Project</h2>
+              <h2 className="text-lg font-bold">Recent Projects</h2>
               <ExternalLink className="h-4 w-4 opacity-40" />
             </div>
-            <div
-              className="rounded-xl border p-3"
-              style={{
-                backgroundColor: "var(--vertex-root-bg)",
-                borderColor: "var(--vertex-border)",
-              }}
-            >
-              <h3 className="text-sm font-semibold text-[#1d9bf0]">
-                {portfolio.featuredProjectName}
-              </h3>
-              <p
-                className="mt-1 text-xs"
-                style={{ color: "var(--vertex-text-muted)" }}
-              >
-                {portfolio.featuredProjectSummary}
-              </p>
-              <div className="mt-2 text-[9px] font-mono uppercase tracking-widest opacity-30">
-                {portfolio.featuredProjectStack}
-              </div>
+            <div className="space-y-3">
+              {projectCards.map((project, index) => {
+                const href = project.projectUrl || undefined;
+
+                return (
+                  <div
+                    key={`${project.name}-${index}`}
+                    className="rounded-xl border p-3"
+                    style={{
+                      backgroundColor: "var(--vertex-root-bg)",
+                      borderColor: "var(--vertex-border)",
+                    }}
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <h3 className="text-sm font-semibold text-[#1d9bf0]">
+                        {project.name}
+                      </h3>
+                      {href ? (
+                        <a
+                          href={href}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="shrink-0 opacity-60 transition-opacity hover:opacity-100"
+                        >
+                          <ExternalLink className="h-3.5 w-3.5" />
+                        </a>
+                      ) : null}
+                    </div>
+                    <p
+                      className="mt-1 text-xs"
+                      style={{ color: "var(--vertex-text-muted)" }}
+                    >
+                      {project.summary}
+                    </p>
+                    {project.stack ? (
+                      <div className="mt-2 text-[9px] font-mono uppercase tracking-widest opacity-30">
+                        {project.stack}
+                      </div>
+                    ) : null}
+                  </div>
+                );
+              })}
             </div>
           </BentoCard>
 
@@ -380,16 +423,18 @@ function VertexTemplate({ portfolio }: TemplateComponentProps) {
             </div>
           </BentoCard>
 
-          <BentoCard className="md:col-span-6">
-            <h2 className="mb-4 text-lg font-bold">Gallery</h2>
-            <TemplateGallery
-              images={galleryImages}
-              transitionClassName="transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
-              navButtonClassName="border-[var(--vertex-border)] bg-[var(--vertex-bg)] text-[var(--vertex-text-main)]"
-              imageClassName="p-6"
-              tileClassName="bg-[var(--vertex-root-bg)] border-[var(--vertex-border)]"
-            />
-          </BentoCard>
+          {galleryImages.length > 0 ? (
+            <BentoCard className="md:col-span-6">
+              <h2 className="mb-4 text-lg font-bold">Gallery</h2>
+              <TemplateGallery
+                images={galleryImages}
+                transitionClassName="transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
+                navButtonClassName="border-[var(--vertex-border)] bg-[var(--vertex-bg)] text-[var(--vertex-text-main)]"
+                imageClassName="p-6"
+                tileClassName="bg-[var(--vertex-root-bg)] border-[var(--vertex-border)]"
+              />
+            </BentoCard>
+          ) : null}
 
           {portfolio.recommendation && (
             <BentoCard className="md:col-span-6">

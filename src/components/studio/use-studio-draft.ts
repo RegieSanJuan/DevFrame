@@ -10,7 +10,7 @@ import { getTemplateSettingsDefaults } from "@/lib/template-field-registry";
 import type { TemplateSlug } from "@/lib/template-catalog";
 
 const DRAFT_KEY = "devframe:guest-draft";
-const DRAFT_VERSION = 1 as const;
+const DRAFT_VERSION = 2 as const;
 
 type StoredDraft = {
   version: typeof DRAFT_VERSION;
@@ -29,6 +29,11 @@ type StudioDraftAction =
   | {
       type: "hydrate";
       requestedTemplate: TemplateSlug | null;
+    }
+  | {
+      type: "replace-draft";
+      formValues: PortfolioFormValues;
+      templateSettings: Record<string, unknown>;
     }
   | {
       type: "update-field";
@@ -83,8 +88,11 @@ function readStoredDraft(
             stored.formValues.templateSettings ??
             getTemplateSettingsDefaults(templateSlug));
 
+    const baseFormValues = getEmptyPortfolioForm(templateSlug ?? fallbackTemplate);
+
     return {
       formValues: {
+        ...baseFormValues,
         ...stored.formValues,
         templateSlug: templateSlug ?? fallbackTemplate,
         templateSettings,
@@ -141,6 +149,16 @@ function reducer(
         isHydrated: true,
       };
     }
+
+    case "replace-draft":
+      return {
+        formValues: {
+          ...action.formValues,
+          templateSettings: action.templateSettings,
+        },
+        templateSettings: action.templateSettings,
+        isHydrated: true,
+      };
 
     case "update-field":
       return {
@@ -261,6 +279,20 @@ export function useStudioDraft(requestedTemplate: TemplateSlug | null) {
     }
   }, []);
 
+  const replaceDraft = useCallback(
+    (
+      formValues: PortfolioFormValues,
+      templateSettings: Record<string, unknown> = formValues.templateSettings ?? {},
+    ) => {
+      dispatch({
+        type: "replace-draft",
+        formValues,
+        templateSettings,
+      });
+    },
+    [],
+  );
+
   return {
     formValues: state.formValues,
     templateSettings: state.templateSettings,
@@ -269,5 +301,6 @@ export function useStudioDraft(requestedTemplate: TemplateSlug | null) {
     updateTemplateSettings,
     switchTemplate,
     clearDraft,
+    replaceDraft,
   };
 }

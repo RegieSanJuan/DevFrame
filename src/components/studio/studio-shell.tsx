@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import type { BuilderFormState } from "@/app/actions";
+import { usePortfolioImageUploads } from "@/hooks/use-portfolio-image-uploads";
 import type { PortfolioFormValues } from "@/lib/portfolio-schema";
 import {
   parsePortfolioFormData,
@@ -118,7 +119,7 @@ export function StudioShell({
     updateField,
     updateTemplateSettings,
     switchTemplate,
-    clearDraft,
+    replaceDraft,
   } = useStudioDraft(requestedTemplate);
 
   const [isSaving, setIsSaving] = useState(false);
@@ -130,9 +131,20 @@ export function StudioShell({
     status: "idle",
   });
 
+  const handleFieldChange = useCallback(
+    <K extends keyof PortfolioFormValues>(key: K, value: PortfolioFormValues[K]) => {
+      updateField(key, value);
+    },
+    [updateField],
+  );
+  const imageUploads = usePortfolioImageUploads(formValues, handleFieldChange);
+  const previewValues = useMemo(
+    () => imageUploads.applyPreviewValues(formValues),
+    [formValues, imageUploads],
+  );
   const livePortfolio = useMemo(
-    () => formValuesToRecord(formValues, templateSettings),
-    [formValues, templateSettings],
+    () => formValuesToRecord(previewValues, templateSettings),
+    [previewValues, templateSettings],
   );
 
   const getValidatedFormData = useCallback(() => {
@@ -140,6 +152,7 @@ export function StudioShell({
       ...formValues,
       templateSettings,
     } as Record<string, unknown>);
+    imageUploads.appendToFormData(formData);
     const parsed = portfolioFormSchema.safeParse(parsePortfolioFormData(formData));
 
     if (!parsed.success) {
@@ -152,7 +165,7 @@ export function StudioShell({
     }
 
     return formData;
-  }, [formValues, templateSettings]);
+  }, [formValues, imageUploads, templateSettings]);
 
   const executeSave = useCallback(async () => {
     const formData = getValidatedFormData();
@@ -168,14 +181,18 @@ export function StudioShell({
       const result = await saveAction({ status: "idle" }, formData);
       setSaveState(result);
 
-      if (result.status === "success") {
-        clearDraft();
+      if (result.status === "success" && result.persisted && result.savedValues) {
+        replaceDraft(
+          result.savedValues,
+          result.savedValues.templateSettings ?? {},
+        );
+        imageUploads.clearPendingUploads();
         clearPendingStudioSaveIntent();
       }
     } finally {
       setIsSaving(false);
     }
-  }, [clearDraft, getValidatedFormData, saveAction]);
+  }, [getValidatedFormData, imageUploads, replaceDraft, saveAction]);
 
   const validateBeforeAuth = useCallback(() => {
     if (!isHydrated) {
@@ -188,12 +205,10 @@ export function StudioShell({
   const sidebarProps = {
     clerkEnabled,
     formValues,
+    imageUploads,
     isReady: isHydrated,
     isSaving,
-    onFieldChange: updateField as <K extends keyof PortfolioFormValues>(
-      key: K,
-      value: PortfolioFormValues[K],
-    ) => void,
+    onFieldChange: handleFieldChange,
     onTemplateSettingChange: updateTemplateSettings,
     onTemplateSwitch: switchTemplate as (slug: TemplateSlug) => void,
     saveState,

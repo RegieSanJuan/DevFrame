@@ -16,10 +16,15 @@ import { createFormData } from "@/utils/form-data";
 
 type UsePortfolioBuilderFormOptions = {
   defaultValues: PortfolioFormValues;
+  buildFormData?: (
+    values: PortfolioFormValues,
+    templateSettings: Record<string, unknown>,
+  ) => FormData;
 };
 
 export function usePortfolioBuilderForm({
   defaultValues,
+  buildFormData,
 }: UsePortfolioBuilderFormOptions) {
   const [submissionState, setSubmissionState] = useState<BuilderFormState>({
     status: "idle",
@@ -43,11 +48,14 @@ export function usePortfolioBuilderForm({
     },
   });
 
-  const submit = form.handleSubmit((values) => {
+  const submit = form.handleSubmit(() => {
     startTransition(async () => {
+      const values = form.getValues();
       const result = await savePortfolioAction(
         submissionState,
-        createFormData({ ...values, templateSettings }),
+        buildFormData
+          ? buildFormData(values, templateSettings)
+          : createFormData({ ...values, templateSettings }),
       );
       setSubmissionState(result);
     });
@@ -70,6 +78,7 @@ export function usePortfolioBuilderForm({
     templateSettings,
     setTemplateSettings,
     submissionState,
+    setSubmissionState,
     submit,
   };
 }
