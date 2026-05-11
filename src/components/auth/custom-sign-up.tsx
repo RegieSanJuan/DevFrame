@@ -345,6 +345,11 @@ export function CustomSignUp() {
           )}
         </Button>
 
+        <div
+          id="clerk-captcha"
+          className="flex justify-center [&:empty]:hidden"
+        />
+
         <p className="text-center text-sm text-foreground-muted">
           Already have an account?{" "}
           <Link
