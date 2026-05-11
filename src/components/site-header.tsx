@@ -49,8 +49,7 @@ export async function SiteHeader() {
                 </Button>
                 <Button asChild size="xs" variant="accent">
                   <Link href="/sign-up">
-                    Sign up
-                    <ArrowRight className="size-4 ml-1" />
+                    <ArrowRight className="size-4" />
                   </Link>
                 </Button>
               </>
