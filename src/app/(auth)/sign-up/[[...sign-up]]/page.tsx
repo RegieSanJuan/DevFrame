@@ -1,10 +1,10 @@
 "use client";
 
-import { useSignUp, useAuth } from "@clerk/nextjs";
-import { ArrowRight, Loader2, Lock, Mail, ShieldCheck, Key } from "lucide-react";
+import { useAuth, useSignUp } from "@clerk/nextjs";
+import { ArrowRight, Key, Loader2, Lock, Mail, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -32,16 +32,19 @@ export default function SignUpPage() {
   }, [authLoaded, userId, router]);
 
   const handleGoogleSignUp = async () => {
-    if (!signUp) return;
+    setIsPending(true);
+    setError("");
+
     try {
-      await signUp.sso({
+      await (signUp as any).authenticateWithRedirect({
         strategy: "oauth_google",
-        redirectUrl: "/builder",
-        redirectCallbackUrl: window.location.origin + "/sign-up",
+        redirectUrl: "/sign-up/sso-callback",
+        redirectUrlComplete: "/builder",
       });
     } catch (err: any) {
       console.error("Google sign up error:", err);
       setError("Failed to initialize Google sign up.");
+      setIsPending(false);
     }
   };
 
@@ -195,6 +198,8 @@ export default function SignUpPage() {
       </div>
     );
   }
+
+
 
   return (
     <div className="space-y-6 w-full max-w-md mx-auto">

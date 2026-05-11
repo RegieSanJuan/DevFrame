@@ -29,16 +29,21 @@ export default function SignInPage() {
   }, [authLoaded, userId, router]);
 
   const handleGoogleSignIn = async () => {
-    if (!signIn) return;
+    setIsPending(true);
+    setError("");
+
     try {
-      await signIn.sso({
+      const redirectUrl = window.location.origin + "/sign-in/sso-callback";
+      
+      await signIn.create({
         strategy: "oauth_google",
-        redirectUrl: "/builder",
-        redirectCallbackUrl: window.location.origin + "/sign-in",
+        redirectUrl,
+        actionCompleteRedirectUrl: "/builder",
       });
     } catch (err: any) {
       console.error("Google sign in error:", err);
       setError("Failed to initialize Google sign in.");
+      setIsPending(false);
     }
   };
 
@@ -99,6 +104,8 @@ export default function SignInPage() {
   if (!authLoaded || userId) {
     return null;
   }
+
+
 
   return (
     <div className="space-y-6 w-full max-w-md mx-auto">
