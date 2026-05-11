@@ -13,12 +13,12 @@ import { DevframeLogo } from "./marketing/app-icon";
 import { SiteHeaderSurface } from "./site-header-surface";
 
 export async function SiteHeader() {
+  const userId = isClerkConfigured ? (await auth()).userId : null;
   const navLinks = [
     { label: "Templates", href: "/templates" },
     { label: "Pricing", href: "/pricing" },
-    { label: "Docs", href: "/docs" },
+    ...(userId ? [{ label: "Dashboard", href: "/dashboard" }] : []),
   ];
-  const userId = isClerkConfigured ? (await auth()).userId : null;
 
   return (
     <header className="sticky top-0 z-50 grid place-items-center w-full">
@@ -48,7 +48,10 @@ export async function SiteHeader() {
                   <Link href="/sign-in">Sign in</Link>
                 </Button>
                 <Button asChild size="xs" variant="accent">
-                  <Link href="/templates">Start building</Link>
+                  <Link href="/sign-up">
+                    Sign up
+                    <ArrowRight className="size-4 ml-1" />
+                  </Link>
                 </Button>
               </>
             ) : (

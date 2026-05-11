@@ -2,8 +2,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import { IBM_Plex_Mono, Manrope } from "next/font/google";
 
-import { SiteFooter } from "@/components/marketing/site-footer";
-import { SiteHeader } from "@/components/site-header";
+
 import { ThemeProvider } from "@/components/theme-provider";
 import { appEnv, isClerkConfigured } from "@/lib/env";
 
@@ -87,9 +86,7 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <div className="relative isolate min-h-screen flex flex-col items-center w-full">
-              <SiteHeader />
-              <main className="pb-8 max-w-6xl">{children}</main>
-              <SiteFooter />
+              {children}
             </div>
           </ThemeProvider>
         </Providers>
