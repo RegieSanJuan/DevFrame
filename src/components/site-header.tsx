@@ -1,19 +1,16 @@
-import { UserButton } from "@clerk/nextjs";
-import { auth } from "@clerk/nextjs/server";
+import { auth, currentUser } from "@clerk/nextjs/server";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
-import {
-  clerkUserButtonAppearance,
-  clerkUserProfileAppearance,
-} from "@/lib/clerk-auth-appearance";
 import { isClerkConfigured } from "@/lib/env";
 import { DevframeLogo } from "./marketing/app-icon";
+import { SiteHeaderAccountMenu } from "./site-header-account-menu";
 import { SiteHeaderSurface } from "./site-header-surface";
 
 export async function SiteHeader() {
   const userId = isClerkConfigured ? (await auth()).userId : null;
+  const user = userId ? await currentUser() : null;
   const navLinks = [
     { label: "Templates", href: "/templates" },
     { label: "Pricing", href: "/pricing" },
@@ -61,11 +58,14 @@ export async function SiteHeader() {
                     <ArrowRight className="size-4" />
                   </Link>
                 </Button>
-                <UserButton
-                  showName
-                  userProfileMode="modal"
-                  appearance={clerkUserButtonAppearance}
-                  userProfileProps={{ appearance: clerkUserProfileAppearance }}
+                <SiteHeaderAccountMenu
+                  displayName={
+                    user?.firstName ||
+                    user?.fullName ||
+                    user?.primaryEmailAddress?.emailAddress ||
+                    "Account"
+                  }
+                  email={user?.primaryEmailAddress?.emailAddress || undefined}
                 />
               </div>
             )}

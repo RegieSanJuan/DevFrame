@@ -46,20 +46,6 @@ function Providers({ children }: Readonly<{ children: React.ReactNode }>) {
       signUpUrl="/sign-up"
       signInFallbackRedirectUrl="/dashboard"
       signUpFallbackRedirectUrl="/dashboard"
-      appearance={{
-        cssLayerName: "clerk",
-        variables: {
-          colorPrimary: "#3ecf8e",
-          colorBackground: "#111614",
-          colorInputBackground: "#0e1211",
-          colorInputText: "#f3f5f4",
-          colorText: "#f3f5f4",
-          colorTextSecondary: "#a3ada8",
-          colorNeutral: "#1a211f",
-          colorDanger: "#ff7b72",
-          borderRadius: "1rem",
-        },
-      }}
     >
       {children}
     </ClerkProvider>
