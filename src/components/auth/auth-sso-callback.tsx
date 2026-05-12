@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import { getClerkErrorMessage } from "./utils";
+import { getClerkErrorMessage, navigateToAuthDestination } from "./utils";
 
 export function AuthSsoCallback() {
   const clerk = useClerk();
@@ -22,12 +22,7 @@ export function AuthSsoCallback() {
           return;
         }
 
-        if (to.startsWith("https://")) {
-          window.location.href = to;
-          return;
-        }
-
-        router.replace(to);
+        navigateToAuthDestination(router, to, "/builder");
       })
       .catch((caughtError) => {
         if (!isMounted) {

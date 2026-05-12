@@ -33,6 +33,11 @@ yarn-error.log*
 # env files (can opt-in for committing if needed)
 .env*
 
+# local Clerk CLI snapshots
+clerk.config.current.json
+clerk.config.patch.json
+clerk.schema.json
+
 # vercel
 .vercel
 

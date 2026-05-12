@@ -16,10 +16,16 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
   ArrowRight,
   Blocks,
+  Briefcase,
   Braces,
   Globe,
+  ImagePlus,
   Layers3,
   LayoutDashboard,
+  MonitorSmartphone,
+  Palette,
+  ShieldCheck,
+  UploadCloud,
 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
@@ -76,6 +82,48 @@ const workflow = [
     title: "Publish the route",
     description: "Open the public portfolio immediately and keep iterating.",
   },
+] as const;
+
+const heroWorkflowModules = [
+  {
+    label: "Studio",
+    value: "Live editor",
+    detail: "/studio preview",
+    icon: MonitorSmartphone,
+  },
+  {
+    label: "Builder",
+    value: "Structured fields",
+    detail: "Profile, links, sections",
+    icon: Braces,
+  },
+  {
+    label: "Dashboard",
+    value: "Private workspace",
+    detail: "Route and publish state",
+    icon: LayoutDashboard,
+  },
+] as const;
+
+const heroTemplateOptions = ["Nova", "Vertex", "Drift"] as const;
+
+const heroContentModules = [
+  { label: "Experience", value: "4 entries", icon: Briefcase },
+  { label: "Projects", value: "3 recent", icon: Blocks },
+  { label: "Gallery", value: "6 uploads", icon: ImagePlus },
+  { label: "Session", value: "Active", icon: ShieldCheck },
+] as const;
+
+const heroGalleryAssets = [
+  { name: "studio-shot.webp", status: "Uploaded" },
+  { name: "launch-card.png", status: "Ready" },
+  { name: "case-study.jpg", status: "Ready" },
+] as const;
+
+const heroCommunityItems = [
+  "Star repo",
+  "Report issue",
+  "Suggest template",
 ] as const;
 
 const TECH_STACK_MARQUEE = [
@@ -243,35 +291,57 @@ export function HomepageExperience({
           <div className="translate-y-8 rotate-x-8 rotate-y-12 -rotate-z-6 transform-3d scale-[0.82] origin-top">
             <Card data-hero-panel className="border-border">
               <CardContent className="p-0">
-                <div className="grid gap-0 md:grid-cols-[0.84fr_1.16fr]">
+                <div className="grid gap-0 md:grid-cols-[0.86fr_1.14fr]">
                   <div className="border-b border-border p-6 md:border-b-0 md:border-r">
                     <div className="flex items-center justify-between gap-3">
-                      <span className="section-label">Control center</span>
-                      <Badge variant="success">Live draft</Badge>
+                      <span className="section-label">Portfolio command</span>
+                      <Badge variant="success">Published draft</Badge>
                     </div>
                     <h2 className="mt-5 text-3xl font-semibold tracking-[-0.05em] text-foreground">
-                      Publish without losing the builder context.
+                      One workspace behind a real public portfolio.
                     </h2>
                     <p className="mt-4 text-sm leading-7 text-foreground-muted">
-                      The editing flow stays centered around cards, short
-                      labels, and readable route details instead of a busy admin
-                      panel.
+                      Studio drafts, Builder sections, Dashboard state, and
+                      template settings all feed the same portfolio record.
                     </p>
                     <div className="mt-6 grid gap-3">
-                      <div className="rounded-2xl border border-border bg-surface px-4 py-4">
-                        <p className="text-xs font-semibold uppercase tracking-[0.24em] text-foreground-soft">
-                          Public route
+                      <div className="rounded-2xl border border-border bg-surface p-4">
+                        <div className="flex items-center justify-between gap-3">
+                          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-foreground-soft">
+                            Public route
+                          </p>
+                          <Globe className="size-4 text-accent" />
+                        </div>
+                        <p className="mt-2 font-mono text-lg font-semibold text-foreground">
+                          /p/maya-rivera
                         </p>
-                        <p className="mt-2 text-lg font-semibold text-foreground">
-                          /p/your-username
+                        <p className="mt-1 text-xs font-medium uppercase tracking-[0.18em] text-accent">
+                          Live on DevFrame
                         </p>
                       </div>
-                      <div className="rounded-2xl border border-border bg-surface px-4 py-4">
-                        <p className="text-xs font-semibold uppercase tracking-[0.24em] text-foreground-soft">
-                          Current template
-                        </p>
-                        <p className="mt-2 text-lg font-semibold text-foreground">
-                          Drift
+                      <div className="rounded-2xl border border-border bg-surface p-4">
+                        <div className="flex items-center justify-between gap-3">
+                          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-foreground-soft">
+                            Template system
+                          </p>
+                          <Palette className="size-4 text-accent" />
+                        </div>
+                        <div className="mt-3 grid grid-cols-3 gap-2">
+                          {heroTemplateOptions.map((template) => (
+                            <span
+                              key={template}
+                              className={
+                                template === "Drift"
+                                  ? "rounded-xl border border-accent/40 bg-accent-soft px-3 py-2 text-center text-xs font-semibold text-accent"
+                                  : "rounded-xl border border-border bg-surface-strong px-3 py-2 text-center text-xs text-foreground-muted"
+                              }
+                            >
+                              {template}
+                            </span>
+                          ))}
+                        </div>
+                        <p className="mt-3 text-sm leading-6 text-foreground-muted">
+                          Drift template, warm accent, gallery section enabled.
                         </p>
                       </div>
                     </div>
@@ -282,67 +352,133 @@ export function HomepageExperience({
                       <div className="flex items-center justify-between gap-3">
                         <div>
                           <p className="text-xs font-semibold uppercase tracking-[0.24em] text-foreground-soft">
-                            Builder fields
+                            Live portfolio preview
                           </p>
                           <p className="mt-2 text-lg font-semibold text-foreground">
-                            Tight, readable form sections
+                            Maya Rivera, product engineer
                           </p>
                         </div>
-                        <Braces className="size-5 text-accent" />
+                        <Badge>Drift</Badge>
                       </div>
-                      <div className="mt-4 grid gap-3 md:grid-cols-2">
-                        {["Name", "Role", "Skills", "Featured project"].map(
-                          (item) => (
-                            <div
-                              key={item}
-                              className="rounded-2xl border border-border bg-surface px-4 py-3 text-sm text-foreground-muted"
-                            >
-                              {item}
+                      <div className="mt-5 grid gap-4 lg:grid-cols-[1fr_0.9fr]">
+                        <div className="rounded-2xl border border-border bg-background/60 p-4">
+                          <div className="flex items-center gap-3">
+                            <div className="size-12 rounded-2xl border border-border bg-[linear-gradient(135deg,#c9a96e,#5c6f7a_54%,#202020)]" />
+                            <div>
+                              <p className="font-semibold text-foreground">
+                                Frontend systems for developer tools.
+                              </p>
+                              <p className="mt-1 text-xs uppercase tracking-[0.18em] text-foreground-soft">
+                                Available for product teams
+                              </p>
                             </div>
-                          ),
-                        )}
+                          </div>
+                          <div className="mt-4 grid gap-2 sm:grid-cols-2">
+                            {heroContentModules.map((item) => {
+                              const Icon = item.icon;
+
+                              return (
+                                <div
+                                  key={item.label}
+                                  className="rounded-xl border border-border bg-surface px-3 py-2.5"
+                                >
+                                  <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-foreground-soft">
+                                    <Icon className="size-3.5 text-accent" />
+                                    {item.label}
+                                  </div>
+                                  <p className="mt-1 text-sm font-semibold text-foreground">
+                                    {item.value}
+                                  </p>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+
+                        <div className="rounded-2xl border border-border bg-surface p-4">
+                          <div className="flex items-center justify-between gap-3">
+                            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-foreground-soft">
+                              Gallery uploads
+                            </p>
+                            <UploadCloud className="size-4 text-accent" />
+                          </div>
+                          <div className="mt-3 space-y-2">
+                            {heroGalleryAssets.map((asset, index) => (
+                              <div
+                                key={asset.name}
+                                className="flex items-center justify-between gap-3 rounded-xl border border-border bg-surface-strong px-3 py-2"
+                              >
+                                <div className="flex items-center gap-3">
+                                  <span
+                                    className="size-8 rounded-lg border border-border bg-surface"
+                                    style={{
+                                      backgroundImage: `linear-gradient(135deg, rgba(201,169,110,${
+                                        0.34 + index * 0.16
+                                      }), rgba(255,255,255,0.06))`,
+                                    }}
+                                  />
+                                  <span className="text-xs font-medium text-foreground-muted">
+                                    {asset.name}
+                                  </span>
+                                </div>
+                                <span className="text-xs font-semibold text-accent">
+                                  {asset.status}
+                                </span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
                       </div>
                     </div>
 
-                    <div className="grid gap-4 sm:grid-cols-2">
+                    <div className="grid gap-4 lg:grid-cols-[1.12fr_0.88fr]">
                       <div className="rounded-[24px] border border-border bg-surface p-5">
                         <p className="text-xs font-semibold uppercase tracking-[0.24em] text-foreground-soft">
-                          Setup
+                          Product modules
                         </p>
-                        <div className="mt-4 space-y-3">
-                          <div className="flex items-center justify-between text-sm text-foreground-muted">
-                            <span>Clerk auth</span>
-                            <span className="text-accent">Ready</span>
-                          </div>
-                          <div className="flex items-center justify-between text-sm text-foreground-muted">
-                            <span>Supabase read</span>
-                            <span className="text-accent">Ready</span>
-                          </div>
-                          <div className="flex items-center justify-between text-sm text-foreground-muted">
-                            <span>Supabase write</span>
-                            <span className="text-foreground-soft">
-                              Optional
-                            </span>
-                          </div>
+                        <div className="mt-4 grid gap-3 sm:grid-cols-3">
+                          {heroWorkflowModules.map((item) => {
+                            const Icon = item.icon;
+
+                            return (
+                              <div
+                                key={item.label}
+                                className="rounded-2xl border border-border bg-surface-strong px-4 py-3"
+                              >
+                                <Icon className="size-4 text-accent" />
+                                <p className="mt-3 text-sm font-semibold text-foreground">
+                                  {item.label}
+                                </p>
+                                <p className="mt-1 text-xs text-foreground-muted">
+                                  {item.value}
+                                </p>
+                                <p className="mt-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-foreground-soft">
+                                  {item.detail}
+                                </p>
+                              </div>
+                            );
+                          })}
                         </div>
                       </div>
 
                       <div className="rounded-[24px] border border-border bg-surface p-5">
                         <p className="text-xs font-semibold uppercase tracking-[0.24em] text-foreground-soft">
-                          Output
+                          Open source loop
                         </p>
-                        <div className="mt-4 space-y-3">
-                          {["Hero", "About", "Skills", "Project"].map(
-                            (item) => (
-                              <div
-                                key={item}
-                                className="rounded-2xl border border-border bg-surface-strong px-4 py-3 text-sm text-foreground-muted"
-                              >
-                                {item}
-                              </div>
-                            ),
-                          )}
+                        <div className="mt-4 space-y-2">
+                          {heroCommunityItems.map((item) => (
+                            <div
+                              key={item}
+                              className="rounded-xl border border-border bg-surface-strong px-3 py-2 text-xs font-medium text-foreground-muted"
+                            >
+                              {item}
+                            </div>
+                          ))}
                         </div>
+                        <p className="mt-4 text-xs leading-5 text-foreground-muted">
+                          Support page links GitHub, issues, feature requests,
+                          and optional GoTyme or GCash support.
+                        </p>
                       </div>
                     </div>
                   </div>

@@ -13,7 +13,7 @@ export async function SiteHeader() {
   const user = userId ? await currentUser() : null;
   const navLinks = [
     { label: "Templates", href: "/templates" },
-    { label: "Pricing", href: "/pricing" },
+    { label: "Support", href: "/support" },
     ...(userId ? [{ label: "Dashboard", href: "/dashboard" }] : []),
   ];
 
