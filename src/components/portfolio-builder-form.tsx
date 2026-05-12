@@ -410,8 +410,8 @@ export function PortfolioBuilderForm({
 
             <p className="text-sm leading-6 text-foreground-soft">
               {demoMode
-                ? "Demo mode is active right now, so protected pages stay accessible while you finish setting up Clerk."
-                : "Once Clerk is connected, this builder stays protected behind your authenticated dashboard."}
+                ? "Your draft workspace is available in preview, so you can keep shaping the portfolio before launch."
+                : "Your builder workspace stays private while you edit and publish."}
             </p>
           </form>
         </CardContent>
@@ -446,23 +446,22 @@ export function PortfolioBuilderForm({
         <Card className="border-border bg-surface-strong text-foreground">
           <CardHeader>
             <Badge className="border-border bg-surface-strong text-foreground-soft">
-              MVP note
+              Publishing
             </Badge>
-            <CardTitle>Ready for Supabase and Vercel</CardTitle>
+            <CardTitle>Ready to publish from one workflow</CardTitle>
             <CardDescription>
-              The UI works before your environment is fully connected, and the
-              same builder upgrades to real persistence once your keys are added.
+              Keep your content structured, previewable, and ready for a clean
+              public route.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4 text-sm leading-6 text-foreground-muted">
             <p>
-              Clerk handles authentication. Supabase stores the portfolio data.
-              The public page reads your saved portfolio and renders the chosen
-              template automatically.
+              Edit once, preview across templates, and open the public portfolio
+              route when the story feels ready.
             </p>
             <p>
-              When Supabase is missing, DevFrame uses preview mode so you can
-              keep shaping the product instead of getting blocked by setup.
+              When persistence is unavailable, DevFrame keeps a local preview so
+              drafting stays unblocked.
             </p>
           </CardContent>
         </Card>

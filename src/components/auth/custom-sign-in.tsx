@@ -10,7 +10,11 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-import { getClerkErrorMessage, navigateWithDecoratedUrl } from "./utils";
+import {
+  getClerkErrorMessage,
+  navigateWithDecoratedUrl,
+  redirectToVerificationInSameTab,
+} from "./utils";
 
 export function CustomSignIn() {
   const { isLoaded, signIn, setActive } = useSignIn();
@@ -39,11 +43,16 @@ export function CustomSignIn() {
     setError("");
 
     try {
-      await signIn.authenticateWithRedirect({
+      const signInAttempt = await signIn.create({
         strategy: "oauth_google",
         redirectUrl: "/sign-in/sso-callback",
-        redirectUrlComplete: "/builder",
+        actionCompleteRedirectUrl: "/builder",
       });
+
+      redirectToVerificationInSameTab(
+        signInAttempt.firstFactorVerification,
+        "Google sign in could not be started. Please try again.",
+      );
     } catch (caughtError) {
       setError(
         getClerkErrorMessage(
@@ -109,11 +118,11 @@ export function CustomSignIn() {
         </div>
         <div>
           <p className="text-base font-medium text-foreground">
-            Waiting for auth keys
+            Authentication unavailable
           </p>
           <p className="mx-auto mt-2 max-w-[280px] text-sm leading-relaxed text-foreground-muted">
-            Clerk keys are missing from your environment variables. The
-            application remains in preview mode.
+            Sign-in is not available in this preview. You can still explore the
+            public pages and templates.
           </p>
         </div>
       </div>

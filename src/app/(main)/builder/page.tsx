@@ -33,13 +33,13 @@ export default async function BuilderPage({ searchParams }: BuilderPageProps) {
     <div className="container-shell space-y-10 pt-10">
       <section className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr] lg:items-end">
         <div className="space-y-4">
-          <Badge>{viewer.demoMode ? "Demo builder" : "Builder"}</Badge>
+          <Badge>Builder</Badge>
           <h1 className="text-4xl font-semibold tracking-[-0.05em] text-foreground md:text-5xl">
             Shape your portfolio without rebuilding the whole site.
           </h1>
           <p className="max-w-3xl text-base leading-7 text-foreground-muted md:text-lg md:leading-8">
             One structured builder feeds the selected template, the public route,
-            and your setup checks so publishing feels quick, calm, and repeatable.
+            and the live preview so publishing feels quick, calm, and repeatable.
           </p>
         </div>
 
@@ -76,7 +76,7 @@ export default async function BuilderPage({ searchParams }: BuilderPageProps) {
                 Access
               </p>
               <p className="mt-3 text-lg font-semibold text-foreground">
-                {viewer.demoMode ? "Preview mode" : "Protected"}
+                {viewer.demoMode ? "Draft workspace" : "Private workspace"}
               </p>
             </div>
           </CardHeader>

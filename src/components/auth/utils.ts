@@ -4,6 +4,10 @@ type RouterLike = {
   replace: (href: string) => void;
 };
 
+type VerificationLike = {
+  externalVerificationRedirectURL: URL | null;
+};
+
 export function getClerkErrorMessage(
   error: unknown,
   fallback: string,
@@ -48,4 +52,17 @@ export function navigateWithDecoratedUrl(
   }
 
   router.replace(url);
+}
+
+export function redirectToVerificationInSameTab(
+  verification: VerificationLike,
+  fallbackError: string,
+) {
+  const redirectUrl = verification.externalVerificationRedirectURL?.toString();
+
+  if (!redirectUrl) {
+    throw new Error(fallbackError);
+  }
+
+  window.location.assign(redirectUrl);
 }

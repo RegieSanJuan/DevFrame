@@ -36,6 +36,14 @@ export const appEnv = {
   supabasePublishableKey:
     process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY?.trim() || "",
   supabaseServiceRoleKey: process.env.SUPABASE_SERVICE_ROLE_KEY?.trim() || "",
+  rateLimitRedisRestUrl:
+    process.env.UPSTASH_REDIS_REST_URL?.trim() ||
+    process.env.KV_REST_API_URL?.trim() ||
+    "",
+  rateLimitRedisRestToken:
+    process.env.UPSTASH_REDIS_REST_TOKEN?.trim() ||
+    process.env.KV_REST_API_TOKEN?.trim() ||
+    "",
 };
 
 export const isClerkConfigured = Boolean(
@@ -48,4 +56,8 @@ export const isSupabaseReadConfigured = Boolean(
 
 export const isSupabaseWriteConfigured = Boolean(
   isSupabaseReadConfigured && appEnv.supabaseServiceRoleKey,
+);
+
+export const isRateLimitRedisConfigured = Boolean(
+  appEnv.rateLimitRedisRestUrl && appEnv.rateLimitRedisRestToken,
 );

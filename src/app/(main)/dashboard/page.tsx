@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, ExternalLink, LayoutTemplate, Sparkles } from "lucide-react";
 
-import { SetupStatus } from "@/components/setup-status";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -26,7 +25,7 @@ export default async function DashboardPage() {
     <div className="container-shell space-y-10 pt-10">
       <section className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr] lg:items-end">
         <div className="space-y-4">
-        <Badge>{viewer.demoMode ? "Demo dashboard" : "Dashboard"}</Badge>
+          <Badge>Dashboard</Badge>
           <h1 className="text-4xl font-semibold tracking-[-0.05em] text-foreground md:text-5xl">
             Build and publish your DevFrame portfolio.
           </h1>
@@ -60,7 +59,7 @@ export default async function DashboardPage() {
                 Access
               </p>
               <p className="mt-3 text-lg font-semibold text-foreground">
-                {viewer.demoMode ? "Preview mode" : "Protected"}
+                {viewer.demoMode ? "Draft workspace" : "Private workspace"}
               </p>
             </div>
           </CardContent>
@@ -151,8 +150,6 @@ export default async function DashboardPage() {
           </CardContent>
         </Card>
       )}
-
-      <SetupStatus />
     </div>
   );
 }
