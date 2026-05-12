@@ -1,7 +1,7 @@
 "use client";
 
 import { useClerk } from "@clerk/nextjs";
-import { ChevronDown, LayoutDashboard, LogOut } from "lucide-react";
+import { ChevronDown, LayoutDashboard, LogOut, UserCog } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
@@ -88,6 +88,18 @@ export function SiteHeaderAccountMenu({
             <Link href="/dashboard" onClick={() => setIsOpen(false)}>
               <LayoutDashboard className="size-4" />
               Dashboard
+            </Link>
+          </Button>
+
+          <Button
+            asChild
+            variant="ghost"
+            size="sm"
+            className="w-full justify-start border-none text-zinc-300 hover:bg-zinc-900 hover:text-white"
+          >
+            <Link href="/account" onClick={() => setIsOpen(false)}>
+              <UserCog className="size-4" />
+              Account settings
             </Link>
           </Button>
 

@@ -46,6 +46,10 @@ cp .env.example .env.local
 - `CLERK_SECRET_KEY`
 - `CLERK_AUTHORIZED_PARTIES` if you want to override the default origin allowlist
 
+DevFrame keeps Clerk as auth/session infrastructure only and uses custom auth
+screens. For Clerk CLI checks, OAuth redirects, and email template setup, see
+[docs/clerk-auth-setup.md](./docs/clerk-auth-setup.md).
+
 4. Create a Supabase project and add:
 
 - `NEXT_PUBLIC_SUPABASE_URL`

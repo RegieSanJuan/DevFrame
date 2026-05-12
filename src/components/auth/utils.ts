@@ -8,6 +8,8 @@ type VerificationLike = {
   externalVerificationRedirectURL: URL | null;
 };
 
+const DEFAULT_AUTH_REDIRECT = "/dashboard";
+
 export function getClerkErrorMessage(
   error: unknown,
   fallback: string,
@@ -39,19 +41,54 @@ export function getClerkErrorMessage(
   return fallback;
 }
 
+export function getSafeAuthDestination(
+  destination: string,
+  fallback = DEFAULT_AUTH_REDIRECT,
+) {
+  const trimmedDestination = destination.trim();
+
+  if (!trimmedDestination) {
+    return fallback;
+  }
+
+  if (
+    trimmedDestination.startsWith("/") &&
+    !trimmedDestination.startsWith("//")
+  ) {
+    return trimmedDestination;
+  }
+
+  if (typeof window === "undefined") {
+    return fallback;
+  }
+
+  try {
+    const targetUrl = new URL(trimmedDestination, window.location.origin);
+
+    if (targetUrl.origin === window.location.origin) {
+      return `${targetUrl.pathname}${targetUrl.search}${targetUrl.hash}`;
+    }
+  } catch {
+    return fallback;
+  }
+
+  return fallback;
+}
+
+export function navigateToAuthDestination(
+  router: RouterLike,
+  destination: string,
+  fallback = DEFAULT_AUTH_REDIRECT,
+) {
+  router.replace(getSafeAuthDestination(destination, fallback));
+}
+
 export function navigateWithDecoratedUrl(
   router: RouterLike,
   decorateUrl: (url: string) => string,
   destination: string,
 ) {
-  const url = decorateUrl(destination);
-
-  if (url.startsWith("https://")) {
-    window.location.href = url;
-    return;
-  }
-
-  router.replace(url);
+  navigateToAuthDestination(router, decorateUrl(destination), destination);
 }
 
 export function redirectToVerificationInSameTab(
@@ -64,5 +101,11 @@ export function redirectToVerificationInSameTab(
     throw new Error(fallbackError);
   }
 
-  window.location.assign(redirectUrl);
+  const parsedUrl = new URL(redirectUrl);
+
+  if (parsedUrl.protocol !== "https:") {
+    throw new Error(fallbackError);
+  }
+
+  window.location.assign(parsedUrl.toString());
 }

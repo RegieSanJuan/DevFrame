@@ -84,8 +84,13 @@ function isAuthPath(pathname: string) {
   return pathname.startsWith("/sign-in") || pathname.startsWith("/sign-up");
 }
 
+function isAccountPath(pathname: string) {
+  return pathname.startsWith("/account");
+}
+
 function isPrivateAppPath(pathname: string) {
   return (
+    isAccountPath(pathname) ||
     pathname.startsWith("/builder") ||
     pathname.startsWith("/dashboard") ||
     pathname.startsWith("/studio") ||
@@ -122,6 +127,14 @@ function getRateLimitRule(request: NextRequest): RateLimitRule | null {
   if (isAuthPath(pathname)) {
     return {
       keyPrefix: "auth",
+      limit: method === "POST" ? 20 : 60,
+      windowSeconds: 60,
+    };
+  }
+
+  if (isAccountPath(pathname)) {
+    return {
+      keyPrefix: "account",
       limit: method === "POST" ? 20 : 60,
       windowSeconds: 60,
     };
@@ -269,6 +282,10 @@ export async function guardRequest(request: NextRequest) {
   }
 
   if (isAuthPath(pathname) && contentLength > 256 * ONE_KB) {
+    return forbiddenJson("Payload too large", 413);
+  }
+
+  if (isAccountPath(pathname) && contentLength > 256 * ONE_KB) {
     return forbiddenJson("Payload too large", 413);
   }
 

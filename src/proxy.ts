@@ -6,6 +6,7 @@ import { appEnv, isClerkConfigured } from "@/lib/env";
 import { applySecurityHeaders, guardRequest } from "@/lib/security/request-guard";
 
 const isProtectedRoute = createRouteMatcher([
+  "/account(.*)",
   "/dashboard(.*)",
   "/builder(.*)",
 ]);
