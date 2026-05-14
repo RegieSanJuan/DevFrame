@@ -72,7 +72,7 @@ Open `http://localhost:3000`.
 - Clerk `authorizedParties` is now enforced in `src/proxy.ts`.
 - By default it allows `NEXT_PUBLIC_APP_URL` plus the current Vercel deployment URL(s).
 - If you want an explicit fixed allowlist, set `CLERK_AUTHORIZED_PARTIES` as a comma-separated list such as `https://your-domain.com,https://your-project.vercel.app`.
-- For durable production rate limiting, set either `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN` or Vercel KV's `KV_REST_API_URL` + `KV_REST_API_TOKEN`. If these are missing, DevFrame uses a per-instance in-memory fallback that is fine for local/dev but weaker on serverless production.
+- For durable production rate limiting, set either `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN` or Vercel KV's `KV_REST_API_URL` + `KV_REST_API_TOKEN`. If these are missing, DevFrame uses a per-instance in-memory fallback that is for local/dev only and is not durable security protection on Vercel serverless.
 - Leave Vercel's `Automatically expose System Environment Variables` setting enabled so preview deployments can use `VERCEL_BRANCH_URL`, `VERCEL_URL`, and `VERCEL_PROJECT_PRODUCTION_URL`.
 
 ## Recommended Vercel branch flow

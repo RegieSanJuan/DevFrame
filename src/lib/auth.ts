@@ -3,16 +3,22 @@ import { redirect } from "next/navigation";
 
 import { isClerkConfigured } from "@/lib/env";
 
+export const DEMO_USER_ID = "demo-user";
+
 export type ViewerContext = {
   userId: string | null;
   isAuthenticated: boolean;
   demoMode: boolean;
 };
 
+export function isDemoUserId(userId: string | null | undefined) {
+  return userId === DEMO_USER_ID;
+}
+
 export async function getViewerContext(): Promise<ViewerContext> {
   if (!isClerkConfigured) {
     return {
-      userId: "demo-user",
+      userId: DEMO_USER_ID,
       isAuthenticated: true,
       demoMode: true,
     };

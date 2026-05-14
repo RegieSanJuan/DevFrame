@@ -18,6 +18,7 @@ export async function savePortfolioDraft(
   values: PortfolioFormValues,
   ownerId: string,
   uploads?: PortfolioUploadFiles,
+  options?: { allowDatabasePersistence?: boolean },
 ) {
-  return savePortfolio(values, ownerId, uploads);
+  return savePortfolio(values, ownerId, uploads, options);
 }

@@ -29,6 +29,7 @@ type RedisPipelineResult = Array<{
 
 const globalRateLimitState = globalThis as typeof globalThis & {
   __devframeRateLimitStore?: Map<string, MemoryBucket>;
+  __devframeRateLimitFallbackWarningShown?: boolean;
 };
 
 function getMemoryStore() {
@@ -48,6 +49,21 @@ function getRedisConfig() {
     token: appEnv.rateLimitRedisRestToken,
     url: appEnv.rateLimitRedisRestUrl.replace(/\/+$/, ""),
   };
+}
+
+function warnMemoryFallbackInProduction(reason: string) {
+  if (
+    process.env.NODE_ENV !== "production" ||
+    globalRateLimitState.__devframeRateLimitFallbackWarningShown
+  ) {
+    return;
+  }
+
+  globalRateLimitState.__devframeRateLimitFallbackWarningShown = true;
+  console.warn(
+    `DevFrame rate limiting is using in-memory fallback in production (${reason}). ` +
+      "This is development-only protection on serverless platforms; configure Upstash Redis or Vercel KV for durable limits.",
+  );
 }
 
 function normalizeKey(value: string) {
@@ -137,6 +153,11 @@ function enforceMemoryRateLimit(config: RateLimitConfig): RateLimitResult {
 }
 
 export async function enforceRateLimit(config: RateLimitConfig) {
+  if (!isRateLimitRedisConfigured) {
+    warnMemoryFallbackInProduction("Redis/KV env vars are missing");
+    return enforceMemoryRateLimit(config);
+  }
+
   try {
     const redisResult = await enforceRedisRateLimit(config);
 
@@ -144,6 +165,7 @@ export async function enforceRateLimit(config: RateLimitConfig) {
       return redisResult;
     }
   } catch (error) {
+    warnMemoryFallbackInProduction("Redis/KV request failed");
     console.warn("Redis rate limit unavailable; using in-memory fallback.", error);
   }
 

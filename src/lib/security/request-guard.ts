@@ -104,12 +104,9 @@ function isPortfolioSaveRequest(request: NextRequest) {
   }
 
   const pathname = request.nextUrl.pathname;
+  const isPortfolioEditorPath = pathname === "/builder" || pathname === "/studio";
 
-  return (
-    pathname.startsWith("/builder") ||
-    pathname.startsWith("/studio") ||
-    Boolean(request.headers.get("next-action"))
-  );
+  return isPortfolioEditorPath && Boolean(request.headers.get("next-action"));
 }
 
 function getRateLimitRule(request: NextRequest): RateLimitRule | null {
@@ -286,6 +283,15 @@ export async function guardRequest(request: NextRequest) {
   }
 
   if (isAccountPath(pathname) && contentLength > 256 * ONE_KB) {
+    return forbiddenJson("Payload too large", 413);
+  }
+
+  if (
+    method === "POST" &&
+    isPrivateAppPath(pathname) &&
+    !isPortfolioSaveRequest(request) &&
+    contentLength > 256 * ONE_KB
+  ) {
     return forbiddenJson("Payload too large", 413);
   }
 

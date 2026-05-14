@@ -4,6 +4,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
 
 import { createPortfolioUrl } from "@/lib/app-url";
+import { isDemoUserId } from "@/lib/auth";
 import {
   buildPortfolioSectionsFromValues,
   buildProfileImage,
@@ -118,6 +119,10 @@ type SavePortfolioResult = {
   record: PortfolioRecord;
   persisted: boolean;
   error?: string;
+};
+
+type SavePortfolioOptions = {
+  allowDatabasePersistence?: boolean;
 };
 
 const PORTFOLIO_STORAGE_BUCKET = "portfolio-assets";
@@ -967,10 +972,18 @@ export async function savePortfolio(
     profileImageFile: null,
     galleryImageFiles: [],
   },
+  options: SavePortfolioOptions = {},
 ): Promise<SavePortfolioResult> {
   const previewRecord = buildPortfolioRecord(values, ownerId, "preview");
 
   await savePreviewPortfolio(previewRecord);
+
+  if (options.allowDatabasePersistence === false || isDemoUserId(ownerId)) {
+    return {
+      record: previewRecord,
+      persisted: false,
+    };
+  }
 
   const supabase = createSupabaseAdminClient();
 
@@ -1075,6 +1088,16 @@ export async function savePortfolio(
 }
 
 export async function getPortfolioForOwner(ownerId: string) {
+  if (isDemoUserId(ownerId)) {
+    const previewPortfolio = await getPreviewPortfolio();
+
+    if (previewPortfolio?.ownerId === ownerId) {
+      return previewPortfolio;
+    }
+
+    return null;
+  }
+
   const supabase = createSupabaseAdminClient();
 
   if (supabase) {

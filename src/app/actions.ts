@@ -69,7 +69,9 @@ export async function savePortfolioAction(
     };
   }
 
-  const result = await savePortfolioDraft(parsed.data, viewer.userId!, uploads);
+  const result = await savePortfolioDraft(parsed.data, viewer.userId!, uploads, {
+    allowDatabasePersistence: !viewer.demoMode,
+  });
 
   if (!result.persisted) {
     const imageUploadNotice = hasPortfolioUploadFiles(uploads)
