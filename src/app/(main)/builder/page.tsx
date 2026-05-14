@@ -9,6 +9,7 @@ import { Card, CardHeader, CardDescription, CardTitle } from "@/components/ui/ca
 import { requireViewer } from "@/lib/auth";
 import { getEmptyPortfolioForm, toFormValues } from "@/lib/portfolio-schema";
 import { isTemplateSlug } from "@/lib/template-catalog";
+import { getTemplateSettingsDefaults } from "@/lib/template-field-registry";
 import { getPortfolioByOwner } from "@/services/portfolio-service";
 import { getTemplates } from "@/services/template-service";
 
@@ -24,12 +25,22 @@ export default async function BuilderPage({ searchParams }: BuilderPageProps) {
   const selectedTemplate = isTemplateSlug(template) ? template : "drift";
   const existingPortfolio = await getPortfolioByOwner(viewer.userId!);
   const templates = getTemplates();
+  const isTemplateSwitching =
+    isTemplateSlug(template) && existingPortfolio
+      ? template !== existingPortfolio.templateSlug
+      : false;
   const defaultValues = existingPortfolio
     ? {
         ...toFormValues(existingPortfolio),
         templateSlug: isTemplateSlug(template)
           ? template
           : existingPortfolio.templateSlug,
+        // When the URL requests a different template, reset template-specific
+        // settings to the new template's defaults so stale keys from the
+        // previous template don't leak into the new one.
+        ...(isTemplateSwitching
+          ? { templateSettings: getTemplateSettingsDefaults(selectedTemplate) }
+          : {}),
       }
     : getEmptyPortfolioForm(selectedTemplate);
 

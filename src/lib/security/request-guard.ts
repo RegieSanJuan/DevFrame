@@ -265,9 +265,12 @@ export async function guardRequest(request: NextRequest) {
     return forbiddenJson("Invalid request", 400);
   }
 
+  const API_POST_ALLOWED_PREFIXES = ["/api/portfolio-uploads"];
+
   if (
     pathname.startsWith("/api/") &&
-    !["GET", "HEAD", "OPTIONS"].includes(method)
+    !["GET", "HEAD", "OPTIONS"].includes(method) &&
+    !API_POST_ALLOWED_PREFIXES.some((prefix) => pathname.startsWith(prefix))
   ) {
     return forbiddenJson("Method not allowed", 405);
   }

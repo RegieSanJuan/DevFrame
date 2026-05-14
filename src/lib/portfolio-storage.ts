@@ -30,6 +30,7 @@ import {
   createSupabaseAdminClient,
   createSupabasePublicClient,
 } from "@/lib/supabase";
+import { getTemplateFields } from "@/lib/template-field-registry";
 
 const PREVIEW_COOKIE_NAME = "devframe-preview";
 const SCHEMA_NOT_READY_MESSAGE =
@@ -124,7 +125,34 @@ type SavePortfolioOptions = {
   allowDatabasePersistence?: boolean;
 };
 
+/**
+ * Asset kinds that are managed (queried, synced, and cleaned up) during
+ * portfolio save operations.
+ *
+ * - Extend this list if future templates add template-specific asset kinds.
+ * - Only managed/template-specific asset kinds should be cleaned on template switch.
+ * - Shared assets like profile photos ("avatar") and gallery images
+ *   ("gallery-image") are template-agnostic and always preserved across
+ *   template changes — they are never deleted when the user switches templates.
+ */
 const MANAGED_ASSET_KINDS = ["avatar", "gallery-image"] as const;
+
+/**
+ * Strips any template settings keys that don't belong to the target template.
+ * Prevents stale config from a previous template polluting the DB.
+ */
+function sanitizeTemplateSettings(
+  templateSlug: PortfolioRecord["templateSlug"],
+  raw: Record<string, unknown>,
+): Record<string, unknown> {
+  const allowedKeys = new Set(
+    getTemplateFields(templateSlug).map((field) => field.key),
+  );
+
+  return Object.fromEntries(
+    Object.entries(raw).filter(([key]) => allowedKeys.has(key)),
+  );
+}
 
 const BASE_PORTFOLIO: Omit<
   PortfolioRecord,
@@ -360,7 +388,10 @@ function buildPortfolioRecord(
     previewUrl: createPortfolioUrl(values.slug),
     updatedAt: new Date().toISOString(),
     source,
-    templateSettings: values.templateSettings ?? {},
+    templateSettings: sanitizeTemplateSettings(
+      values.templateSlug,
+      values.templateSettings ?? {},
+    ),
     experience: values.experience,
     recentProjects: values.recentProjects,
     sections,
@@ -993,7 +1024,10 @@ export async function savePortfolio(
     featured_project_summary: values.featuredProjectSummary,
     featured_project_stack: values.featuredProjectStack,
     featured_project_url: values.featuredProjectUrl || null,
-    template_settings: values.templateSettings ?? {},
+    template_settings: sanitizeTemplateSettings(
+      values.templateSlug,
+      values.templateSettings ?? {},
+    ),
     is_primary: true,
   };
 
