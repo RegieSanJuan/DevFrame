@@ -4,9 +4,11 @@ import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 
 import type { BuilderFormState } from "@/app/actions";
+import { PortfolioContentFields } from "@/components/portfolio-content-fields";
 import { TemplateSettingsFields } from "@/components/builder/template-settings-fields";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import type { PortfolioImageUploadControls } from "@/hooks/use-portfolio-image-uploads";
 import {
   availabilityOptions,
   type PortfolioFormValues,
@@ -29,6 +31,7 @@ type SidebarProps = {
   onSave: () => void;
   isSaving: boolean;
   saveState: BuilderFormState;
+  imageUploads: PortfolioImageUploadControls;
 };
 
 function Section({
@@ -83,7 +86,9 @@ function Field({
 }
 
 const fieldClass =
-  "w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white placeholder-white/20 outline-none transition focus:border-white/25 focus:bg-white/8 focus:ring-1 focus:ring-white/10";
+  "w-full rounded-lg border border-border bg-surface-inset px-3 py-2 text-sm text-foreground placeholder:text-foreground-soft outline-none transition focus:border-accent focus:bg-surface focus:ring-1 focus:ring-accent/20";
+
+const selectFieldClass = `${fieldClass} [color-scheme:dark] [&>option]:bg-background [&>option]:text-foreground`;
 
 function getPreviewPath(previewUrl: string) {
   if (typeof window === "undefined") {
@@ -109,6 +114,7 @@ export function StudioSidebar({
   onSave,
   isSaving,
   saveState,
+  imageUploads,
 }: SidebarProps) {
   const templateFields = getTemplateFields(formValues.templateSlug);
 
@@ -194,7 +200,7 @@ export function StudioSidebar({
           <Field label="Availability" htmlFor="sf-availability">
             <select
               id="sf-availability"
-              className={fieldClass}
+              className={selectFieldClass}
               value={formValues.availability}
               onChange={(event) =>
                 onFieldChange(
@@ -327,8 +333,19 @@ export function StudioSidebar({
           </Field>
         </Section>
 
+        <Section title={`${formValues.templateSlug} content`}>
+          <PortfolioContentFields
+            templateSlug={formValues.templateSlug}
+            values={formValues}
+            onFieldChange={onFieldChange}
+            imageUploads={imageUploads}
+            variant="studio"
+            showIntro={false}
+          />
+        </Section>
+
         {templateFields.length > 0 ? (
-          <Section title={`${formValues.templateSlug} settings`}>
+          <Section title={`${formValues.templateSlug} appearance`}>
             <TemplateSettingsFields
               fields={templateFields}
               values={templateSettings}
@@ -367,14 +384,14 @@ export function StudioSidebar({
             : isSaving
               ? "Saving..."
               : clerkEnabled
-                ? "Save & Publish"
-                : "Save draft"}
+                ? "Publish portfolio"
+                : "Save preview draft"}
         </button>
 
         <p className="text-center text-[11px] text-white/25">
           {clerkEnabled
-            ? "Your draft stays local until you sign in and publish."
-            : "Your draft stays local until auth is configured."}
+            ? "Drafts stay local until you sign in and publish to Supabase."
+            : "Drafts stay local until auth and persistence are configured."}
         </p>
       </div>
     </div>

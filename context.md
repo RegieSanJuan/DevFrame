@@ -24,7 +24,7 @@
 This repo is no longer just a template gallery. It has four distinct surfaces
 that need to stay coherent:
 
-1. Marketing pages (`/`, `/templates`, `/pricing`)
+1. Marketing pages (`/`, `/templates`, `/support`)
 2. Authenticated builder and dashboard flows
 3. The no-account studio flow (`/studio`) with live preview
 4. Public portfolio output at `/p/[slug]`

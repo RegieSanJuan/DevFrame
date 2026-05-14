@@ -17,7 +17,12 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-import { getClerkErrorMessage, navigateWithDecoratedUrl } from "./utils";
+import {
+  getAuthDestinationFromLocation,
+  getClerkErrorMessage,
+  navigateWithDecoratedUrl,
+  redirectToVerificationInSameTab,
+} from "./utils";
 
 export function CustomSignUp() {
   const { isLoaded, signUp, setActive } = useSignUp();
@@ -32,12 +37,13 @@ export function CustomSignUp() {
   const [error, setError] = useState("");
 
   const isClerkConfigured = !!process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
+  const authDestination = getAuthDestinationFromLocation();
 
   useEffect(() => {
     if (authLoaded && userId) {
-      router.replace("/dashboard");
+      router.replace(authDestination);
     }
-  }, [authLoaded, router, userId]);
+  }, [authDestination, authLoaded, router, userId]);
 
   const handleGoogleSignUp = async () => {
     if (!isLoaded) {
@@ -48,11 +54,17 @@ export function CustomSignUp() {
     setError("");
 
     try {
-      await signUp.authenticateWithRedirect({
+      const ssoCallbackUrl = `/sign-up/sso-callback?redirect_url=${encodeURIComponent(authDestination)}`;
+      const signUpAttempt = await signUp.create({
         strategy: "oauth_google",
-        redirectUrl: "/sign-up/sso-callback",
-        redirectUrlComplete: "/builder",
+        redirectUrl: ssoCallbackUrl,
+        actionCompleteRedirectUrl: authDestination,
       });
+
+      redirectToVerificationInSameTab(
+        signUpAttempt.verifications.externalAccount,
+        "Google sign up could not be started. Please try again.",
+      );
     } catch (caughtError) {
       setError(
         getClerkErrorMessage(
@@ -116,7 +128,7 @@ export function CustomSignUp() {
         await setActive({
           session: verificationAttempt.createdSessionId,
           navigate: async ({ decorateUrl }) => {
-            navigateWithDecoratedUrl(router, decorateUrl, "/dashboard");
+            navigateWithDecoratedUrl(router, decorateUrl, authDestination);
           },
         });
         return;
@@ -143,11 +155,11 @@ export function CustomSignUp() {
         </div>
         <div>
           <p className="text-base font-medium text-foreground">
-            Waiting for auth keys
+            Authentication unavailable
           </p>
           <p className="mx-auto mt-2 max-w-[280px] text-sm leading-relaxed text-foreground-muted">
-            Clerk keys are missing from your environment variables. The
-            application remains in preview mode.
+            Sign-up is not available in this preview. You can still explore the
+            public pages and templates.
           </p>
         </div>
       </div>
@@ -344,6 +356,11 @@ export function CustomSignUp() {
             </>
           )}
         </Button>
+
+        <div
+          id="clerk-captcha"
+          className="flex justify-center [&:empty]:hidden"
+        />
 
         <p className="text-center text-sm text-foreground-muted">
           Already have an account?{" "}

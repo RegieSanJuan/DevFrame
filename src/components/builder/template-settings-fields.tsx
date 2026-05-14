@@ -16,7 +16,7 @@ export function TemplateSettingsFields({ fields, values, onChange }: Props) {
     <section className="space-y-4">
       <div>
         <p className="text-sm font-semibold uppercase tracking-[0.22em] text-foreground-soft">
-          Template settings
+          Appearance settings
         </p>
         <p className="mt-2 text-sm leading-6 text-foreground-muted">
           Customize how this template looks and feels. These settings only

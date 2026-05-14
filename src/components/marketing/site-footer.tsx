@@ -1,7 +1,10 @@
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
+
 import { ThemeToggle } from "../theme-toggle";
 import { DevframeLogo } from "./app-icon";
+
+const githubRepoUrl = "https://github.com/RegieSanJuan/DevFrame";
 
 function GithubIcon({ size = 15 }: { size?: number }) {
   return (
@@ -22,15 +25,15 @@ function XIcon({ size = 15 }: { size?: number }) {
 const footerLinks = {
   Product: [
     { label: "Templates", href: "/templates" },
-    { label: "Pricing", href: "/pricing" },
+    { label: "Support", href: "/support" },
     { label: "Changelog", href: "/changelog" },
     { label: "Roadmap", href: "/roadmap" },
   ],
   Developers: [
     { label: "Documentation", href: "/docs" },
     { label: "API Reference", href: "/docs/api" },
-    { label: "GitHub", href: "https://github.com", external: true },
-    { label: "Open Source", href: "/open-source" },
+    { label: "GitHub", href: githubRepoUrl, external: true },
+    { label: "Open Source", href: "/support" },
   ],
   Company: [
     { label: "About", href: "/about" },
@@ -47,8 +50,7 @@ const footerLinks = {
 
 export function SiteFooter() {
   return (
-    <footer className="relative w-full mt-24 overflow-hidden border-t border-border">
-      {/* Massive background wordmark */}
+    <footer className="relative mt-24 w-full overflow-hidden border-t border-border">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -bottom-10 right-0 select-none translate-x-[12%]"
@@ -66,22 +68,19 @@ export function SiteFooter() {
         </span>
       </div>
 
-      {/* Upper section — logo + columns */}
       <div className="relative z-10 mx-auto max-w-[88rem] px-5 pt-16 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 gap-x-8 gap-y-12 md:grid-cols-[1fr_repeat(4,_auto)] md:gap-x-12">
-          {/* Brand block */}
           <div className="col-span-2 flex flex-col gap-5 md:col-span-1">
-            <DevframeLogo className="opacity-90 transition hover:opacity-100 w-fit" />
+            <DevframeLogo className="w-fit opacity-90 transition hover:opacity-100" />
 
             <p className="max-w-xs text-sm leading-relaxed text-foreground-muted">
-              Build, publish, and iterate on your developer portfolio — with a
-              premium builder designed for people who care about craft.
+              Build, publish, and iterate on your developer portfolio with a
+              free, open-source builder for people who care about craft.
             </p>
 
-            {/* Social */}
             <div className="flex items-center gap-3">
               <a
-                href="https://github.com"
+                href={githubRepoUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="GitHub"
@@ -102,7 +101,6 @@ export function SiteFooter() {
             </div>
           </div>
 
-          {/* Link columns */}
           {Object.entries(footerLinks).map(([group, links]) => (
             <div key={group} className="flex flex-col gap-4">
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-foreground-soft">
@@ -136,13 +134,12 @@ export function SiteFooter() {
           ))}
         </div>
 
-        {/* Divider + bottom bar */}
         <div className="relative mt-16 flex flex-col items-start justify-between gap-4 py-8 sm:flex-row sm:items-center">
           <p className="text-xs text-foreground-soft">
-            © {new Date().getFullYear()} DevFrame. All rights reserved.
+            (c) {new Date().getFullYear()} DevFrame. Open-source and free to use.
           </p>
           <p className="text-xs text-foreground-soft">
-            Made with care —{" "}
+            Made with care.{" "}
             <span className="text-accent">Ship something beautiful.</span>
           </p>
         </div>

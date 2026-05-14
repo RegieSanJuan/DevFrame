@@ -13,7 +13,7 @@ export async function SiteHeader() {
   const user = userId ? await currentUser() : null;
   const navLinks = [
     { label: "Templates", href: "/templates" },
-    { label: "Pricing", href: "/pricing" },
+    { label: "Support", href: "/support" },
     ...(userId ? [{ label: "Dashboard", href: "/dashboard" }] : []),
   ];
 
@@ -45,7 +45,8 @@ export async function SiteHeader() {
                   <Link href="/sign-in">Sign in</Link>
                 </Button>
                 <Button asChild size="xs" variant="accent">
-                  <Link href="/sign-up">
+                  <Link href="/studio">
+                    Open Studio
                     <ArrowRight className="size-4" />
                   </Link>
                 </Button>
@@ -53,8 +54,8 @@ export async function SiteHeader() {
             ) : (
               <div className="flex items-center gap-3">
                 <Button asChild size="sm" variant="accent">
-                  <Link href="/builder">
-                    Start building
+                  <Link href="/studio">
+                    Edit Portfolio
                     <ArrowRight className="size-4" />
                   </Link>
                 </Button>

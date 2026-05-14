@@ -1,59 +1,58 @@
 "use client";
 
-import React from "react";
-import { Monitor, Smartphone, Layout, ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { ArrowRight, Monitor, SlidersHorizontal, Smartphone } from "lucide-react";
 import Link from "next/link";
+
+import { Button } from "@/components/ui/button";
 
 export function StudioMobileFallback() {
   return (
-    <div className="flex flex-col items-center justify-center absolute inset-0 p-6 bg-[#0a0a0a] text-white overflow-hidden">
-      <div className="max-w-md w-full space-y-8 text-center">
-        {/* Visual Illustration */}
-        <div className="relative h-40 flex items-center justify-center overflow-hidden">
-          <div className="absolute inset-0 bg-blue-500/10 blur-3xl rounded-full" />
-          <div className="relative flex items-center gap-4">
-            <div className="p-4 bg-zinc-900 border border-zinc-800 rounded-xl shadow-2xl">
-              <Smartphone className="w-12 h-12 text-zinc-500" />
-            </div>
-            <ArrowRight className="w-6 h-6 text-zinc-700 animate-pulse" />
-            <div className="p-6 bg-zinc-900 border-2 border-blue-500/50 rounded-xl shadow-[0_0_30px_rgba(59,130,246,0.2)]">
-              <Monitor className="w-16 h-16 text-blue-400" />
-            </div>
+    <div className="absolute inset-0 flex items-center justify-center overflow-hidden bg-[#0a0a0a] p-6 text-white">
+      <div className="w-full max-w-md rounded-[28px] border border-white/10 bg-[#101010] p-6 shadow-2xl shadow-black/40">
+        <div className="flex items-center justify-between gap-4 border-b border-white/10 pb-5">
+          <div>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/35">
+              DevFrame Studio
+            </p>
+            <h1 className="mt-2 text-2xl font-semibold tracking-[-0.04em]">
+              Studio is desktop-first.
+            </h1>
+          </div>
+          <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-accent">
+            <Monitor className="size-5" />
+          </span>
+        </div>
+
+        <div className="mt-6 grid grid-cols-[1fr_auto_1fr] items-center gap-3">
+          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4 text-center">
+            <Smartphone className="mx-auto size-6 text-white/45" />
+            <p className="mt-3 text-xs font-semibold text-white/60">Mobile</p>
+          </div>
+          <ArrowRight className="size-4 text-white/30" />
+          <div className="rounded-2xl border border-accent/30 bg-accent/10 p-4 text-center">
+            <SlidersHorizontal className="mx-auto size-6 text-accent" />
+            <p className="mt-3 text-xs font-semibold text-accent">
+              Form Editor
+            </p>
           </div>
         </div>
 
-        {/* Content */}
-        <div className="space-y-4">
-          <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl uppercase italic">
-            Desktop Only Experience
-          </h1>
-          <p className="text-zinc-400 text-lg leading-relaxed">
-            The Studio is a powerful, precision tool designed for large screens. 
-            To provide the best building experience, we recommend using a desktop or laptop.
-          </p>
-        </div>
+        <p className="mt-6 text-sm leading-6 text-white/55">
+          Use the mobile form editor to manage structured content on this
+          device, then open Studio on a larger screen for the live split preview.
+        </p>
 
-        {/* Action */}
-        <div className="pt-4 flex flex-col gap-3">
-          <Button 
-            asChild
-            variant="outline" 
-            className="w-full py-6 border-zinc-800 bg-zinc-900/50 hover:bg-zinc-800 text-zinc-300 transition-all active:scale-[0.98]"
-          >
-            <Link href="/">
-              Return to Home
+        <div className="mt-6 flex flex-col gap-3">
+          <Button asChild variant="accent" size="lg" className="w-full">
+            <Link href="/builder">
+              Use Mobile Form Editor
+              <ArrowRight className="size-4" />
             </Link>
           </Button>
-          <div className="text-[10px] uppercase tracking-[0.2em] text-zinc-600 font-medium">
-            DevFrame Studio v1.0
-          </div>
+          <Button asChild variant="ghost" size="lg" className="w-full text-white/55">
+            <Link href="/templates">Browse Templates</Link>
+          </Button>
         </div>
-      </div>
-
-      {/* Decorative Grid Background */}
-      <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none opacity-20">
-        <div className="absolute inset-0 [background-image:linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] [background-size:24px_24px]"></div>
       </div>
     </div>
   );

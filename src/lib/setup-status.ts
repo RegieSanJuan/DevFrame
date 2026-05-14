@@ -19,6 +19,12 @@ export type SetupStatusResponse = {
   items: SetupStatusItem[];
 };
 
+const setupDiagnosticsFlag =
+  process.env.DEVFRAME_SHOW_SETUP_STATUS?.trim().toLowerCase();
+
+export const isSetupDiagnosticsEnabled =
+  process.env.NODE_ENV !== "production" || setupDiagnosticsFlag === "true";
+
 export function getSetupStatusItems(): SetupStatusItem[] {
   return [
     {
@@ -26,7 +32,7 @@ export function getSetupStatusItems(): SetupStatusItem[] {
       title: "Clerk auth",
       description: isClerkConfigured
         ? "Authentication is ready for real sign-in and dashboard protection."
-        : "Add your Clerk publishable key and secret key to enable sign-up and sign-in.",
+        : "Configure authentication credentials to enable sign-up and sign-in.",
       icon: "clerk",
       ready: isClerkConfigured,
       statusLabel: isClerkConfigured
@@ -38,7 +44,7 @@ export function getSetupStatusItems(): SetupStatusItem[] {
       title: "Supabase read access",
       description: isSupabaseReadConfigured
         ? "Public portfolio reads and API access can use your Supabase project."
-        : "Add the project URL and publishable key so public portfolio pages can read live data.",
+        : "Connect database read access so public portfolio pages can read live data.",
       icon: "supabaseRead",
       ready: isSupabaseReadConfigured,
       statusLabel: isSupabaseReadConfigured
@@ -49,8 +55,8 @@ export function getSetupStatusItems(): SetupStatusItem[] {
       id: "supabaseWrite",
       title: "Supabase write access",
       description: isSupabaseWriteConfigured
-        ? "Builder submissions can now persist to PostgreSQL."
-        : "Add the service role key to let server actions save portfolios from Clerk-authenticated users.",
+        ? "Structured editor submissions can now persist to PostgreSQL."
+        : "Enable server-side write access so saved portfolios can persist.",
       icon: "supabaseWrite",
       ready: isSupabaseWriteConfigured,
       statusLabel: isSupabaseWriteConfigured

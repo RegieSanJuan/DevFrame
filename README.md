@@ -1,8 +1,8 @@
 # DevFrame
 
-DevFrame is a portfolio builder for developers. Users sign in, choose a ready-made template, fill in a guided form, and publish a portfolio at a route like `/p/regie`.
+DevFrame is a free and open-source portfolio builder for developers. Users sign in, choose a ready-made template, fill in a guided form, and publish a portfolio at a route like `/p/regie`.
 
-This repo is set up as an MVP SaaS starter with:
+This repo is set up as an open-source app starter with:
 
 - Next.js 16 App Router
 - Tailwind CSS 4
@@ -12,6 +12,7 @@ This repo is set up as an MVP SaaS starter with:
 - Supabase Storage-ready architecture
 - React Hook Form + Zod
 - Vercel-friendly deployment setup
+- Optional community support through GitHub, GoTyme InstaPay, and GCash
 
 ## What is included
 
@@ -45,6 +46,10 @@ cp .env.example .env.local
 - `CLERK_SECRET_KEY`
 - `CLERK_AUTHORIZED_PARTIES` if you want to override the default origin allowlist
 
+DevFrame keeps Clerk as auth/session infrastructure only and uses custom auth
+screens. For Clerk CLI checks, OAuth redirects, and email template setup, see
+[docs/clerk-auth-setup.md](./docs/clerk-auth-setup.md).
+
 4. Create a Supabase project and add:
 
 - `NEXT_PUBLIC_SUPABASE_URL`
@@ -67,6 +72,7 @@ Open `http://localhost:3000`.
 - Clerk `authorizedParties` is now enforced in `src/proxy.ts`.
 - By default it allows `NEXT_PUBLIC_APP_URL` plus the current Vercel deployment URL(s).
 - If you want an explicit fixed allowlist, set `CLERK_AUTHORIZED_PARTIES` as a comma-separated list such as `https://your-domain.com,https://your-project.vercel.app`.
+- For durable production rate limiting, set either `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN` or Vercel KV's `KV_REST_API_URL` + `KV_REST_API_TOKEN`. If these are missing, DevFrame uses a per-instance in-memory fallback that is for local/dev only and is not durable security protection on Vercel serverless.
 - Leave Vercel's `Automatically expose System Environment Variables` setting enabled so preview deployments can use `VERCEL_BRANCH_URL`, `VERCEL_URL`, and `VERCEL_PROJECT_PRODUCTION_URL`.
 
 ## Recommended Vercel branch flow
@@ -105,13 +111,17 @@ Open `http://localhost:3000`.
 - Preview deploys now automatically fall back to the active Vercel branch/deployment URL when `NEXT_PUBLIC_APP_URL` is not set for Preview.
 - That means `staging` and `feature/*` previews no longer fall back to `http://localhost:3000` for metadata and generated portfolio links.
 
-## Auth choice
+## Support and contribute
 
-This project is wired for Clerk because it is the fastest way to ship an MVP auth flow. As of April 15, 2026, Clerk's official pricing page lists a free `Hobby` tier with up to `50,000 monthly active users`, so it is a practical option for an MVP.
+DevFrame is free and open-source. The easiest ways to support the project are:
 
-Source:
+- Star the repository: https://github.com/RegieSanJuan/DevFrame
+- Report bugs with clear reproduction steps.
+- Suggest features through GitHub Issues or Discussions.
+- Contribute code, docs, and templates. Start with [CONTRIBUTING.md](./CONTRIBUTING.md).
+- Support development through the GoTyme InstaPay or GCash QR codes on `/support`.
 
-- https://clerk.com/pricing
+Donations are optional and help cover hosting, tools, and continued development. There is no Ko-fi, PayPal, Patreon, or payment API integration in this repo.
 
 ## How persistence works
 
@@ -125,7 +135,7 @@ Source:
 - Add more template variants
 - Add a custom domain workflow
 - Add an editor for multiple projects, testimonials, and blog posts
-- Add billing once the core product flow feels good
+- Improve contribution guides and community templates
 
 ## Customizing & Adding Templates
 

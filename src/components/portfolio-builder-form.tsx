@@ -2,8 +2,10 @@
 
 import Link from "next/link";
 import { AlertCircle, ArrowUpRight, CheckCircle2, Sparkles } from "lucide-react";
+import { useCallback, useEffect } from "react";
 
 import { BuilderStepCard } from "@/components/builder/builder-step-card";
+import { PortfolioContentFields } from "@/components/portfolio-content-fields";
 import { TemplateOptionCard } from "@/components/builder/template-option-card";
 import { TemplateSettingsFields } from "@/components/builder/template-settings-fields";
 import { Badge } from "@/components/ui/badge";
@@ -18,6 +20,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { usePortfolioBuilderForm } from "@/hooks/use-portfolio-builder-form";
+import { usePortfolioImageUploads } from "@/hooks/use-portfolio-image-uploads";
 import {
   availabilityOptions,
   type PortfolioFormValues,
@@ -46,20 +49,53 @@ export function PortfolioBuilderForm({
   demoMode,
 }: PortfolioBuilderFormProps) {
   const {
-    form: {
-      register,
-      formState: { errors },
-    },
+    form,
     isPending,
     selectTemplate,
     selectedTemplate,
     templateSettings,
     setTemplateSettings,
     submissionState,
+    setSubmissionState,
     submit,
   } = usePortfolioBuilderForm({
     defaultValues,
+    buildFormData: (values, nextTemplateSettings) => {
+      return imageUploads.createSubmitFormData(values, nextTemplateSettings);
+    },
   });
+  const {
+    register,
+    setValue,
+    watch,
+    formState: { errors },
+  } = form;
+  const handleFieldChange = useCallback(
+    <K extends keyof PortfolioFormValues>(key: K, value: PortfolioFormValues[K]) => {
+      setValue(key as never, value as never, {
+        shouldDirty: true,
+        shouldTouch: true,
+        shouldValidate: true,
+      });
+    },
+    [setValue],
+  );
+  const liveValues = watch();
+  const imageUploads = usePortfolioImageUploads(liveValues, handleFieldChange);
+
+  useEffect(() => {
+    if (!submissionState.persisted || !submissionState.savedValues) {
+      return;
+    }
+
+    form.reset(submissionState.savedValues);
+    setTemplateSettings(submissionState.savedValues.templateSettings ?? {});
+    imageUploads.clearPendingUploads();
+    setSubmissionState((current) => ({
+      ...current,
+      savedValues: undefined,
+    }));
+  }, [form, imageUploads, setSubmissionState, setTemplateSettings, submissionState]);
 
   return (
     <div className="grid gap-6 xl:grid-cols-[1.05fr_0.95fr]">
@@ -70,10 +106,10 @@ export function PortfolioBuilderForm({
               <Sparkles className="size-5" />
             </span>
             <div>
-              <CardTitle>Portfolio builder</CardTitle>
+              <CardTitle>Structured content editor</CardTitle>
               <CardDescription>
-                Fill in your details, pick a template, and publish your public
-                portfolio.
+                Manage portfolio sections, template settings, and mobile edits
+                without leaving the form workflow.
               </CardDescription>
             </div>
           </div>
@@ -88,7 +124,7 @@ export function PortfolioBuilderForm({
                 </p>
                 <p className="mt-2 text-sm leading-6 text-foreground-muted">
                   Each template is wired to a different portfolio presentation,
-                  but your data structure stays the same.
+                  while your structured content stays the same.
                 </p>
               </div>
               <div className="grid gap-4 md:grid-cols-3">
@@ -311,6 +347,13 @@ export function PortfolioBuilderForm({
             </section>
 
             {/* ── Template-specific settings ──────────────────────── */}
+            <PortfolioContentFields
+              templateSlug={selectedTemplate}
+              values={liveValues}
+              onFieldChange={handleFieldChange}
+              imageUploads={imageUploads}
+            />
+
             <TemplateSettingsFields
               fields={getTemplateFields(selectedTemplate)}
               values={templateSettings}
@@ -321,12 +364,22 @@ export function PortfolioBuilderForm({
 
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
               <Button type="submit" variant="accent" size="lg" disabled={isPending}>
-                {isPending ? "Saving portfolio..." : "Save portfolio"}
+                {isPending
+                  ? "Saving..."
+                  : demoMode
+                    ? "Save preview draft"
+                    : "Publish portfolio"}
+              </Button>
+              <Button asChild variant="secondary" size="lg">
+                <Link href={`/studio?template=${selectedTemplate}`}>
+                  Open Live Studio
+                  <ArrowUpRight className="size-4" />
+                </Link>
               </Button>
               {submissionState.previewUrl ? (
-                <Button asChild variant="secondary" size="lg">
+                <Button asChild variant="outline" size="lg">
                   <Link href={new URL(submissionState.previewUrl).pathname}>
-                    Open public preview
+                    View Portfolio
                     <ArrowUpRight className="size-4" />
                   </Link>
                 </Button>
@@ -362,8 +415,8 @@ export function PortfolioBuilderForm({
 
             <p className="text-sm leading-6 text-foreground-soft">
               {demoMode
-                ? "Demo mode is active right now, so protected pages stay accessible while you finish setting up Clerk."
-                : "Once Clerk is connected, this builder stays protected behind your authenticated dashboard."}
+                ? "Draft changes stay in preview mode until persistence is available."
+                : "Publishing stores the portfolio in Supabase and updates the public route."}
             </p>
           </form>
         </CardContent>
@@ -372,8 +425,8 @@ export function PortfolioBuilderForm({
       <div className="order-1 space-y-6 xl:order-2">
         <Card className="border-border">
           <CardHeader>
-            <Badge>How it works</Badge>
-            <CardTitle>One form, multiple portfolio styles</CardTitle>
+            <Badge>Content manager</Badge>
+            <CardTitle>One structured form, multiple portfolio styles</CardTitle>
             <CardDescription>
               DevFrame keeps your data structured so you can switch templates
               without rebuilding your content from scratch.
@@ -385,12 +438,12 @@ export function PortfolioBuilderForm({
               description="Start with Nova, Vertex, or Drift depending on how bold, structured, or editorial you want your portfolio to feel."
             />
             <BuilderStepCard
-              step="2. Fill in your profile"
-              description="Add your intro, about section, links, and featured project details."
+              step="2. Manage the content"
+              description="Add your intro, about section, links, gallery images, and featured project details."
             />
             <BuilderStepCard
-              step="3. Publish to a clean URL"
-              description="Your public portfolio lives at a route like `/p/your-name`."
+              step="3. Open Studio or publish"
+              description="Use Studio for the live preview, then publish to a public route like `/p/your-name`."
             />
           </CardContent>
         </Card>
@@ -398,23 +451,22 @@ export function PortfolioBuilderForm({
         <Card className="border-border bg-surface-strong text-foreground">
           <CardHeader>
             <Badge className="border-border bg-surface-strong text-foreground-soft">
-              MVP note
+              Studio handoff
             </Badge>
-            <CardTitle>Ready for Supabase and Vercel</CardTitle>
+            <CardTitle>Open the live editor when layout matters</CardTitle>
             <CardDescription>
-              The UI works before your environment is fully connected, and the
-              same builder upgrades to real persistence once your keys are added.
+              Keep content structured here, then use Studio for the full
+              desktop preview and publishing pass.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4 text-sm leading-6 text-foreground-muted">
             <p>
-              Clerk handles authentication. Supabase stores the portfolio data.
-              The public page reads your saved portfolio and renders the chosen
-              template automatically.
+              The form editor is best for structured updates and mobile edits.
+              Studio is the flagship surface for visual editing.
             </p>
             <p>
-              When Supabase is missing, DevFrame uses preview mode so you can
-              keep shaping the product instead of getting blocked by setup.
+              When persistence is unavailable, DevFrame keeps a preview draft so
+              editing stays unblocked.
             </p>
           </CardContent>
         </Card>

@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import type { BuilderFormState } from "@/app/actions";
+import { usePortfolioImageUploads } from "@/hooks/use-portfolio-image-uploads";
 import type { PortfolioFormValues } from "@/lib/portfolio-schema";
 import {
   parsePortfolioFormData,
@@ -92,6 +93,8 @@ function ClerkSaveBridge({
     clerk.openSignIn({
       fallbackRedirectUrl: returnUrl,
       forceRedirectUrl: returnUrl,
+      signUpFallbackRedirectUrl: returnUrl,
+      signUpForceRedirectUrl: returnUrl,
     });
   }, [canResumeSave, clerk, isLoaded, isSignedIn, onSave, onValidate]);
 
@@ -118,7 +121,7 @@ export function StudioShell({
     updateField,
     updateTemplateSettings,
     switchTemplate,
-    clearDraft,
+    replaceDraft,
   } = useStudioDraft(requestedTemplate);
 
   const [isSaving, setIsSaving] = useState(false);
@@ -130,9 +133,20 @@ export function StudioShell({
     status: "idle",
   });
 
+  const handleFieldChange = useCallback(
+    <K extends keyof PortfolioFormValues>(key: K, value: PortfolioFormValues[K]) => {
+      updateField(key, value);
+    },
+    [updateField],
+  );
+  const imageUploads = usePortfolioImageUploads(formValues, handleFieldChange);
+  const previewValues = useMemo(
+    () => imageUploads.applyPreviewValues(formValues),
+    [formValues, imageUploads],
+  );
   const livePortfolio = useMemo(
-    () => formValuesToRecord(formValues, templateSettings),
-    [formValues, templateSettings],
+    () => formValuesToRecord(previewValues, templateSettings),
+    [previewValues, templateSettings],
   );
 
   const getValidatedFormData = useCallback(() => {
@@ -165,17 +179,41 @@ export function StudioShell({
     setIsSaving(true);
 
     try {
-      const result = await saveAction({ status: "idle" }, formData);
+      const submitFormData = await imageUploads.createSubmitFormData(
+        formValues,
+        templateSettings,
+      );
+      const result = await saveAction({ status: "idle" }, submitFormData);
       setSaveState(result);
 
-      if (result.status === "success") {
-        clearDraft();
+      if (result.status === "success" && result.persisted && result.savedValues) {
+        replaceDraft(
+          result.savedValues,
+          result.savedValues.templateSettings ?? {},
+        );
+        imageUploads.clearPendingUploads();
         clearPendingStudioSaveIntent();
       }
+    } catch (error) {
+      setSaveState({
+        status: "error",
+        message:
+          error instanceof Error
+            ? error.message
+            : "Unable to upload images or save the portfolio.",
+        persisted: false,
+      });
     } finally {
       setIsSaving(false);
     }
-  }, [clearDraft, getValidatedFormData, saveAction]);
+  }, [
+    formValues,
+    getValidatedFormData,
+    imageUploads,
+    replaceDraft,
+    saveAction,
+    templateSettings,
+  ]);
 
   const validateBeforeAuth = useCallback(() => {
     if (!isHydrated) {
@@ -188,12 +226,10 @@ export function StudioShell({
   const sidebarProps = {
     clerkEnabled,
     formValues,
+    imageUploads,
     isReady: isHydrated,
     isSaving,
-    onFieldChange: updateField as <K extends keyof PortfolioFormValues>(
-      key: K,
-      value: PortfolioFormValues[K],
-    ) => void,
+    onFieldChange: handleFieldChange,
     onTemplateSettingChange: updateTemplateSettings,
     onTemplateSwitch: switchTemplate as (slug: TemplateSlug) => void,
     saveState,

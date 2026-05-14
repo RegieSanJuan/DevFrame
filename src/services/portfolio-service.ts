@@ -16,6 +16,7 @@ export async function getPublicPortfolioBySlug(slug: string) {
 export async function savePortfolioDraft(
   values: PortfolioFormValues,
   ownerId: string,
+  options?: { allowDatabasePersistence?: boolean },
 ) {
-  return savePortfolio(values, ownerId);
+  return savePortfolio(values, ownerId, options);
 }

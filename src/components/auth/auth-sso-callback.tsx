@@ -6,12 +6,17 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import { getClerkErrorMessage } from "./utils";
+import {
+  getAuthDestinationFromLocation,
+  getClerkErrorMessage,
+  navigateToAuthDestination,
+} from "./utils";
 
 export function AuthSsoCallback() {
   const clerk = useClerk();
   const router = useRouter();
   const [error, setError] = useState("");
+  const authDestination = getAuthDestinationFromLocation();
 
   useEffect(() => {
     let isMounted = true;
@@ -22,12 +27,7 @@ export function AuthSsoCallback() {
           return;
         }
 
-        if (to.startsWith("https://")) {
-          window.location.href = to;
-          return;
-        }
-
-        router.replace(to);
+        navigateToAuthDestination(router, to, authDestination);
       })
       .catch((caughtError) => {
         if (!isMounted) {
@@ -45,7 +45,7 @@ export function AuthSsoCallback() {
     return () => {
       isMounted = false;
     };
-  }, [clerk, router]);
+  }, [authDestination, clerk, router]);
 
   if (error) {
     return (
