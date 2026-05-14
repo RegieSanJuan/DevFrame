@@ -19,7 +19,7 @@ type UsePortfolioBuilderFormOptions = {
   buildFormData?: (
     values: PortfolioFormValues,
     templateSettings: Record<string, unknown>,
-  ) => FormData;
+  ) => FormData | Promise<FormData>;
 };
 
 export function usePortfolioBuilderForm({
@@ -50,14 +50,23 @@ export function usePortfolioBuilderForm({
 
   const submit = form.handleSubmit(() => {
     startTransition(async () => {
-      const values = form.getValues();
-      const result = await savePortfolioAction(
-        submissionState,
-        buildFormData
-          ? buildFormData(values, templateSettings)
-          : createFormData({ ...values, templateSettings }),
-      );
-      setSubmissionState(result);
+      try {
+        const values = form.getValues();
+        const formData = buildFormData
+          ? await buildFormData(values, templateSettings)
+          : createFormData({ ...values, templateSettings });
+        const result = await savePortfolioAction(submissionState, formData);
+        setSubmissionState(result);
+      } catch (error) {
+        setSubmissionState({
+          status: "error",
+          message:
+            error instanceof Error
+              ? error.message
+              : "Unable to save the portfolio.",
+          persisted: false,
+        });
+      }
     });
   });
 

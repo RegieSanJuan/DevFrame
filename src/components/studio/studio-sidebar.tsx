@@ -384,14 +384,14 @@ export function StudioSidebar({
             : isSaving
               ? "Saving..."
               : clerkEnabled
-                ? "Save & Publish"
-                : "Save draft"}
+                ? "Publish portfolio"
+                : "Save preview draft"}
         </button>
 
         <p className="text-center text-[11px] text-white/25">
           {clerkEnabled
-            ? "Your draft stays local until you sign in and publish."
-            : "Your draft stays local until auth is configured."}
+            ? "Drafts stay local until you sign in and publish to Supabase."
+            : "Drafts stay local until auth and persistence are configured."}
         </p>
       </div>
     </div>

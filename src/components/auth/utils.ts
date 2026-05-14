@@ -9,6 +9,7 @@ type VerificationLike = {
 };
 
 const DEFAULT_AUTH_REDIRECT = "/dashboard";
+const AUTH_REDIRECT_PARAMS = ["redirect_url", "redirectUrl", "return_url"];
 
 export function getClerkErrorMessage(
   error: unknown,
@@ -81,6 +82,21 @@ export function navigateToAuthDestination(
   fallback = DEFAULT_AUTH_REDIRECT,
 ) {
   router.replace(getSafeAuthDestination(destination, fallback));
+}
+
+export function getAuthDestinationFromLocation(
+  fallback = DEFAULT_AUTH_REDIRECT,
+) {
+  if (typeof window === "undefined") {
+    return fallback;
+  }
+
+  const params = new URLSearchParams(window.location.search);
+  const destination = AUTH_REDIRECT_PARAMS.map((param) => params.get(param)).find(
+    (value) => value,
+  );
+
+  return getSafeAuthDestination(destination ?? "", fallback);
 }
 
 export function navigateWithDecoratedUrl(

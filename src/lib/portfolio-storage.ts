@@ -24,8 +24,7 @@ import {
 import {
   filterRenderableGalleryImages,
   isRenderableImageSrc,
-  type PortfolioUploadFiles,
-  validatePortfolioImageFile,
+  PORTFOLIO_STORAGE_BUCKET,
 } from "@/lib/portfolio-image-uploads";
 import {
   createSupabaseAdminClient,
@@ -125,7 +124,6 @@ type SavePortfolioOptions = {
   allowDatabasePersistence?: boolean;
 };
 
-const PORTFOLIO_STORAGE_BUCKET = "portfolio-assets";
 const MANAGED_ASSET_KINDS = ["avatar", "gallery-image"] as const;
 
 const BASE_PORTFOLIO: Omit<
@@ -332,6 +330,8 @@ function buildPortfolioRecord(
     (image, index) => ({
       src: image.src.trim(),
       alt: image.alt || `Portfolio gallery image ${index + 1}`,
+      storageBucket: image.storageBucket ?? "",
+      storagePath: image.storagePath ?? "",
     }),
   );
   const profileImageUrl = isRenderableImageSrc(values.profileImageUrl)
@@ -464,23 +464,6 @@ function createStorageSegment(value: string) {
     .replace(/^-+|-+$/g, "") || "portfolio";
 }
 
-function getFileExtension(file: File) {
-  const nameExtension = file.name.split(".").pop()?.toLowerCase();
-
-  if (nameExtension && ["jpg", "jpeg", "png", "webp"].includes(nameExtension)) {
-    return nameExtension;
-  }
-
-  switch (file.type) {
-    case "image/png":
-      return "png";
-    case "image/webp":
-      return "webp";
-    default:
-      return "jpg";
-  }
-}
-
 function isExternalAsset(row: Pick<PortfolioAssetRow, "storage_path" | "metadata">) {
   return (
     row.storage_path.startsWith("external/") ||
@@ -488,40 +471,34 @@ function isExternalAsset(row: Pick<PortfolioAssetRow, "storage_path" | "metadata
   );
 }
 
-async function uploadPortfolioImage(
+function getStorageAssetReference(
   supabase: SupabaseClient,
-  path: string,
-  file: File,
+  ownerId: string,
+  publicUrl: string,
+  storageBucket: string | undefined,
+  storagePath: string | undefined,
 ) {
-  const validationError = validatePortfolioImageFile(file);
+  const bucket = storageBucket?.trim() || PORTFOLIO_STORAGE_BUCKET;
+  const path = storagePath?.trim() ?? "";
+  const url = publicUrl.trim();
 
-  if (validationError) {
-    return {
-      publicUrl: null,
-      error: validationError,
-    };
+  if (!url || bucket !== PORTFOLIO_STORAGE_BUCKET || !path) {
+    return null;
   }
 
-  const { error } = await supabase.storage.from(PORTFOLIO_STORAGE_BUCKET).upload(path, file, {
-    upsert: true,
-    contentType: file.type,
-  });
+  const ownerPrefix = `${createStorageSegment(ownerId)}/`;
 
-  if (error) {
-    return {
-      publicUrl: null,
-      error: error.message,
-    };
+  if (!path.startsWith(ownerPrefix)) {
+    return null;
   }
 
-  const { data } = supabase.storage
-    .from(PORTFOLIO_STORAGE_BUCKET)
-    .getPublicUrl(path);
+  const expectedPublicUrl = supabase.storage.from(bucket).getPublicUrl(path).data.publicUrl;
 
-  return {
-    publicUrl: data.publicUrl,
-    error: null,
-  };
+  if (expectedPublicUrl !== url) {
+    return null;
+  }
+
+  return { bucket, path, publicUrl: expectedPublicUrl };
 }
 
 async function removeStorageObjects(
@@ -614,6 +591,8 @@ async function loadPortfolioRelations(
     .map((row, index) => ({
       src: row.public_url!,
       alt: row.alt_text ?? `Portfolio gallery image ${index + 1}`,
+      storageBucket: isExternalAsset(row) ? "" : row.bucket,
+      storagePath: isExternalAsset(row) ? "" : row.storage_path,
     }));
 
   const recentProjects: RecentProjectItem[] = projectRows.map((row) => ({
@@ -744,7 +723,6 @@ async function syncPortfolioAssets(
   portfolioId: string,
   ownerId: string,
   values: PortfolioFormValues,
-  uploads: PortfolioUploadFiles,
 ) {
   const { data: existingAssetsData, error: existingAssetsError } = await supabase
     .from("portfolio_assets")
@@ -760,30 +738,25 @@ async function syncPortfolioAssets(
   const existingAssets = (existingAssetsData ?? []) as PortfolioAssetRow[];
   const reusedAssetIds = new Set<string>();
   const assetRowsToInsert: Array<Record<string, unknown>> = [];
-  const storagePrefix = `${createStorageSegment(ownerId)}/${createStorageSegment(values.slug)}/${portfolioId}`;
+  const profileStorageAsset = getStorageAssetReference(
+    supabase,
+    ownerId,
+    values.profileImageUrl,
+    values.profileImageStorageBucket,
+    values.profileImageStoragePath,
+  );
 
-  if (uploads.profileImageFile) {
-    const extension = getFileExtension(uploads.profileImageFile);
-    const uploadResult = await uploadPortfolioImage(
-      supabase,
-      `${storagePrefix}/avatar.${extension}`,
-      uploads.profileImageFile,
-    );
-
-    if (uploadResult.error || !uploadResult.publicUrl) {
-      return uploadResult.error ?? "Unable to upload the profile image.";
-    }
-
+  if (profileStorageAsset) {
     assetRowsToInsert.push({
       portfolio_id: portfolioId,
       kind: "avatar",
-      bucket: PORTFOLIO_STORAGE_BUCKET,
-      storage_path: `${storagePrefix}/avatar.${extension}`,
-      public_url: uploadResult.publicUrl,
+      bucket: profileStorageAsset.bucket,
+      storage_path: profileStorageAsset.path,
+      public_url: profileStorageAsset.publicUrl,
       alt_text:
         values.profileImageAlt.trim() || `${values.name || "Portfolio"} profile image`,
       display_order: 0,
-      metadata: { source: "storage-upload" },
+      metadata: { source: "direct-upload" },
     });
   } else if (isRenderableImageSrc(values.profileImageUrl)) {
     const existingAvatar = existingAssets.find(
@@ -823,14 +796,9 @@ async function syncPortfolioAssets(
     }
   }
 
-  const galleryUploadsByIndex = new Map(
-    uploads.galleryImageFiles.map(({ index, file }) => [index, file]),
-  );
   const galleryEntries = values.galleryImages.flatMap((image, index) => {
-    const uploadedFile = galleryUploadsByIndex.get(index);
-
-    if (uploadedFile || isRenderableImageSrc(image.src)) {
-      return [{ image, index, uploadedFile }];
+    if (isRenderableImageSrc(image.src)) {
+      return [{ image, index }];
     }
 
     return [];
@@ -838,29 +806,24 @@ async function syncPortfolioAssets(
 
   for (const [displayOrder, entry] of galleryEntries.entries()) {
     const altText = entry.image.alt || `Portfolio gallery image ${displayOrder + 1}`;
+    const storageAsset = getStorageAssetReference(
+      supabase,
+      ownerId,
+      entry.image.src,
+      entry.image.storageBucket,
+      entry.image.storagePath,
+    );
 
-    if (entry.uploadedFile) {
-      const extension = getFileExtension(entry.uploadedFile);
-      const storagePath = `${storagePrefix}/gallery-${displayOrder + 1}.${extension}`;
-      const uploadResult = await uploadPortfolioImage(
-        supabase,
-        storagePath,
-        entry.uploadedFile,
-      );
-
-      if (uploadResult.error || !uploadResult.publicUrl) {
-        return uploadResult.error ?? "Unable to upload a gallery image.";
-      }
-
+    if (storageAsset) {
       assetRowsToInsert.push({
         portfolio_id: portfolioId,
         kind: "gallery-image",
-        bucket: PORTFOLIO_STORAGE_BUCKET,
-        storage_path: storagePath,
-        public_url: uploadResult.publicUrl,
+        bucket: storageAsset.bucket,
+        storage_path: storageAsset.path,
+        public_url: storageAsset.publicUrl,
         alt_text: altText,
         display_order: displayOrder,
-        metadata: { source: "storage-upload" },
+        metadata: { source: "direct-upload" },
       });
       continue;
     }
@@ -968,10 +931,6 @@ async function syncPortfolioSections(
 export async function savePortfolio(
   values: PortfolioFormValues,
   ownerId: string,
-  uploads: PortfolioUploadFiles = {
-    profileImageFile: null,
-    galleryImageFiles: [],
-  },
   options: SavePortfolioOptions = {},
 ): Promise<SavePortfolioResult> {
   const previewRecord = buildPortfolioRecord(values, ownerId, "preview");
@@ -1065,7 +1024,7 @@ export async function savePortfolio(
     await Promise.all([
       syncPortfolioExperience(supabase, data.id, previewRecord.experience),
       syncRecentProjects(supabase, data.id, previewRecord.recentProjects),
-      syncPortfolioAssets(supabase, data.id, ownerId, values, uploads),
+      syncPortfolioAssets(supabase, data.id, ownerId, values),
       syncPortfolioSections(supabase, data.id, previewRecord.sections),
     ])
   ).filter(Boolean);

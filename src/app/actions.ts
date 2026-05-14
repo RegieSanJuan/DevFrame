@@ -8,10 +8,7 @@ import {
   portfolioFormSchema,
   toFormValues,
 } from "@/lib/portfolio-schema";
-import {
-  hasPortfolioUploadFiles,
-  readPortfolioUploadFiles,
-} from "@/lib/portfolio-image-uploads";
+import { SKIPPED_IMAGE_UPLOAD_COUNT_KEY } from "@/lib/portfolio-image-uploads";
 import { enforceRateLimit } from "@/lib/security/rate-limit";
 import { isSetupDiagnosticsEnabled } from "@/lib/setup-status";
 import { savePortfolioDraft } from "@/services/portfolio-service";
@@ -59,7 +56,12 @@ export async function savePortfolioAction(
 
   const candidate = parsePortfolioFormData(formData);
   const parsed = portfolioFormSchema.safeParse(candidate);
-  const uploads = readPortfolioUploadFiles(formData);
+  const rawSkippedImageUploadCount = Number(
+    formData.get(SKIPPED_IMAGE_UPLOAD_COUNT_KEY) ?? 0,
+  );
+  const skippedImageUploadCount = Number.isFinite(rawSkippedImageUploadCount)
+    ? Math.max(0, rawSkippedImageUploadCount)
+    : 0;
 
   if (!parsed.success) {
     return {
@@ -69,20 +71,20 @@ export async function savePortfolioAction(
     };
   }
 
-  const result = await savePortfolioDraft(parsed.data, viewer.userId!, uploads, {
+  const result = await savePortfolioDraft(parsed.data, viewer.userId!, {
     allowDatabasePersistence: !viewer.demoMode,
   });
 
   if (!result.persisted) {
-    const imageUploadNotice = hasPortfolioUploadFiles(uploads)
-      ? " Uploaded images will appear after the draft is fully published."
+    const imageUploadNotice = skippedImageUploadCount > 0
+      ? " Image uploads require configured Supabase Storage and were not included."
       : "";
     const diagnosticsNotice =
       isSetupDiagnosticsEnabled && result.error ? ` ${result.error}` : "";
 
     return {
       status: "success",
-      message: `Saved as a preview draft.${imageUploadNotice}${diagnosticsNotice}`,
+      message: `Draft saved for preview.${imageUploadNotice}${diagnosticsNotice}`,
       previewUrl: result.record.previewUrl,
       persisted: false,
     };
@@ -90,7 +92,11 @@ export async function savePortfolioAction(
 
   return {
     status: "success",
-    message: "Portfolio saved and ready at your public URL.",
+    message: `Portfolio published and ready at your public URL.${
+      skippedImageUploadCount > 0
+        ? " Some image uploads were skipped because Supabase Storage is not configured."
+        : ""
+    }`,
     previewUrl: result.record.previewUrl,
     persisted: true,
     savedValues: toFormValues(result.record),
