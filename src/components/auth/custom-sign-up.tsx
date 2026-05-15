@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 import {
+  getAuthDestinationFromLocation,
   getClerkErrorMessage,
   navigateWithDecoratedUrl,
   redirectToVerificationInSameTab,
@@ -36,12 +37,13 @@ export function CustomSignUp() {
   const [error, setError] = useState("");
 
   const isClerkConfigured = !!process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
+  const authDestination = getAuthDestinationFromLocation();
 
   useEffect(() => {
     if (authLoaded && userId) {
-      router.replace("/dashboard");
+      router.replace(authDestination);
     }
-  }, [authLoaded, router, userId]);
+  }, [authDestination, authLoaded, router, userId]);
 
   const handleGoogleSignUp = async () => {
     if (!isLoaded) {
@@ -52,10 +54,11 @@ export function CustomSignUp() {
     setError("");
 
     try {
+      const ssoCallbackUrl = `/sign-up/sso-callback?redirect_url=${encodeURIComponent(authDestination)}`;
       const signUpAttempt = await signUp.create({
         strategy: "oauth_google",
-        redirectUrl: "/sign-up/sso-callback",
-        actionCompleteRedirectUrl: "/builder",
+        redirectUrl: ssoCallbackUrl,
+        actionCompleteRedirectUrl: authDestination,
       });
 
       redirectToVerificationInSameTab(
@@ -125,7 +128,7 @@ export function CustomSignUp() {
         await setActive({
           session: verificationAttempt.createdSessionId,
           navigate: async ({ decorateUrl }) => {
-            navigateWithDecoratedUrl(router, decorateUrl, "/dashboard");
+            navigateWithDecoratedUrl(router, decorateUrl, authDestination);
           },
         });
         return;

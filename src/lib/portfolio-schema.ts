@@ -98,6 +98,8 @@ const galleryImageSchema = z.object({
     .string()
     .trim()
     .max(120, "Keep the image description under 120 characters"),
+  storageBucket: z.string().trim().max(120).optional(),
+  storagePath: z.string().trim().max(1024).optional(),
 });
 
 export const portfolioFormSchema = z.object({
@@ -184,6 +186,8 @@ export const portfolioFormSchema = z.object({
     .trim()
     .max(120, "Keep the profile image alt text under 120 characters")
     .default(""),
+  profileImageStorageBucket: z.string().trim().max(120).default(""),
+  profileImageStoragePath: z.string().trim().max(1024).default(""),
   scheduleCallHref: optionalContactLink,
   scheduleCallLabel: z
     .string()
@@ -257,6 +261,8 @@ export type PortfolioSection = {
 export type GalleryImage = {
   src: string;
   alt: string;
+  storageBucket?: string;
+  storagePath?: string;
 };
 
 export type PortfolioRecord = {
@@ -482,6 +488,12 @@ export function parsePortfolioFormData(
     resumeLabel: String(formData.get("resumeLabel") ?? "").trim(),
     profileImageUrl: String(formData.get("profileImageUrl") ?? "").trim(),
     profileImageAlt: String(formData.get("profileImageAlt") ?? "").trim(),
+    profileImageStorageBucket: String(
+      formData.get("profileImageStorageBucket") ?? "",
+    ).trim(),
+    profileImageStoragePath: String(
+      formData.get("profileImageStoragePath") ?? "",
+    ).trim(),
     scheduleCallHref: String(formData.get("scheduleCallHref") ?? "").trim()
       ? normalizeContactLink(String(formData.get("scheduleCallHref") ?? "").trim())
       : "",
@@ -522,6 +534,8 @@ export function getEmptyPortfolioForm(
     resumeLabel: "",
     profileImageUrl: "",
     profileImageAlt: "",
+    profileImageStorageBucket: "",
+    profileImageStoragePath: "",
     scheduleCallHref: "",
     scheduleCallLabel: "",
     templateSettings: {},
@@ -573,6 +587,8 @@ export function toFormValues(record: PortfolioRecord): PortfolioFormValues {
     resumeLabel: resumeLink?.label ?? "",
     profileImageUrl: profileImage?.src ?? "",
     profileImageAlt: profileImage?.alt ?? "",
+    profileImageStorageBucket: "",
+    profileImageStoragePath: "",
     scheduleCallHref: scheduleCall?.href ?? "",
     scheduleCallLabel: scheduleCall?.label ?? "",
     templateSettings: record.templateSettings ?? {},

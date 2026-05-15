@@ -89,7 +89,7 @@ export default function TemplatesPage() {
                   <div className="flex gap-3 border-t border-border pt-6">
                     <Button asChild variant="accent" className="flex-1">
                       <Link href={`/studio?template=${template.slug}`}>
-                        Use template
+                        Use in Studio
                       </Link>
                     </Button>
                     {sample ? (
@@ -123,7 +123,7 @@ export default function TemplatesPage() {
                 Data Layer
               </p>
               <p className="mt-2 text-lg font-semibold text-foreground">
-                One builder
+                Structured content
               </p>
             </div>
             <div className="rounded-2xl border border-border bg-surface p-5">

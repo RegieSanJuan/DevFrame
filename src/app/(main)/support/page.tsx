@@ -111,7 +111,7 @@ export default function SupportPage() {
               </a>
             </Button>
             <Button asChild size="lg" variant="secondary">
-              <Link href="/builder">Open the builder</Link>
+              <Link href="/studio">Open Studio</Link>
             </Button>
           </div>
         </div>

@@ -28,7 +28,6 @@ import {
 import { getTemplateFields } from "@/lib/template-field-registry";
 import type { PortfolioTemplate } from "@/lib/template-catalog";
 import { cn } from "@/lib/utils";
-import { createFormData } from "@/utils/form-data";
 
 type PortfolioBuilderFormProps = {
   defaultValues: PortfolioFormValues;
@@ -62,11 +61,7 @@ export function PortfolioBuilderForm({
   } = usePortfolioBuilderForm({
     defaultValues,
     buildFormData: (values, nextTemplateSettings) => {
-      const formData = createFormData({
-        ...values,
-        templateSettings: nextTemplateSettings,
-      });
-      return imageUploads.appendToFormData(formData);
+      return imageUploads.createSubmitFormData(values, nextTemplateSettings);
     },
   });
   const {
@@ -111,10 +106,10 @@ export function PortfolioBuilderForm({
               <Sparkles className="size-5" />
             </span>
             <div>
-              <CardTitle>Portfolio builder</CardTitle>
+              <CardTitle>Structured content editor</CardTitle>
               <CardDescription>
-                Fill in your details, pick a template, and publish your public
-                portfolio.
+                Manage portfolio sections, template settings, and mobile edits
+                without leaving the form workflow.
               </CardDescription>
             </div>
           </div>
@@ -129,7 +124,7 @@ export function PortfolioBuilderForm({
                 </p>
                 <p className="mt-2 text-sm leading-6 text-foreground-muted">
                   Each template is wired to a different portfolio presentation,
-                  but your data structure stays the same.
+                  while your structured content stays the same.
                 </p>
               </div>
               <div className="grid gap-4 md:grid-cols-3">
@@ -369,12 +364,22 @@ export function PortfolioBuilderForm({
 
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
               <Button type="submit" variant="accent" size="lg" disabled={isPending}>
-                {isPending ? "Saving portfolio..." : "Save portfolio"}
+                {isPending
+                  ? "Saving..."
+                  : demoMode
+                    ? "Save preview draft"
+                    : "Publish portfolio"}
+              </Button>
+              <Button asChild variant="secondary" size="lg">
+                <Link href={`/studio?template=${selectedTemplate}`}>
+                  Open Live Studio
+                  <ArrowUpRight className="size-4" />
+                </Link>
               </Button>
               {submissionState.previewUrl ? (
-                <Button asChild variant="secondary" size="lg">
+                <Button asChild variant="outline" size="lg">
                   <Link href={new URL(submissionState.previewUrl).pathname}>
-                    Open public preview
+                    View Portfolio
                     <ArrowUpRight className="size-4" />
                   </Link>
                 </Button>
@@ -410,8 +415,8 @@ export function PortfolioBuilderForm({
 
             <p className="text-sm leading-6 text-foreground-soft">
               {demoMode
-                ? "Your draft workspace is available in preview, so you can keep shaping the portfolio before launch."
-                : "Your builder workspace stays private while you edit and publish."}
+                ? "Draft changes stay in preview mode until persistence is available."
+                : "Publishing stores the portfolio in Supabase and updates the public route."}
             </p>
           </form>
         </CardContent>
@@ -420,8 +425,8 @@ export function PortfolioBuilderForm({
       <div className="order-1 space-y-6 xl:order-2">
         <Card className="border-border">
           <CardHeader>
-            <Badge>How it works</Badge>
-            <CardTitle>One form, multiple portfolio styles</CardTitle>
+            <Badge>Content manager</Badge>
+            <CardTitle>One structured form, multiple portfolio styles</CardTitle>
             <CardDescription>
               DevFrame keeps your data structured so you can switch templates
               without rebuilding your content from scratch.
@@ -433,12 +438,12 @@ export function PortfolioBuilderForm({
               description="Start with Nova, Vertex, or Drift depending on how bold, structured, or editorial you want your portfolio to feel."
             />
             <BuilderStepCard
-              step="2. Fill in your profile"
-              description="Add your intro, about section, links, and featured project details."
+              step="2. Manage the content"
+              description="Add your intro, about section, links, gallery images, and featured project details."
             />
             <BuilderStepCard
-              step="3. Publish to a clean URL"
-              description="Your public portfolio lives at a route like `/p/your-name`."
+              step="3. Open Studio or publish"
+              description="Use Studio for the live preview, then publish to a public route like `/p/your-name`."
             />
           </CardContent>
         </Card>
@@ -446,22 +451,22 @@ export function PortfolioBuilderForm({
         <Card className="border-border bg-surface-strong text-foreground">
           <CardHeader>
             <Badge className="border-border bg-surface-strong text-foreground-soft">
-              Publishing
+              Studio handoff
             </Badge>
-            <CardTitle>Ready to publish from one workflow</CardTitle>
+            <CardTitle>Open the live editor when layout matters</CardTitle>
             <CardDescription>
-              Keep your content structured, previewable, and ready for a clean
-              public route.
+              Keep content structured here, then use Studio for the full
+              desktop preview and publishing pass.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4 text-sm leading-6 text-foreground-muted">
             <p>
-              Edit once, preview across templates, and open the public portfolio
-              route when the story feels ready.
+              The form editor is best for structured updates and mobile edits.
+              Studio is the flagship surface for visual editing.
             </p>
             <p>
-              When persistence is unavailable, DevFrame keeps a local preview so
-              drafting stays unblocked.
+              When persistence is unavailable, DevFrame keeps a preview draft so
+              editing stays unblocked.
             </p>
           </CardContent>
         </Card>

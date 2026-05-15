@@ -93,6 +93,8 @@ function ClerkSaveBridge({
     clerk.openSignIn({
       fallbackRedirectUrl: returnUrl,
       forceRedirectUrl: returnUrl,
+      signUpFallbackRedirectUrl: returnUrl,
+      signUpForceRedirectUrl: returnUrl,
     });
   }, [canResumeSave, clerk, isLoaded, isSignedIn, onSave, onValidate]);
 
@@ -152,7 +154,6 @@ export function StudioShell({
       ...formValues,
       templateSettings,
     } as Record<string, unknown>);
-    imageUploads.appendToFormData(formData);
     const parsed = portfolioFormSchema.safeParse(parsePortfolioFormData(formData));
 
     if (!parsed.success) {
@@ -165,7 +166,7 @@ export function StudioShell({
     }
 
     return formData;
-  }, [formValues, imageUploads, templateSettings]);
+  }, [formValues, templateSettings]);
 
   const executeSave = useCallback(async () => {
     const formData = getValidatedFormData();
@@ -178,7 +179,11 @@ export function StudioShell({
     setIsSaving(true);
 
     try {
-      const result = await saveAction({ status: "idle" }, formData);
+      const submitFormData = await imageUploads.createSubmitFormData(
+        formValues,
+        templateSettings,
+      );
+      const result = await saveAction({ status: "idle" }, submitFormData);
       setSaveState(result);
 
       if (result.status === "success" && result.persisted && result.savedValues) {
@@ -189,10 +194,26 @@ export function StudioShell({
         imageUploads.clearPendingUploads();
         clearPendingStudioSaveIntent();
       }
+    } catch (error) {
+      setSaveState({
+        status: "error",
+        message:
+          error instanceof Error
+            ? error.message
+            : "Unable to upload images or save the portfolio.",
+        persisted: false,
+      });
     } finally {
       setIsSaving(false);
     }
-  }, [getValidatedFormData, imageUploads, replaceDraft, saveAction]);
+  }, [
+    formValues,
+    getValidatedFormData,
+    imageUploads,
+    replaceDraft,
+    saveAction,
+    templateSettings,
+  ]);
 
   const validateBeforeAuth = useCallback(() => {
     if (!isHydrated) {

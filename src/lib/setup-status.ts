@@ -55,7 +55,7 @@ export function getSetupStatusItems(): SetupStatusItem[] {
       id: "supabaseWrite",
       title: "Supabase write access",
       description: isSupabaseWriteConfigured
-        ? "Builder submissions can now persist to PostgreSQL."
+        ? "Structured editor submissions can now persist to PostgreSQL."
         : "Enable server-side write access so saved portfolios can persist.",
       icon: "supabaseWrite",
       ready: isSupabaseWriteConfigured,

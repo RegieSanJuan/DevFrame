@@ -1,5 +1,4 @@
 import type { PortfolioFormValues } from "@/lib/portfolio-schema";
-import type { PortfolioUploadFiles } from "@/lib/portfolio-image-uploads";
 import {
   getPortfolioForOwner,
   getPublicPortfolio,
@@ -17,7 +16,7 @@ export async function getPublicPortfolioBySlug(slug: string) {
 export async function savePortfolioDraft(
   values: PortfolioFormValues,
   ownerId: string,
-  uploads?: PortfolioUploadFiles,
+  options?: { allowDatabasePersistence?: boolean },
 ) {
-  return savePortfolio(values, ownerId, uploads);
+  return savePortfolio(values, ownerId, options);
 }

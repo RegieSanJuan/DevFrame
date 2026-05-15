@@ -35,11 +35,11 @@ import { Card, CardContent } from "../ui/card";
 
 const platformCards = [
   {
-    title: "A calmer control surface",
+    title: "A calmer editing flow",
     description:
-      "Move between templates, builder fields, and publishing status inside one dark workspace.",
+      "Open Studio first, then use structured content tools and Dashboard status when you need them.",
     icon: LayoutDashboard,
-    detail: "Dashboard-first flow",
+    detail: "Studio-first flow",
   },
   {
     title: "One dataset, multiple looks",
@@ -49,11 +49,11 @@ const platformCards = [
     detail: "Template swapping",
   },
   {
-    title: "Short, focused builder steps",
+    title: "Structured content tools",
     description:
-      "Inputs stay readable, spaced, and publish-ready instead of turning into a crowded form wall.",
+      "Inputs stay readable on smaller screens instead of turning into a crowded form wall.",
     icon: Braces,
-    detail: "Fewer noisy fields",
+    detail: "Mobile form editor",
   },
   {
     title: "Public routes that feel real",
@@ -70,9 +70,9 @@ const workflow = [
     description: "Start with a visual direction that matches your tone.",
   },
   {
-    title: "Complete the builder",
+    title: "Open the Studio",
     description:
-      "Add your intro, links, skills, and featured work in one pass.",
+      "Draft with the live preview as the center of the workspace.",
   },
   {
     title: "Review setup health",
@@ -80,7 +80,7 @@ const workflow = [
   },
   {
     title: "Publish the route",
-    description: "Open the public portfolio immediately and keep iterating.",
+    description: "Persist to Supabase, open the public portfolio, and keep iterating.",
   },
 ] as const;
 
@@ -93,13 +93,13 @@ const heroWorkflowModules = [
   },
   {
     label: "Builder",
-    value: "Structured fields",
-    detail: "Profile, links, sections",
+    value: "Mobile form",
+    detail: "Structured content",
     icon: Braces,
   },
   {
     label: "Dashboard",
-    value: "Private workspace",
+    value: "Control center",
     detail: "Route and publish state",
     icon: LayoutDashboard,
   },
@@ -270,15 +270,16 @@ export function HomepageExperience({
             data-hero-item
             className="mt-6 max-w-2xl text-base leading-7 text-foreground-muted md:text-lg md:leading-8"
           >
-            DevFrame gives developers a dark, focused workspace for publishing a
-            shareable portfolio route without the usual clutter.
+            DevFrame gives developers a dark, focused Studio for drafting,
+            previewing, and publishing a shareable portfolio route without the
+            usual clutter.
           </p>
           <div
             data-hero-item
             className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center"
           >
             <Button asChild size="sm" variant="accent">
-              <Link href={startBuildingHref}>Start building</Link>
+              <Link href={startBuildingHref}>Open Studio</Link>
             </Button>
             <Button asChild size="sm" variant="secondary">
               <Link href="/templates">Browse templates</Link>
@@ -295,13 +296,13 @@ export function HomepageExperience({
                   <div className="border-b border-border p-6 md:border-b-0 md:border-r">
                     <div className="flex items-center justify-between gap-3">
                       <span className="section-label">Portfolio command</span>
-                      <Badge variant="success">Published draft</Badge>
+                      <Badge variant="warning">Draft preview</Badge>
                     </div>
                     <h2 className="mt-5 text-3xl font-semibold tracking-[-0.05em] text-foreground">
                       One workspace behind a real public portfolio.
                     </h2>
                     <p className="mt-4 text-sm leading-7 text-foreground-muted">
-                      Studio drafts, Builder sections, Dashboard state, and
+                      Studio drafts, structured content, Dashboard state, and
                       template settings all feed the same portfolio record.
                     </p>
                     <div className="mt-6 grid gap-3">
@@ -497,8 +498,8 @@ export function HomepageExperience({
             One dark system, every surface.
           </h2>
           <p className="text-base leading-7 text-foreground-muted">
-            The same calm design language runs through the builder, templates,
-            auth flow, and every public portfolio route.
+            The same calm design language runs through Studio, the structured
+            editor, auth flow, and every public portfolio route.
           </p>
         </div>
 
@@ -540,8 +541,8 @@ export function HomepageExperience({
                   From blank slate to live portfolio in four steps.
                 </h2>
                 <p className="text-sm leading-7 text-foreground-muted">
-                  No sprawling settings page. Pick a template, fill the fields,
-                  check setup status, then publish — done.
+                  No sprawling settings page. Open Studio, refine the content,
+                  check setup status, then publish.
                 </p>
               </div>
 
@@ -686,8 +687,8 @@ export function HomepageExperience({
                   size="sm"
                   className="w-full mt-auto"
                 >
-                  <Link href={`/templates/preview/${template.slug}`}>
-                    Use {template.name}
+                  <Link href={`/studio?template=${template.slug}`}>
+                    Use in Studio
                     <ArrowRight className="size-3.5" />
                   </Link>
                 </Button>
@@ -707,15 +708,15 @@ export function HomepageExperience({
                 Ship a portfolio that looks production-ready.
               </h2>
               <p className="text-base leading-7 text-foreground-muted">
-                Pick a template, fill your details, and publish to a live route
-                — no config sprawl, no blank-canvas paralysis.
+                Open the live Studio, shape the draft, and publish to a live
+                route without config sprawl or blank-canvas paralysis.
               </p>
             </div>
 
             <div className="flex flex-col gap-3 sm:flex-row">
               <Button asChild size="lg" variant="accent">
                 <Link href={startBuildingHref}>
-                  Start building
+                  Open Studio
                   <ArrowRight className="size-4" />
                 </Link>
               </Button>

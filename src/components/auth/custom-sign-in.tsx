@@ -20,6 +20,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 import {
+  getAuthDestinationFromLocation,
   getClerkErrorMessage,
   navigateWithDecoratedUrl,
   redirectToVerificationInSameTab,
@@ -43,12 +44,13 @@ export function CustomSignIn() {
   const [success, setSuccess] = useState("");
 
   const isClerkConfigured = !!process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
+  const authDestination = getAuthDestinationFromLocation();
 
   useEffect(() => {
     if (authLoaded && userId) {
-      router.replace("/dashboard");
+      router.replace(authDestination);
     }
-  }, [authLoaded, router, userId]);
+  }, [authDestination, authLoaded, router, userId]);
 
   const clearMessages = () => {
     setError("");
@@ -64,10 +66,11 @@ export function CustomSignIn() {
     clearMessages();
 
     try {
+      const ssoCallbackUrl = `/sign-in/sso-callback?redirect_url=${encodeURIComponent(authDestination)}`;
       const signInAttempt = await signIn.create({
         strategy: "oauth_google",
-        redirectUrl: "/sign-in/sso-callback",
-        actionCompleteRedirectUrl: "/builder",
+        redirectUrl: ssoCallbackUrl,
+        actionCompleteRedirectUrl: authDestination,
       });
 
       redirectToVerificationInSameTab(
@@ -108,7 +111,7 @@ export function CustomSignIn() {
         await setActive({
           session: signInAttempt.createdSessionId,
           navigate: async ({ decorateUrl }) => {
-            navigateWithDecoratedUrl(router, decorateUrl, "/builder");
+            navigateWithDecoratedUrl(router, decorateUrl, authDestination);
           },
         });
         return;
@@ -199,7 +202,7 @@ export function CustomSignIn() {
         await setActive({
           session: resetAttempt.createdSessionId,
           navigate: async ({ decorateUrl }) => {
-            navigateWithDecoratedUrl(router, decorateUrl, "/dashboard");
+            navigateWithDecoratedUrl(router, decorateUrl, authDestination);
           },
         });
         return;

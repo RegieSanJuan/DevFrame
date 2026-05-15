@@ -1,5 +1,6 @@
 "use client";
 
+import { createClient } from "@supabase/supabase-js";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import {
@@ -10,10 +11,12 @@ import {
 import {
   PORTFOLIO_IMAGE_UPLOAD_ACCEPT as IMAGE_UPLOAD_ACCEPT,
   PORTFOLIO_IMAGE_UPLOAD_MAX_SIZE_LABEL as IMAGE_UPLOAD_MAX_SIZE_LABEL,
-  appendPortfolioUploadFiles as appendUploadFiles,
   getImageAltFromFileName as getAltFromFileName,
+  PORTFOLIO_STORAGE_BUCKET,
+  SKIPPED_IMAGE_UPLOAD_COUNT_KEY,
   validatePortfolioImageFile,
 } from "@/lib/portfolio-image-uploads";
+import { createFormData } from "@/utils/form-data";
 
 type FieldUpdater = <K extends keyof PortfolioFormValues>(
   key: K,
@@ -26,6 +29,23 @@ type PendingUpload = {
 };
 
 type GalleryPendingUploads = Record<number, PendingUpload>;
+
+type UploadedAsset = {
+  bucket: string;
+  path: string;
+  publicUrl: string;
+};
+
+type SignedUploadTarget = UploadedAsset & {
+  token: string;
+};
+
+class ImageUploadUnavailableError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "ImageUploadUnavailableError";
+  }
+}
 
 function revokePreviewUrl(previewUrl: string) {
   URL.revokeObjectURL(previewUrl);
@@ -46,7 +66,69 @@ function buildGalleryImage(file: File): GalleryImage {
   return {
     src: "",
     alt: getAltFromFileName(file.name),
+    storageBucket: "",
+    storagePath: "",
   };
+}
+
+function createBrowserSupabaseClient() {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const publishableKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
+
+  if (!supabaseUrl || !publishableKey) {
+    return null;
+  }
+
+  return createClient(supabaseUrl, publishableKey, {
+    auth: {
+      persistSession: false,
+      autoRefreshToken: false,
+      detectSessionInUrl: false,
+    },
+  });
+}
+
+async function readJsonError(response: Response) {
+  try {
+    const payload = (await response.json()) as { error?: string };
+    return payload.error;
+  } catch {
+    return null;
+  }
+}
+
+async function requestSignedUploadTarget(
+  file: File,
+  kind: "profile" | "gallery",
+  slug: string,
+): Promise<SignedUploadTarget> {
+  const response = await fetch("/api/portfolio-uploads", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      fileName: file.name,
+      fileSize: file.size,
+      fileType: file.type,
+      kind,
+      slug,
+    }),
+  });
+
+  if (response.status === 503) {
+    throw new ImageUploadUnavailableError(
+      (await readJsonError(response)) ?? "Image uploads are not configured.",
+    );
+  }
+
+  if (!response.ok) {
+    throw new Error(
+      (await readJsonError(response)) ?? "Unable to prepare image upload.",
+    );
+  }
+
+  return (await response.json()) as SignedUploadTarget;
 }
 
 export type PortfolioImageUploadControls = {
@@ -69,7 +151,10 @@ export type PortfolioImageUploadControls = {
     remove: (index: number) => void;
   };
   applyPreviewValues: (values: PortfolioFormValues) => PortfolioFormValues;
-  appendToFormData: (formData: FormData) => FormData;
+  createSubmitFormData: (
+    values: PortfolioFormValues,
+    templateSettings: Record<string, unknown>,
+  ) => Promise<FormData>;
   clearPendingUploads: () => void;
 };
 
@@ -301,18 +386,168 @@ export function usePortfolioImageUploads(
     [galleryUploads, profileUpload],
   );
 
-  const appendToFormData = useCallback(
-    (formData: FormData) =>
-      appendUploadFiles(formData, {
-        profileImageFile: profileUpload?.file ?? null,
-        galleryImageFiles: Object.entries(galleryUploads).map(
-          ([rawIndex, upload]) => ({
-            index: Number(rawIndex),
-            file: upload.file,
-          }),
-        ),
-      }),
-    [galleryUploads, profileUpload],
+  const createSubmitFormData = useCallback(
+    async (
+      nextValues: PortfolioFormValues,
+      templateSettings: Record<string, unknown>,
+    ) => {
+      const pendingGalleryUploads = Object.entries(galleryUploads).map(
+        ([rawIndex, upload]) => ({
+          index: Number(rawIndex),
+          upload,
+        }),
+      );
+      const pendingUploadCount =
+        (profileUpload ? 1 : 0) + pendingGalleryUploads.length;
+      let submitValues = nextValues;
+      let skippedUploadCount = 0;
+      const storageClient =
+        pendingUploadCount > 0 ? createBrowserSupabaseClient() : null;
+
+      const uploadFile = async (
+        file: File,
+        kind: "profile" | "gallery",
+      ): Promise<UploadedAsset> => {
+        const validationError = validatePortfolioImageFile(file);
+
+        if (validationError) {
+          throw new Error(validationError);
+        }
+
+        const target = await requestSignedUploadTarget(
+          file,
+          kind,
+          nextValues.slug,
+        );
+
+        if (target.bucket !== PORTFOLIO_STORAGE_BUCKET) {
+          throw new Error("Unexpected image upload bucket.");
+        }
+
+        const uploadResult = await storageClient!.storage
+          .from(target.bucket)
+          .uploadToSignedUrl(target.path, target.token, file, {
+            contentType: file.type,
+            upsert: true,
+          });
+
+        if (uploadResult.error) {
+          throw new Error(uploadResult.error.message);
+        }
+
+        return {
+          bucket: target.bucket,
+          path: target.path,
+          publicUrl: target.publicUrl,
+        };
+      };
+
+      if (pendingUploadCount > 0 && !storageClient) {
+        skippedUploadCount = pendingUploadCount;
+      } else if (pendingUploadCount > 0) {
+        try {
+          let uploadedProfileAsset: UploadedAsset | null = null;
+          const uploadedGalleryAssets: Array<{
+            index: number;
+            asset: UploadedAsset;
+          }> = [];
+
+          if (profileUpload) {
+            uploadedProfileAsset = await uploadFile(profileUpload.file, "profile");
+          }
+
+          for (const { index, upload } of pendingGalleryUploads) {
+            uploadedGalleryAssets.push({
+              index,
+              asset: await uploadFile(upload.file, "gallery"),
+            });
+          }
+
+          if (uploadedProfileAsset) {
+            submitValues = {
+              ...submitValues,
+              profileImageUrl: uploadedProfileAsset.publicUrl,
+              profileImageStorageBucket: uploadedProfileAsset.bucket,
+              profileImageStoragePath: uploadedProfileAsset.path,
+            };
+            onFieldChange("profileImageUrl", uploadedProfileAsset.publicUrl);
+            onFieldChange("profileImageStorageBucket", uploadedProfileAsset.bucket);
+            onFieldChange("profileImageStoragePath", uploadedProfileAsset.path);
+            setProfileUpload((current) => {
+              if (current) {
+                revokePreviewUrl(current.previewUrl);
+              }
+
+              return null;
+            });
+          }
+
+          if (uploadedGalleryAssets.length > 0) {
+            const uploadedGalleryByIndex = new Map(
+              uploadedGalleryAssets.map(({ index, asset }) => [index, asset]),
+            );
+            const nextGalleryImages = submitValues.galleryImages.map(
+              (image, index) => {
+                const asset = uploadedGalleryByIndex.get(index);
+
+                if (!asset) {
+                  return image;
+                }
+
+                return {
+                  ...image,
+                  src: asset.publicUrl,
+                  storageBucket: asset.bucket,
+                  storagePath: asset.path,
+                };
+              },
+            );
+
+            submitValues = {
+              ...submitValues,
+              galleryImages: nextGalleryImages,
+            };
+            onFieldChange("galleryImages", nextGalleryImages);
+            setGalleryUploads((current) => {
+              const nextUploads = { ...current };
+
+              uploadedGalleryAssets.forEach(({ index }) => {
+                if (nextUploads[index]) {
+                  revokePreviewUrl(nextUploads[index].previewUrl);
+                  delete nextUploads[index];
+                }
+              });
+
+              return nextUploads;
+            });
+          }
+        } catch (error) {
+          if (error instanceof ImageUploadUnavailableError) {
+            skippedUploadCount = pendingUploadCount;
+          } else {
+            const message =
+              error instanceof Error
+                ? error.message
+                : "Unable to upload portfolio images.";
+            setProfileError(message);
+            setGalleryError(message);
+            throw error;
+          }
+        }
+      }
+
+      const formData = createFormData({
+        ...submitValues,
+        templateSettings,
+      } as Record<string, unknown>);
+
+      if (skippedUploadCount > 0) {
+        formData.set(SKIPPED_IMAGE_UPLOAD_COUNT_KEY, String(skippedUploadCount));
+      }
+
+      return formData;
+    },
+    [galleryUploads, onFieldChange, profileUpload],
   );
 
   return useMemo(
@@ -337,12 +572,12 @@ export function usePortfolioImageUploads(
         remove: removeGalleryImage,
       },
       applyPreviewValues,
-      appendToFormData,
+      createSubmitFormData,
       clearPendingUploads,
     }),
     [
       addGalleryFiles,
-      appendToFormData,
+      createSubmitFormData,
       applyPreviewValues,
       clearPendingUploads,
       galleryError,
