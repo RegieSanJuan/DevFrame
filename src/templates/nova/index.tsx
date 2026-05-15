@@ -13,6 +13,7 @@ import {
   BriefcaseBusiness,
   Code2,
   ExternalLink,
+  FileText,
   Mail,
   Moon,
   Sun,
@@ -80,9 +81,9 @@ function NovaTemplate({ portfolio }: TemplateComponentProps) {
         backgroundColor: "var(--nova-bg)",
         color: "var(--nova-text)",
       }}
-      className="min-h-screen transition-colors duration-500"
+      className="@container min-h-screen transition-colors duration-500"
     >
-      <div className="max-w-5xl mx-auto px-6 md:px-12 py-12 space-y-32">
+      <div className="max-w-5xl mx-auto px-4 @sm:px-6 @md:px-12 py-12 space-y-20 @md:space-y-32">
         {/* ── Hero ─────────────────────────────────────── */}
         <section className="space-y-12 py-4">
           {/* Badge + theme toggle row */}
@@ -107,7 +108,7 @@ function NovaTemplate({ portfolio }: TemplateComponentProps) {
           {/* Centered name + subtitle + pills */}
           <div className="text-center space-y-4">
             <h1
-              className="text-5xl md:text-7xl font-bold tracking-tighter h-23"
+              className="text-5xl @md:text-7xl font-bold tracking-tighter pb-2 leading-tight"
               style={{
                 background: `linear-gradient(to bottom, var(--nova-text-strong), color-mix(in srgb, var(--nova-text) 30%, transparent))`,
                 WebkitBackgroundClip: "text",
@@ -132,7 +133,7 @@ function NovaTemplate({ portfolio }: TemplateComponentProps) {
                 {ts.heroTagline}
               </p>
             )}
-            <div className="flex justify-center gap-4 flex-wrap pt-2">
+            <div className="flex flex-col @sm:flex-row items-center justify-center gap-4 pt-2">
               <LinkPill
                 href={portfolio.githubUrl}
                 label="GitHub"
@@ -167,7 +168,7 @@ function NovaTemplate({ portfolio }: TemplateComponentProps) {
           </div>
 
           {/* Two-column: Story+Skills | Featured Card */}
-          <div className="grid gap-10 md:grid-cols-2 lg:gap-12 items-start">
+          <div className="grid grid-cols-1 gap-10 @md:grid-cols-2 @lg:gap-12 items-start">
             {/* Left: Story + Expertise */}
             <div className="space-y-8">
               <div>
@@ -207,7 +208,7 @@ function NovaTemplate({ portfolio }: TemplateComponentProps) {
               href={portfolio.featuredProjectUrl}
               target="_blank"
               rel="noreferrer"
-              className="group block rounded-3xl p-8 relative overflow-hidden transition-all duration-300 hover:-translate-y-0.5"
+              className="group block rounded-3xl p-4 @md:p-8 relative overflow-hidden transition-all duration-300 hover:-translate-y-0.5"
               style={{
                 backgroundColor: "var(--nova-surface-strong)",
                 border: "1px solid var(--nova-border)",
@@ -221,7 +222,7 @@ function NovaTemplate({ portfolio }: TemplateComponentProps) {
               }
             >
               <div
-                className="absolute top-0 right-0 p-8 opacity-[0.06] group-hover:opacity-[0.14] transition-opacity duration-500 pointer-events-none"
+                className="absolute top-0 right-0 p-4 @md:p-8 opacity-[0.06] group-hover:opacity-[0.14] transition-opacity duration-500 pointer-events-none"
                 style={{ color: "var(--nova-accent)" }}
               >
                 <Code2 size={120} />
@@ -265,14 +266,14 @@ function NovaTemplate({ portfolio }: TemplateComponentProps) {
         </section>
 
         {/* ── Professional Resume ────────────────────── */}
-        <section className="grid md:grid-cols-[1fr_2fr] gap-12 items-start">
-          <div className="md:sticky md:top-24">
+        <section className="grid grid-cols-1 @md:grid-cols-[1fr_2fr] gap-8 @md:gap-12 items-start">
+          <div className="@md:sticky @md:top-24">
             <SectionLabel style={{ color: "var(--nova-soft)" }}>
               Professional Resume
             </SectionLabel>
           </div>
           <div
-            className="rounded-3xl p-8"
+            className="rounded-3xl p-4 @md:p-8"
             style={{
               backgroundColor: "var(--nova-surface)",
               border: "1px solid var(--nova-border)",
@@ -284,7 +285,7 @@ function NovaTemplate({ portfolio }: TemplateComponentProps) {
             >
               View full professional resume
             </p>
-            <div className="mt-4 grid gap-5 md:grid-cols-[1.2fr_0.8fr]">
+            <div className="mt-4 grid grid-cols-1 gap-5 @md:grid-cols-[1.2fr_0.8fr]">
               <div>
                 <p
                   className="text-2xl font-semibold tracking-tight"
@@ -299,17 +300,18 @@ function NovaTemplate({ portfolio }: TemplateComponentProps) {
                   A concise overview of role, experience, and project focus for
                   hiring and consulting conversations.
                 </p>
-                <div className="mt-5 flex flex-wrap gap-2">
+                <div className="mt-5 flex flex-col @sm:flex-row gap-2">
                   <a
                     href={resumeHref}
                     target={resumeHref.startsWith("http") ? "_blank" : undefined}
                     rel={resumeHref.startsWith("http") ? "noreferrer" : undefined}
-                    className="rounded-full border px-4 py-2 text-sm transition-colors hover:opacity-80"
+                    className="inline-flex items-center justify-center gap-2 rounded-full border px-4 py-2 text-sm transition-colors hover:opacity-80"
                     style={{
                       borderColor: "var(--nova-border-strong)",
                       color: "var(--nova-text)",
                     }}
                   >
+                    <FileText className="w-4 h-4" />
                     {resumeLabel}
                   </a>
                   {portfolioLinkHref ? (
@@ -317,12 +319,13 @@ function NovaTemplate({ portfolio }: TemplateComponentProps) {
                       href={portfolioLinkHref}
                       target="_blank"
                       rel="noreferrer"
-                      className="rounded-full border px-4 py-2 text-sm transition-colors hover:opacity-80"
+                      className="inline-flex items-center justify-center gap-2 rounded-full border px-4 py-2 text-sm transition-colors hover:opacity-80"
                       style={{
                         borderColor: "var(--nova-border-strong)",
                         color: "var(--nova-text)",
                       }}
                     >
+                      <ExternalLink className="w-4 h-4" />
                       View portfolio link
                     </a>
                   ) : null}
@@ -381,8 +384,8 @@ function NovaTemplate({ portfolio }: TemplateComponentProps) {
 
         {/* ── Experience ───────────────────────────────── */}
         {portfolio.experience && portfolio.experience.length > 0 && (
-          <section className="grid md:grid-cols-[1fr_2fr] gap-12 items-start">
-            <div className="md:sticky md:top-24">
+          <section className="grid grid-cols-1 @md:grid-cols-[1fr_2fr] gap-8 @md:gap-12 items-start">
+            <div className="@md:sticky @md:top-24">
               <SectionLabel style={{ color: "var(--nova-soft)" }}>
                 Experience
               </SectionLabel>
@@ -426,14 +429,14 @@ function NovaTemplate({ portfolio }: TemplateComponentProps) {
 
         {/* ── Recommendation ───────────────────────────── */}
         {portfolio.recommendation && (
-          <section className="grid md:grid-cols-[1fr_2fr] gap-12 items-start">
-            <div className="md:sticky md:top-24">
+          <section className="grid grid-cols-1 @md:grid-cols-[1fr_2fr] gap-8 @md:gap-12 items-start">
+            <div className="@md:sticky @md:top-24">
               <SectionLabel style={{ color: "var(--nova-soft)" }}>
                 Recommendation
               </SectionLabel>
             </div>
             <figure
-              className="rounded-3xl p-8 space-y-6"
+              className="rounded-3xl p-4 @md:p-8 space-y-6"
               style={{
                 backgroundColor: "var(--nova-surface)",
                 border: "1px solid var(--nova-border)",
@@ -472,9 +475,9 @@ function NovaTemplate({ portfolio }: TemplateComponentProps) {
             <TemplateGallery
               images={galleryImages}
               className="grid gap-4"
-              galleryClassName="sm:grid-cols-3"
+              galleryClassName="@sm:grid-cols-3"
               tileClassName="rounded-3xl"
-              imageClassName="p-8 opacity-90"
+              imageClassName="p-4 md:p-8 opacity-90"
               navButtonClassName="border-[var(--nova-border-strong)] text-[var(--nova-text)] bg-[var(--nova-surface)]"
               transitionClassName="transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
               imageSizes="(max-width: 640px) 100vw, 33vw"
@@ -484,7 +487,7 @@ function NovaTemplate({ portfolio }: TemplateComponentProps) {
 
         {/* ── Footer ───────────────────────────────────── */}
         <footer
-          className="pt-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+          className="pt-8 flex flex-col @sm:flex-row items-start @sm:items-center justify-between gap-4"
           style={{ borderTop: "1px solid var(--nova-border)" }}
         >
           <p className="text-sm" style={{ color: "var(--nova-soft)" }}>

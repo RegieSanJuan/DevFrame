@@ -4,6 +4,7 @@ import { Monitor, Smartphone } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { PortfolioRenderer } from "@/components/portfolio-renderer";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import type { PortfolioRecord } from "@/lib/portfolio-schema";
 
 type DeviceSize = "desktop" | "mobile";
@@ -134,8 +135,8 @@ export function StudioPreview({
               </div>
             </div>
 
-            <div
-              className="overflow-auto rounded-[22px] border border-white/8 bg-black/30 overflow-x-hidden"
+            <ScrollArea
+              className="dark rounded-[22px] border border-white/8 bg-black/30"
               style={{
                 width: scaledWidth,
                 height: frameHeight,
@@ -160,7 +161,7 @@ export function StudioPreview({
                   <PortfolioRenderer portfolio={portfolio} />
                 </div>
               </div>
-            </div>
+            </ScrollArea>
           </div>
         </div>
       </div>

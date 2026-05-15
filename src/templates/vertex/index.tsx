@@ -84,13 +84,13 @@ function VertexTemplate({ portfolio }: TemplateComponentProps) {
   return (
     <div
       style={themeStyles}
-      className="min-h-screen bg-[var(--vertex-root-bg)] text-[var(--vertex-text-main)] transition-colors duration-500"
+      className="@container min-h-screen bg-[var(--vertex-root-bg)] text-[var(--vertex-text-main)] transition-colors duration-500"
     >
-      <div className="mx-auto max-w-5xl px-6 py-8 md:px-10 md:py-12 lg:px-12 lg:py-14">
+      <div className="mx-auto max-w-5xl px-4 @sm:px-6 py-8 @md:px-10 @md:py-12 @lg:px-12 @lg:py-14">
         <section className="mb-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
-          <div className="flex items-center gap-4 md:gap-6">
-            <div className="relative flex-shrink-0">
-              <div className="flex h-32 w-32 items-center justify-center overflow-hidden rounded-xl border border-[var(--vertex-border)] bg-[var(--vertex-bg)] md:h-40 md:w-40">
+          <div className="flex flex-col @sm:flex-row items-center @sm:items-start gap-6 @sm:gap-4 @md:gap-6 text-center @sm:text-left">
+            <div className="relative flex-shrink-0 mx-auto @sm:mx-0">
+              <div className="flex h-32 w-32 items-center justify-center overflow-hidden rounded-xl border border-[var(--vertex-border)] bg-[var(--vertex-bg)] @md:h-40 @md:w-40">
                 {profileImage && isRenderableImageSrc(profileImage.src) ? (
                   <>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -117,13 +117,13 @@ function VertexTemplate({ portfolio }: TemplateComponentProps) {
             </div>
 
             <div className="min-w-0 flex-1">
-              <div className="flex items-center justify-between gap-3">
-                <div className="min-w-0">
-                  <h1 className="truncate text-2xl font-bold md:text-3xl">
+              <div className="flex flex-col @sm:flex-row items-center @sm:justify-between gap-4 @sm:gap-3">
+                <div className="min-w-0 flex flex-col items-center @sm:items-start">
+                  <h1 className="truncate text-2xl font-bold @md:text-3xl">
                     {portfolio.name}
                   </h1>
                   <p
-                    className="mt-1 flex items-center gap-1 text-sm"
+                    className="mt-1 flex items-center justify-center @sm:justify-start gap-1 text-sm"
                     style={{ color: "var(--vertex-text-muted)" }}
                   >
                     <MapPin className="h-3.5 w-3.5" />
@@ -150,13 +150,13 @@ function VertexTemplate({ portfolio }: TemplateComponentProps) {
               </div>
 
               <p
-                className="mt-3 text-sm md:text-base"
+                className="mt-3 text-sm @md:text-base"
                 style={{ color: "var(--vertex-text-muted)" }}
               >
                 {portfolio.title}
               </p>
 
-              <div className="mt-4 flex flex-wrap gap-2">
+              <div className="mt-4 flex flex-wrap justify-center @sm:justify-start gap-2">
                 <a
                   href={scheduleCallHref}
                   target={scheduleCallHref.startsWith("http") ? "_blank" : undefined}
@@ -199,8 +199,8 @@ function VertexTemplate({ portfolio }: TemplateComponentProps) {
           </div>
         </section>
 
-        <section className="grid grid-cols-1 gap-4 md:grid-cols-6 md:gap-5">
-          <BentoCard className="md:col-span-4">
+        <section className="grid grid-cols-1 gap-4 @md:grid-cols-6 @md:gap-5">
+          <BentoCard className="@md:col-span-4">
             <h2 className="mb-2 text-lg font-bold">About</h2>
             <p
               className="text-sm leading-relaxed"
@@ -211,7 +211,7 @@ function VertexTemplate({ portfolio }: TemplateComponentProps) {
           </BentoCard>
 
           {hasExperience ? (
-            <BentoCard className="md:col-span-2 md:row-span-2 flex flex-col justify-between">
+            <BentoCard className="@md:col-span-2 @md:row-span-2 flex flex-col justify-between">
               <div>
                 <h2 className="mb-4 text-lg font-bold">Experience</h2>
                 <div className="relative space-y-5">
@@ -256,7 +256,7 @@ function VertexTemplate({ portfolio }: TemplateComponentProps) {
             </BentoCard>
           ) : null}
 
-          <BentoCard className="md:col-span-2">
+          <BentoCard className="@md:col-span-2">
             <h2 className="mb-3 text-sm font-bold">Professional Resume</h2>
             <p
               className="text-[10px] uppercase tracking-[0.22em]"
@@ -332,7 +332,7 @@ function VertexTemplate({ portfolio }: TemplateComponentProps) {
             </div>
           </BentoCard>
 
-          <BentoCard className="md:col-span-4">
+          <BentoCard className="@md:col-span-4">
             <h2 className="mb-4 text-lg font-bold">Tech Stack</h2>
             <div className="flex flex-wrap gap-1.5">
               {portfolio.skills.map((skill) => (
@@ -351,7 +351,7 @@ function VertexTemplate({ portfolio }: TemplateComponentProps) {
             </div>
           </BentoCard>
 
-          <BentoCard className="md:col-span-4">
+          <BentoCard className="@md:col-span-4">
             <div className="mb-4 flex items-center justify-between">
               <h2 className="text-lg font-bold">Recent Projects</h2>
               <ExternalLink className="h-4 w-4 opacity-40" />
@@ -401,7 +401,7 @@ function VertexTemplate({ portfolio }: TemplateComponentProps) {
             </div>
           </BentoCard>
 
-          <BentoCard className="md:col-span-2">
+          <BentoCard className="@md:col-span-2">
             <h2 className="mb-3 text-sm font-bold">Links</h2>
             <div className="space-y-1.5">
               <a
@@ -424,7 +424,7 @@ function VertexTemplate({ portfolio }: TemplateComponentProps) {
           </BentoCard>
 
           {galleryImages.length > 0 ? (
-            <BentoCard className="md:col-span-6">
+            <BentoCard className="@md:col-span-6">
               <h2 className="mb-4 text-lg font-bold">Gallery</h2>
               <TemplateGallery
                 images={galleryImages}
@@ -437,7 +437,7 @@ function VertexTemplate({ portfolio }: TemplateComponentProps) {
           ) : null}
 
           {portfolio.recommendation && (
-            <BentoCard className="md:col-span-6">
+            <BentoCard className="@md:col-span-6">
               <h2 className="mb-3 text-sm font-bold">Recommendation</h2>
               <blockquote
                 className="mb-3 text-xs italic leading-relaxed"
@@ -458,7 +458,7 @@ function VertexTemplate({ portfolio }: TemplateComponentProps) {
           )}
         </section>
       </div>
-      <footer className="mt-12 md:col-span-6 flex justify-center items-center gap-1 border-t border-[var(--vertex-border)] py-5 text-sm">
+      <footer className="mt-12 @md:col-span-6 flex justify-center items-center gap-1 border-t border-[var(--vertex-border)] py-5 text-sm">
         <p className="text-xs" style={{ color: "var(--vertex-text-muted)" }}>
           © {new Date().getFullYear()} {portfolio.name}. All rights reserved.
         </p>

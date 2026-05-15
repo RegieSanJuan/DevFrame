@@ -57,20 +57,20 @@ function DriftTemplate({ portfolio }: TemplateComponentProps) {
   return (
     <div
       style={themeStyles}
-      className="min-h-screen bg-[var(--drift-bg)] text-[var(--drift-text)] transition-colors duration-500 selection:bg-[var(--drift-accent)] selection:text-teal-900"
+      className="@container min-h-screen bg-[var(--drift-bg)] text-[var(--drift-text)] transition-colors duration-500 selection:bg-[var(--drift-accent)] selection:text-teal-900"
     >
-      <div className="mx-auto max-w-screen-xl px-6 py-12 md:px-12 md:py-16 lg:py-0">
-        <div className="lg:flex lg:justify-between lg:gap-4">
-          <header className="lg:sticky lg:top-0 lg:flex lg:max-h-screen lg:w-[48%] lg:flex-col lg:justify-between lg:py-24">
+      <div className="mx-auto max-w-screen-xl px-4 @sm:px-6 @md:px-12 py-12 @md:py-16 @lg:py-0">
+        <div className="@lg:flex @lg:justify-between @lg:gap-4">
+          <header className="@lg:sticky @lg:top-0 @lg:flex @lg:max-h-screen @lg:w-[48%] @lg:flex-col @lg:justify-between @lg:py-24">
             <div>
-              <div className="flex items-center justify-between lg:block">
-                <h1 className="text-4xl font-bold tracking-tight text-[var(--drift-heading)] sm:text-5xl">
+              <div className="flex items-center justify-between @lg:block">
+                <h1 className="text-4xl font-bold tracking-tight text-[var(--drift-heading)] @sm:text-5xl">
                   {portfolio.name}
                 </h1>
 
                 <button
                   onClick={toggleTheme}
-                  className="rounded-full border border-[var(--drift-text)]/10 p-2 transition-all hover:bg-[var(--drift-hover)] lg:mt-4 lg:inline-flex"
+                  className="rounded-full border border-[var(--drift-text)]/10 p-2 transition-all hover:bg-[var(--drift-hover)] @lg:mt-4 @lg:inline-flex"
                   title="Toggle theme"
                 >
                   {mode === "dark" ? (
@@ -81,7 +81,7 @@ function DriftTemplate({ portfolio }: TemplateComponentProps) {
                 </button>
               </div>
 
-              <h2 className="mt-3 text-lg font-medium tracking-tight text-[var(--drift-heading)] sm:text-xl">
+              <h2 className="mt-3 text-lg font-medium tracking-tight text-[var(--drift-heading)] @sm:text-xl">
                 {portfolio.title}
               </h2>
               <p className="mt-4 max-w-xs leading-normal">
@@ -90,7 +90,7 @@ function DriftTemplate({ portfolio }: TemplateComponentProps) {
                   "Crafting pixel-perfect, accessible user interfaces for the modern web."}
               </p>
 
-              <nav className="nav hidden lg:block" aria-label="In-page jump links">
+              <nav className="nav hidden @lg:block" aria-label="In-page jump links">
                 <ul className="mt-16 w-max space-y-4">
                   <li>
                     <a className="group flex items-center py-3 active" href="#about">
@@ -174,13 +174,13 @@ function DriftTemplate({ portfolio }: TemplateComponentProps) {
             </ul>
           </header>
 
-          <main className="space-y-24 pt-24 lg:w-[52%] lg:py-24">
+          <main className="space-y-16 pt-16 @lg:space-y-24 @lg:w-[52%] @lg:pt-24">
             <section
               id="about"
-              className="scroll-mt-16 lg:scroll-mt-24"
+              className="scroll-mt-16 @lg:scroll-mt-24"
               aria-label="About me"
             >
-              <h2 className="mb-4 text-sm font-bold uppercase tracking-widest text-[var(--drift-heading)] lg:sr-only">
+              <h2 className="mb-4 text-sm font-bold uppercase tracking-widest text-[var(--drift-heading)] @lg:sr-only">
                 About
               </h2>
               <div className="space-y-4">
@@ -191,7 +191,7 @@ function DriftTemplate({ portfolio }: TemplateComponentProps) {
             {hasExperience ? (
               <section
                 id="experience"
-                className="scroll-mt-16 lg:scroll-mt-24"
+                className="scroll-mt-16 @lg:scroll-mt-24"
                 aria-label="Work experience"
               >
                 <h2 className="mb-8 text-sm font-bold uppercase tracking-widest text-[var(--drift-heading)]">
@@ -201,13 +201,13 @@ function DriftTemplate({ portfolio }: TemplateComponentProps) {
                   {(portfolio.experience ?? []).map((entry, index) => (
                     <li
                       key={index}
-                      className="group relative grid pb-1 transition-all sm:grid-cols-8 sm:gap-8 lg:hover:!opacity-100 lg:group-hover/list:opacity-50"
+                      className="group relative grid pb-1 transition-all @sm:grid-cols-8 @sm:gap-8 @lg:hover:!opacity-100 @lg:group-hover/list:opacity-50"
                     >
-                      <div className="absolute -inset-x-4 -inset-y-4 z-0 hidden rounded-md transition lg:-inset-x-6 lg:block lg:group-hover:bg-[var(--drift-hover)]" />
-                      <header className="z-10 mb-2 mt-1 text-xs font-semibold uppercase tracking-wide sm:col-span-2">
+                      <div className="absolute -inset-x-4 -inset-y-4 z-0 hidden rounded-md transition @lg:-inset-x-6 @lg:block @lg:group-hover:bg-[var(--drift-hover)]" />
+                      <header className="z-10 mb-2 mt-1 text-xs font-semibold uppercase tracking-wide @sm:col-span-2">
                         {entry.year}
                       </header>
-                      <div className="z-10 sm:col-span-6">
+                      <div className="z-10 @sm:col-span-6">
                         <h3 className="text-base font-medium leading-snug text-[var(--drift-heading)]">
                           {entry.role} · {entry.company}
                         </h3>
@@ -219,7 +219,7 @@ function DriftTemplate({ portfolio }: TemplateComponentProps) {
             ) : null}
 
             {portfolio.recommendation ? (
-              <section className="scroll-mt-16 lg:scroll-mt-24">
+              <section className="scroll-mt-16 @lg:scroll-mt-24">
                 <h2 className="mb-8 text-sm font-bold uppercase tracking-widest text-[var(--drift-heading)]">
                   Recommendations
                 </h2>
@@ -244,18 +244,18 @@ function DriftTemplate({ portfolio }: TemplateComponentProps) {
 
             <section
               id="resume"
-              className="scroll-mt-16 lg:scroll-mt-24"
+              className="scroll-mt-16 @lg:scroll-mt-24"
               aria-label="Professional resume"
             >
               <h2 className="mb-8 text-sm font-bold uppercase tracking-widest text-[var(--drift-heading)]">
                 Professional Resume
               </h2>
-              <div className="rounded-2xl border border-[var(--drift-text)]/10 bg-[var(--drift-hover)] p-6 sm:p-8">
+              <div className="rounded-2xl border border-[var(--drift-text)]/10 bg-[var(--drift-hover)] p-6 @sm:p-8">
                 <p className="text-[10px] font-semibold uppercase tracking-widest text-[var(--drift-heading)]">
                   View full professional resume
                 </p>
                 <a
-                  className="mt-3 inline-flex items-center gap-1.5 text-lg font-semibold text-[var(--drift-heading)] transition-colors hover:opacity-80 sm:text-xl"
+                  className="mt-3 inline-flex items-center gap-1.5 text-lg font-semibold text-[var(--drift-heading)] transition-colors hover:opacity-80 @sm:text-xl"
                   href={resumeHref}
                   target={resumeHref.startsWith("http") ? "_blank" : undefined}
                   rel={resumeHref.startsWith("http") ? "noreferrer" : undefined}
@@ -263,7 +263,7 @@ function DriftTemplate({ portfolio }: TemplateComponentProps) {
                   {resumeLabel}
                   <ExternalLink className="h-4 w-4" />
                 </a>
-                <div className="mt-4 grid gap-3 sm:grid-cols-3">
+                <div className="mt-4 grid gap-3 @sm:grid-cols-3">
                   <div>
                     <p className="text-[10px] font-semibold uppercase tracking-widest text-[var(--drift-heading)]">
                       Experience
@@ -292,7 +292,7 @@ function DriftTemplate({ portfolio }: TemplateComponentProps) {
 
             <section
               id="projects"
-              className="scroll-mt-16 lg:scroll-mt-24"
+              className="scroll-mt-16 @lg:scroll-mt-24"
               aria-label="Projects"
             >
               <h2 className="mb-8 text-sm font-bold uppercase tracking-widest text-[var(--drift-heading)]">
@@ -305,10 +305,10 @@ function DriftTemplate({ portfolio }: TemplateComponentProps) {
                   return (
                     <div
                       key={`${project.name}-${index}`}
-                      className="group relative grid gap-4 pb-1 transition-all sm:grid-cols-8 sm:gap-8 lg:hover:!opacity-100 lg:group-hover/list:opacity-50"
+                      className="group relative grid gap-4 pb-1 transition-all @sm:grid-cols-8 @sm:gap-8 @lg:hover:!opacity-100 @lg:group-hover/list:opacity-50"
                     >
-                      <div className="absolute -inset-x-4 -inset-y-4 z-0 hidden rounded-md transition motion-reduce:transition-none lg:-inset-x-6 lg:block lg:group-hover:bg-[var(--drift-hover)]" />
-                      <div className="z-10 sm:order-2 sm:col-span-6">
+                      <div className="absolute -inset-x-4 -inset-y-4 z-0 hidden rounded-md transition motion-reduce:transition-none @lg:-inset-x-6 @lg:block @lg:group-hover:bg-[var(--drift-hover)]" />
+                      <div className="z-10 @sm:order-2 @sm:col-span-6">
                         <h3>
                           {href ? (
                             <a
@@ -335,7 +335,7 @@ function DriftTemplate({ portfolio }: TemplateComponentProps) {
                           </div>
                         ) : null}
                       </div>
-                      <div className="z-10 sm:order-1 sm:col-span-2 sm:translate-y-1">
+                      <div className="z-10 @sm:order-1 @sm:col-span-2 @sm:translate-y-1">
                         <div className="flex aspect-video items-center justify-center overflow-hidden rounded border-2 border-[var(--drift-heading)]/10 bg-[var(--drift-hover)]">
                           <ExternalLink className="h-8 w-8 opacity-10" />
                         </div>
@@ -349,7 +349,7 @@ function DriftTemplate({ portfolio }: TemplateComponentProps) {
             {hasGallery ? (
               <section
                 id="gallery"
-                className="scroll-mt-16 lg:scroll-mt-24"
+                className="scroll-mt-16 @lg:scroll-mt-24"
                 aria-label="Gallery"
               >
                 <h2 className="mb-8 text-sm font-bold uppercase tracking-widest text-[var(--drift-heading)]">
@@ -358,7 +358,7 @@ function DriftTemplate({ portfolio }: TemplateComponentProps) {
                 <TemplateGallery
                   images={galleryImages}
                   className="grid gap-4"
-                  galleryClassName="sm:grid-cols-3"
+                  galleryClassName="@sm:grid-cols-3"
                   tileClassName="rounded-2xl border border-[var(--drift-text)]/10 bg-[var(--drift-hover)]"
                   imageClassName="p-6"
                   navButtonClassName="border-[var(--drift-text)]/10 bg-[var(--drift-hover)]"
@@ -368,7 +368,7 @@ function DriftTemplate({ portfolio }: TemplateComponentProps) {
               </section>
             ) : null}
 
-            <footer className="max-w-md pb-16 text-xs opacity-50 sm:pb-0">
+            <footer className="max-w-md pb-16 text-xs opacity-50 @sm:pb-0">
               <p>
                 Designed and coded with passion. Built with Next.js and Tailwind
                 CSS, deployed with Vercel.

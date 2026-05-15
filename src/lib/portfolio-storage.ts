@@ -6,6 +6,11 @@ import { cookies } from "next/headers";
 import { createPortfolioUrl } from "@/lib/app-url";
 import { isDemoUserId } from "@/lib/auth";
 import {
+  filterRenderableGalleryImages,
+  isRenderableImageSrc,
+  PORTFOLIO_STORAGE_BUCKET,
+} from "@/lib/portfolio-image-uploads";
+import {
   buildPortfolioSectionsFromValues,
   buildProfileImage,
   buildResumeLink,
@@ -21,11 +26,6 @@ import {
   type ResumeLink,
   type ScheduleCallLink,
 } from "@/lib/portfolio-schema";
-import {
-  filterRenderableGalleryImages,
-  isRenderableImageSrc,
-  PORTFOLIO_STORAGE_BUCKET,
-} from "@/lib/portfolio-image-uploads";
 import {
   createSupabaseAdminClient,
   createSupabasePublicClient,
@@ -251,7 +251,7 @@ const BASE_PORTFOLIO: Omit<
       isEnabled: true,
       data: {
         url: "https://blakedev.io/resume.pdf",
-        label: "Open resume PDF",
+        label: "Resume",
       },
     },
     {
@@ -273,7 +273,7 @@ const BASE_PORTFOLIO: Omit<
   ],
   resumeLink: {
     url: "https://blakedev.io/resume.pdf",
-    label: "Open resume PDF",
+    label: "Resume",
   },
   scheduleCall: {
     href: "https://cal.com/morganblake",
@@ -607,10 +607,10 @@ async function loadPortfolioRelations(
   const experience =
     experienceRows.length > 0
       ? experienceRows.map((row) => ({
-          year: row.year_label,
-          role: row.role,
-          company: row.company,
-        }))
+        year: row.year_label,
+        role: row.role,
+        company: row.company,
+      }))
       : undefined;
 
   const featuredRecommendation =
@@ -648,25 +648,25 @@ async function loadPortfolioRelations(
   const profileImage =
     avatarRow && avatarRow.public_url
       ? {
-          src: avatarRow.public_url,
-          alt: avatarRow.alt_text ?? "Portfolio profile image",
-        }
+        src: avatarRow.public_url,
+        alt: avatarRow.alt_text ?? "Portfolio profile image",
+      }
       : getRelationSection<ProfileImage>(
-          sections,
-          PORTFOLIO_SECTION_TYPES.profileImage,
-        );
+        sections,
+        PORTFOLIO_SECTION_TYPES.profileImage,
+      );
 
   return {
     experience,
     recentProjects: recentProjects.length > 0 ? recentProjects : undefined,
     recommendation: featuredRecommendation
       ? {
-          quote: featuredRecommendation.quote,
-          author: featuredRecommendation.author,
-          role: featuredRecommendation.company
-            ? `${featuredRecommendation.role}, ${featuredRecommendation.company}`
-            : featuredRecommendation.role,
-        }
+        quote: featuredRecommendation.quote,
+        author: featuredRecommendation.author,
+        role: featuredRecommendation.company
+          ? `${featuredRecommendation.role}, ${featuredRecommendation.company}`
+          : featuredRecommendation.role,
+      }
       : undefined,
     sections,
     galleryImages: galleryImages.length > 0 ? galleryImages : undefined,
@@ -1033,16 +1033,16 @@ export async function savePortfolio(
 
   const operation = existingPortfolio
     ? supabase
-        .from("portfolios")
-        .update(payload)
-        .eq("id", existingPortfolio.id)
-        .select("*")
-        .single<PortfolioRow>()
+      .from("portfolios")
+      .update(payload)
+      .eq("id", existingPortfolio.id)
+      .select("*")
+      .single<PortfolioRow>()
     : supabase
-        .from("portfolios")
-        .insert(payload)
-        .select("*")
-        .single<PortfolioRow>();
+      .from("portfolios")
+      .insert(payload)
+      .select("*")
+      .single<PortfolioRow>();
 
   const { data, error } = await operation;
 
