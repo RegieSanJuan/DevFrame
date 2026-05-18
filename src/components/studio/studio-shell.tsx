@@ -245,7 +245,7 @@ export function StudioShell({
           className="flex items-center gap-2 text-sm font-semibold text-white/70 transition hover:text-white"
         >
           <Layers className="size-4 text-accent" />
-          DevFrame Studio
+          Studio
         </Link>
 
         <div className="flex items-center gap-2">
@@ -256,8 +256,8 @@ export function StudioShell({
                 type="button"
                 onClick={() => setDevice("desktop")}
                 className={`flex items-center gap-2 rounded-full px-3 py-1.5 text-[11px] font-semibold transition ${device === "desktop"
-                    ? "bg-white/10 text-white"
-                    : "text-white/40 hover:text-white/70"
+                  ? "bg-white/10 text-white"
+                  : "text-white/40 hover:text-white/70"
                   }`}
               >
                 <Monitor className="size-3.5" />
@@ -267,8 +267,8 @@ export function StudioShell({
                 type="button"
                 onClick={() => setDevice("mobile")}
                 className={`flex items-center gap-2 rounded-full px-3 py-1.5 text-[11px] font-semibold transition ${device === "mobile"
-                    ? "bg-white/10 text-white"
-                    : "text-white/40 hover:text-white/70"
+                  ? "bg-white/10 text-white"
+                  : "text-white/40 hover:text-white/70"
                   }`}
               >
                 <Smartphone className="size-3.5" />

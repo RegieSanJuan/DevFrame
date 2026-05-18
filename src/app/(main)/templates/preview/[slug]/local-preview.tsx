@@ -1,6 +1,5 @@
-import { PortfolioRenderer } from "@/components/portfolio-renderer";
+import { StudioPreview } from "@/components/studio/studio-preview";
 import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import type { PortfolioRecord } from "@/lib/portfolio-schema";
 import type { TemplateCatalogItem } from "@/lib/template-catalog";
 import { Check } from "lucide-react";
@@ -29,24 +28,9 @@ export function TemplateLocalPreview({
       >
         {/* Preview Container */}
         <div
-          className={`relative flex justify-center w-full h-[800px] max-h-[85vh] overflow-hidden rounded-[40px] p-4 border border-border/50 order-1 bg-surface-strong/20`}
+
         >
-          <div
-            className="pointer-events-none absolute inset-0 z-20 bg-gradient-to-b from-transparent via-surface-strong/25 to-surface"
-            aria-hidden="true"
-          />
-          <ScrollArea
-            className={`
-              relative z-10
-              ${mode}
-              w-full h-full
-              transition-all duration-500 ease-in-out
-              rounded-[32px]
-              border border-border shadow-2xl bg-background
-            `}
-          >
-            <PortfolioRenderer portfolio={portfolio} />
-          </ScrollArea>
+          <StudioPreview portfolio={portfolio} device={viewMode} />
         </div>
 
         {/* Info Area */}

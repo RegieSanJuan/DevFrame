@@ -1,11 +1,11 @@
 "use client";
 
 import { GitHubIcon, LinkedInIcon } from "@/components/brand-icons";
-import { getDisplayProjects } from "@/lib/portfolio-schema";
 import {
   filterRenderableGalleryImages,
   isRenderableImageSrc,
 } from "@/lib/portfolio-image-uploads";
+import { getDisplayProjects } from "@/lib/portfolio-schema";
 import { TemplateGallery } from "@/templates/base-components";
 import type { TemplateComponentProps } from "@/templates/registry";
 import { registerTemplate } from "@/templates/registry";
