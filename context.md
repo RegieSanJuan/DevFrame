@@ -1,170 +1,116 @@
 # Agent Context: DevFrame System
 
-> Important
-> This repo is on Next.js `16.2.3` and the App Router lives under `src/app`.
-> Before making framework-level changes, read the relevant guide in
-> `node_modules/next/dist/docs/`.
+> [!IMPORTANT]
+> This repository is built on Next.js `16.2.3` and the App Router resides under `src/app`.
+> Before making framework-level changes, consult the Next.js API guide in `node_modules/next/dist/docs/`. Heed framework deprecations.
 
-## Core Map
+---
 
-- App shell: `src/app/layout.tsx`
-- Main route group: `src/app/(main)`
-- Auth route group: `src/app/(auth)`
-- Marketing shell: `src/app/(main)/layout.tsx`
-- Header split: `src/components/site-header.tsx` (server auth) +
-  `src/components/site-header-surface.tsx` (client scroll state)
-- Builder: `src/app/(main)/builder/page.tsx`
-- Dashboard: `src/app/(main)/dashboard/page.tsx`
-- Studio: `src/app/(main)/studio/page.tsx`
-- Public portfolio route: `src/app/(main)/p/[slug]/page.tsx`
-- Public portfolio API: `src/app/api/portfolios/[slug]/route.ts`
+## 1. Core Map
 
-## Product Surfaces
+- **App Shell**: `src/app/layout.tsx`
+- **Main Route Group**: `src/app/(main)`
+- **Auth Route Group**: `src/app/(auth)`
+- **Marketing & Layout Shell**: `src/app/(main)/layout.tsx`
+- **Header Split System**:
+  - `src/components/site-header.tsx` (Server auth context)
+  - `src/components/site-header-surface.tsx` (Client scroll, responsiveness, & mobile menu state)
+- **Operational Product Pages**:
+  - **Builder**: `src/app/(main)/builder/page.tsx`
+  - **Dashboard**: `src/app/(main)/dashboard/page.tsx`
+  - **Studio**: `src/app/(main)/studio/page.tsx`
+- **Public Output Routes**:
+  - **Public Portfolio Route**: `src/app/(main)/p/[slug]/page.tsx`
+  - **Public Portfolio API Endpoint**: `src/app/api/portfolios/[slug]/route.ts`
 
-This repo is no longer just a template gallery. It has four distinct surfaces
-that need to stay coherent:
+---
 
-1. Marketing pages (`/`, `/templates`, `/support`)
-2. Authenticated builder and dashboard flows
-3. The no-account studio flow (`/studio`) with live preview
-4. Public portfolio output at `/p/[slug]`
+## 2. Product Surfaces
 
-When updating docs or UI, describe the system in terms of those surfaces, not
-just "templates".
+DevFrame consists of four core surfaces that must maintain structural and visual coherence:
 
-## Runtime Model
+1. **Marketing Surfaces** (`/`, `/templates`, `/support`): Expressive, dark-first editorial layout.
+2. **Authenticated Builder & Dashboard**: High operational density fields for bio, resume details, and custom parameters.
+3. **No-Account Studio Flow** (`/studio`): Immediate live sidebar editing and split-panel responsive preview.
+4. **Public Portfolio Output** (`/p/[slug]`): Production-grade static and dynamic server/client rendered portfolios.
 
-- Environment source of truth: `src/lib/env.ts`
-- Auth helper layer: `src/lib/auth.ts`
-- Supabase client wiring: `src/lib/supabase.ts`
-- Setup readiness summary: `src/lib/setup-status.ts`
+---
 
-Key behavior:
+## 3. Runtime Model
 
-- Clerk is optional at runtime.
-- If Clerk keys are missing, the app intentionally falls back to `demoMode`
-  instead of hard-failing. `getViewerContext()` returns a synthetic
-  `"demo-user"` and protected flows remain usable in preview mode.
-- If Clerk is configured, `requireViewer()` redirects unauthenticated users to
-  `/sign-in`.
+- **Environment Config**: `src/lib/env.ts` (Dynamic and static variables, validation schemas)
+- **Auth Helper Layer**: `src/lib/auth.ts`
+- **Supabase Integration**: `src/lib/supabase.ts`
+- **Setup Readiness Status**: `src/lib/setup-status.ts`
 
-Do not remove preview-mode usability unless the product requirement changes.
+### Fallback Behavior
+- **Clerk Integration**: Optional at runtime. If Clerk credentials are absent, the application gracefully activates `demoMode` rather than crashing. `getViewerContext()` provides a synthetic `"demo-user"` context so features remain fully interactive in preview mode.
+- **Supabase Integration**: If `SUPABASE_SERVICE_ROLE_KEY` is missing, data saves trigger local preview cookies so draft updates persist locally on the browser.
 
-## Auth Architecture
+---
 
-- Recent auth work moved sign-in and sign-up logic directly into
-  `src/app/(auth)/sign-in/[[...sign-in]]/page.tsx` and
-  `src/app/(auth)/sign-up/[[...sign-up]]/page.tsx`.
-- The custom auth UI now lives in:
+## 4. Auth Architecture
+
+- **Auth Pages**: Direct path overrides inside `src/app/(auth)/sign-in/[[...sign-in]]/page.tsx` and `src/app/(auth)/sign-up/[[...sign-up]]/page.tsx`.
+- **Custom UI Components**: Custom widgets handle sign-in, signup, email verification, and OAuth.
   - `src/components/auth/custom-sign-in.tsx`
   - `src/components/auth/custom-sign-up.tsx`
   - `src/components/auth/auth-sso-callback.tsx`
-- The current flow supports Google OAuth, email/password auth, and email-code
-  verification for sign-up.
-- SSO callback routes live under:
-  - `src/app/(auth)/sign-in/sso-callback/page.tsx`
-  - `src/app/(auth)/sign-up/sso-callback/page.tsx`
-- Clerk is backend/session infrastructure only in this repo. Do not reintroduce
-  Clerk UI surfaces such as `SignIn`, `SignUp`, `UserButton`, or
-  `AuthenticateWithRedirectCallback`.
-- The signed-in header control is now custom and lives in
-  `src/components/site-header-account-menu.tsx`.
-- Keep auth checks on the server when possible. The site header pattern is the
-  reference: server-side `auth()` in `site-header.tsx`, client-only scroll UI
-  in `site-header-surface.tsx`.
+- **Clerk Constraints**: Clerk serves strictly as the backend session infrastructure. **Do not reintroduce standard Clerk UI overlays** (`SignIn`, `SignUp`, `UserButton`, etc.). Custom navigation flows utilize `src/components/site-header-account-menu.tsx` for signed-in actions.
+- **Server Guarding**: Always keep authentication checks on the server level when possible (`site-header.tsx`), delegating UI rendering to the client components.
 
-## Persistence and Preview Rules
+---
 
-- Server writes enter through `src/app/actions.ts` via `savePortfolioAction`.
-- `savePortfolioAction` always validates the shared portfolio schema first.
-- `src/lib/portfolio-storage.ts` always writes a preview cookie before trying
-  Supabase persistence.
-- If `SUPABASE_SERVICE_ROLE_KEY` is missing, saves still succeed in preview
-  mode and the UI should explain that the public route is not fully persisted.
-- Public reads prefer Supabase, then fall back to preview cookie data, then to
-  seed portfolios.
+## 5. Persistence, Uploads, & Swapping Rules
 
-Current persistence shape:
+### A. Single Portfolio Record Rule
+To avoid duplicate portfolios and table bloat, changing a portfolio's visual template **modifies the single, shared portfolio record** rather than creating new entries. The update modifies `template_settings` and `template_slug` while keeping existing user bio, education, experience, and custom sections intact.
 
-- Ownership is anchored by Clerk user id.
-- `profiles` is upserted on save.
-- `portfolios` stores the main record, including `template_settings`.
-- Related reads currently hydrate:
-  - `portfolio_experience`
-  - `portfolio_recommendations`
-  - `portfolio_assets` (`kind = 'gallery-image'`)
+### B. Upload Route Guards & Image Verification
+- **Upload Utility**: `src/lib/portfolio-image-uploads.ts` manages image constraints:
+  - Allowed formats: `.jpg, .jpeg, .png, .webp` (max `5MB`).
+  - Storage bucket: `portfolio-assets`.
+- **Security Middlewares**: `src/lib/security/request-guard.ts` intercepts incoming mutation requests. **Critical Guard**: Keep the request guards configured to allow valid file uploads and dynamic assets, preventing `405 Method Not Allowed` errors.
 
-`PortfolioSection` types already exist in `src/lib/portfolio-schema.ts` for
-optional structured sections, but current storage hydration is still centered on
-experience, recommendation, and gallery assets.
+### C. Asset Switch & Preservation Rules
+- **Preserved Assets**: User-uploaded profile images and portfolio gallery images are template-agnostic. They are retained globally when switching templates.
+- **Managed Assets**: `src/lib/portfolio-storage.ts` maintains a `MANAGED_ASSET_KINDS` array containing specific, non-persistent, or template-dependent asset items. Ensure that this checklist is safely managed so template-agnostic files do not get cleaned up or lost during template transitions.
 
-## Template System Rules
+---
 
-- Renderer: `src/components/portfolio-renderer.tsx`
-- Dynamic registry: `src/templates/registry.ts`
-- Catalog metadata: `src/lib/template-catalog.ts`
-- Template-specific builder fields: `src/lib/template-field-registry.ts`
-- Shared schema: `src/lib/portfolio-schema.ts`
+## 6. Template System Rules
 
-Important guardrails:
+- **Visual Renderer**: `src/components/portfolio-renderer.tsx` (Avoid placing inline template-specific conditionals here; let the registry handle dynamic matching)
+- **Dynamic Registry**: `src/templates/registry.ts`
+- **Catalog Metadata**: `src/lib/template-catalog.ts`
+- **Dynamic Builder Fields**: `src/lib/template-field-registry.ts`
+- **Shared Schema**: `src/lib/portfolio-schema.ts`
 
-- Do not add conditionals to `portfolio-renderer.tsx` to special-case template
-  behavior. Extend the catalog, registry, and template component instead.
-- Do not create per-template database tables.
-- Template-specific presentation settings belong in `templateSettings`.
-- Template-specific builder controls belong in
-  `template-field-registry.ts`.
-- Gallery visuals should come from `portfolio_assets` or safe fallbacks, not
-  hardcoded image arrays.
+### Steps to Register a New Template
+1. Create metadata inside `src/lib/template-catalog.ts`.
+2. Add dynamic mapping to `src/templates/registry.ts`.
+3. Build the core component inside `src/templates/<slug>`.
+4. Configure any unique interactive settings in `src/lib/template-field-registry.ts`.
+5. Seed mock portfolio fallbacks in `src/lib/portfolio-storage.ts`.
 
-When adding a template, update all of these together:
+---
 
-1. `src/lib/template-catalog.ts`
-2. `src/templates/registry.ts`
-3. The template component under `src/templates/<slug>`
-4. `src/lib/template-field-registry.ts` if the template needs custom settings
-5. Seed preview coverage in `src/lib/portfolio-storage.ts` if needed
+## 7. Recent System Changes
 
-## Studio-Specific Notes
+- **Clerk Custom Flow Integration**: Replaced pre-packaged widgets with custom callbacks, supporting custom styling and direct OAuth integrations.
+- **Tailwind CSS v4 Migration**: Transitioned styles completely to Tailwind CSS v4 using `@tailwindcss/postcss` and dynamic `@import "tailwindcss"` setups.
+- **Upload Route Fix**: Audited upload routes and updated request guard boundaries (`request-guard.ts`) to resolve 405 error cases on direct client uploads.
+- **Single Instance Persistence**: Reconstructed persistence layers in `savePortfolioAction` to prevent duplicate row creation upon changing portfolio templates.
+- **Asset Lifecycle Management**: Introduced strict asset segregation in `portfolio-storage.ts` via `MANAGED_ASSET_KINDS` to ensure profile and gallery photos are preserved across layout swaps.
 
-- `src/components/studio/studio-shell.tsx` is a client-side editing surface
-  with a split editor/preview layout.
-- Studio supports unauthenticated drafting first, then resumes save after auth.
-- The save bridge stores intent in session storage and opens Clerk only when a
-  real save is requested.
+---
 
-Treat Studio as a product surface of its own. It is not just a wrapper around
-the builder page.
+## 8. Verification & QA Protocol
 
-## Recent System Changes Reflected Here
+Always execute this protocol before completing changes:
 
-- `21ada2f`: introduced `(main)` and `(auth)` route groups plus the shared
-  shell structure.
-- `39d5d2c`: added template settings, field registry plumbing, and Supabase
-  persistence for template config.
-- `d02385a`, `c579694`, `87dcfac`: moved the app onto custom Clerk-powered auth pages with Google OAuth, email/password, email verification, and callback routes.
-- `e7f2a1b`: migrated to Tailwind CSS v4 and optimized dev environment memory limits.
-
-## Development Environment
-
-### Memory and Performance
-- The project requires a higher Node memory limit for stable development due to the size of the template system and Turbopack usage.
-- The `dev` script is pre-configured with `cross-env NODE_OPTIONS='--max-old-space-size=4096'`. Do not lower this limit unless strictly necessary.
-
-### Styling System
-- **Tailwind CSS v4**: The project uses Tailwind v4 via `@tailwindcss/postcss`.
-- **CSS Entry Point**: `src/app/globals.css` uses the `@import "tailwindcss";` syntax.
-- **Config**: Do not reintroduce a legacy `tailwind.config.js` unless it's strictly required for a tool that doesn't yet support v4 native CSS config.
-
-### Configuration
-- Use `next.config.ts` for all Next.js configuration. Redundant `next.config.js` files should be removed to avoid resolution conflicts.
-
-## Verification
-
-After touching architecture-sensitive areas:
-
-1. Run targeted lint for the files you changed.
-2. Run `npm run build` when you change route behavior, server/client boundaries,
-   auth flows, or shared rendering contracts.
-3. If you change persistence behavior, verify both preview-mode fallback and
-   the Supabase-backed path.
+1. **Linting Verification**: Run targeted lint tests for modified directories to check types and imports.
+2. **Build Validation**: Execute `npm run build` locally when altering page router maps, middleware, server-client borders, or authentication callbacks.
+3. **Double Persistence Verification**: Verify that saves work seamlessly across both:
+   - *Preview fallback mode* (Local browser cookies, unauthenticated draft mode).
+   - *Supabase authenticated persistence mode* (Real PostgreSQL write operations).
