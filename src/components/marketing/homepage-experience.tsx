@@ -16,8 +16,8 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
   ArrowRight,
   Blocks,
-  Briefcase,
   Braces,
+  Briefcase,
   Globe,
   ImagePlus,
   Layers3,
@@ -186,8 +186,8 @@ function LogoWithFallback({
 
 export function StackSection() {
   return (
-    <section id="stack" className="relative mt-9 h-full py-4">
-      <div className="[mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)] w-200 grayscale">
+    <section id="stack" className="relative mt-9 h-full py-4 w-full flex justify-center">
+      <div className="[mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)] w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-2xl grayscale overflow-hidden">
         <Marquee speed={20} pauseOnHover loop={0}>
           {TECH_STACK_MARQUEE.map((item) => (
             <span
@@ -257,18 +257,18 @@ export function HomepageExperience({
       ref={rootRef}
       className="flex flex-col items-center space-y-24 pt-10 md:space-y-28 md:pt-14"
     >
-      <div className="relative space-y-12">
-        <div className="mx-auto flex max-w-4xl flex-col items-center text-center">
+      <div className="relative space-y-12 w-full max-w-full overflow-hidden flex flex-col items-center">
+        <div className="mx-auto flex max-w-4xl flex-col items-center text-center px-4">
           <h1
             data-hero-item
-            className="mt-6 max-w-4xl text-5xl font-semibold tracking-[-0.07em] text-foreground md:text-7xl"
+            className="mt-6 max-w-4xl text-4xl font-semibold tracking-[-0.07em] text-foreground sm:text-5xl md:text-7xl"
           >
             Launch a portfolio with a
             <span className="block text-accent">cleaner product feel</span>
           </h1>
           <p
             data-hero-item
-            className="mt-6 max-w-2xl text-base leading-7 text-foreground-muted md:text-lg md:leading-8"
+            className="mt-6 max-w-2xl text-sm leading-6 text-foreground-muted sm:text-base sm:leading-7 md:text-lg md:leading-8"
           >
             DevFrame gives developers a dark, focused Studio for drafting,
             previewing, and publishing a shareable portfolio route without the
@@ -276,21 +276,21 @@ export function HomepageExperience({
           </p>
           <div
             data-hero-item
-            className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center"
+            className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center w-full sm:w-auto justify-center px-4"
           >
-            <Button asChild size="sm" variant="accent">
+            <Button asChild size="sm" variant="accent" className="w-full sm:w-auto">
               <Link href={startBuildingHref}>Open Studio</Link>
             </Button>
-            <Button asChild size="sm" variant="secondary">
+            <Button asChild size="sm" variant="secondary" className="w-full sm:w-auto">
               <Link href="/templates">Browse templates</Link>
             </Button>
           </div>
           <StackSection />
         </div>
 
-        <div className="h-[600px] shrink-0 mask-[radial-gradient(white_30%,transparent_90%)] perspective-[4000px] perspective-origin-center">
-          <div className="translate-y-8 rotate-x-8 rotate-y-12 -rotate-z-6 transform-3d scale-[0.82] origin-top">
-            <Card data-hero-panel className="border-border">
+        <div className="h-[280px] sm:h-[390px] md:h-[500px] lg:h-[620px] xl:h-[720px] w-full overflow-hidden flex justify-center items-start mask-[radial-gradient(white_45%,transparent_90%)] perspective-[4000px] perspective-origin-center shrink-0">
+          <div className="translate-y-4 sm:translate-y-8 rotate-x-8 rotate-y-12 -rotate-z-6 transform-3d scale-[0.34] sm:scale-[0.48] md:scale-[0.62] lg:scale-[0.78] xl:scale-[0.9] origin-top shrink-0 w-[1100px]">
+            <Card data-hero-panel className="border-border w-full">
               <CardContent className="p-0">
                 <div className="grid gap-0 md:grid-cols-[0.86fr_1.14fr]">
                   <div className="border-b border-border p-6 md:border-b-0 md:border-r">
@@ -413,9 +413,8 @@ export function HomepageExperience({
                                   <span
                                     className="size-8 rounded-lg border border-border bg-surface"
                                     style={{
-                                      backgroundImage: `linear-gradient(135deg, rgba(201,169,110,${
-                                        0.34 + index * 0.16
-                                      }), rgba(255,255,255,0.06))`,
+                                      backgroundImage: `linear-gradient(135deg, rgba(201,169,110,${0.34 + index * 0.16
+                                        }), rgba(255,255,255,0.06))`,
                                     }}
                                   />
                                   <span className="text-xs font-medium text-foreground-muted">

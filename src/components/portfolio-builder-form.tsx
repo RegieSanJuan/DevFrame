@@ -242,6 +242,18 @@ export function PortfolioBuilderForm({
                   {...register("skills")}
                 />
                 <FieldError message={errors.skills?.message} />
+                {selectedTemplate === "vertex" && (
+                  (() => {
+                    const count = liveValues.skills
+                      ? liveValues.skills.split(",").map((s) => s.trim()).filter(Boolean).length
+                      : 0;
+                    return count > 8 ? (
+                      <p className="mt-1.5 text-xs text-amber-500 font-semibold">
+                        Vertex template only shows the first 8 skills in the bento layout to prevent grid overflow (current: {count}).
+                      </p>
+                    ) : null;
+                  })()
+                )}
               </div>
             </section>
 

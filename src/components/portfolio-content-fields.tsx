@@ -678,20 +678,26 @@ export function PortfolioContentFields({
                 </ItemShell>
               ))}
             </div>
-            <Button
-              type="button"
-              variant="secondary"
-              size="xs"
-              onClick={() =>
-                onFieldChange("recentProjects", [
-                  ...values.recentProjects,
-                  EMPTY_RECENT_PROJECT,
-                ])
-              }
-            >
-              <Plus className="size-3.5" />
-              Add recent project
-            </Button>
+            {!(templateSlug === "vertex" && values.recentProjects.length >= 2) ? (
+              <Button
+                type="button"
+                variant="secondary"
+                size="xs"
+                onClick={() =>
+                  onFieldChange("recentProjects", [
+                    ...values.recentProjects,
+                    EMPTY_RECENT_PROJECT,
+                  ])
+                }
+              >
+                <Plus className="size-3.5" />
+                Add recent project
+              </Button>
+            ) : (
+              <p className="text-xs text-amber-500 font-semibold">
+                Vertex template supports a maximum of 2 recent projects to prevent grid overflow.
+              </p>
+            )}
           </SectionShell>
         );
 

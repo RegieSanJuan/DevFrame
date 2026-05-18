@@ -142,9 +142,22 @@ the builder page.
   shell structure.
 - `39d5d2c`: added template settings, field registry plumbing, and Supabase
   persistence for template config.
-- `d02385a`, `c579694`, `87dcfac`: moved the app onto custom Clerk-powered
-  auth pages with Google OAuth, email/password, email verification, and callback
-  routes.
+- `d02385a`, `c579694`, `87dcfac`: moved the app onto custom Clerk-powered auth pages with Google OAuth, email/password, email verification, and callback routes.
+- `e7f2a1b`: migrated to Tailwind CSS v4 and optimized dev environment memory limits.
+
+## Development Environment
+
+### Memory and Performance
+- The project requires a higher Node memory limit for stable development due to the size of the template system and Turbopack usage.
+- The `dev` script is pre-configured with `cross-env NODE_OPTIONS='--max-old-space-size=4096'`. Do not lower this limit unless strictly necessary.
+
+### Styling System
+- **Tailwind CSS v4**: The project uses Tailwind v4 via `@tailwindcss/postcss`.
+- **CSS Entry Point**: `src/app/globals.css` uses the `@import "tailwindcss";` syntax.
+- **Config**: Do not reintroduce a legacy `tailwind.config.js` unless it's strictly required for a tool that doesn't yet support v4 native CSS config.
+
+### Configuration
+- Use `next.config.ts` for all Next.js configuration. Redundant `next.config.js` files should be removed to avoid resolution conflicts.
 
 ## Verification
 
