@@ -54,7 +54,7 @@ function VertexTemplate({ portfolio }: TemplateComponentProps) {
   };
 
   const galleryImages = filterRenderableGalleryImages(portfolio.galleryImages);
-  const projectCards = getDisplayProjects(portfolio);
+  const projectCards = getDisplayProjects(portfolio).slice(0, 3); // Limit to 3 total (featured + max 2 recent)
   const scheduleCallHref = portfolio.scheduleCall?.href || `mailto:${portfolio.email}`;
   const scheduleCallLabel = portfolio.scheduleCall?.label || "Schedule a Call";
   const hasExperience = Boolean(portfolio.experience?.length);
@@ -266,14 +266,15 @@ function VertexTemplate({ portfolio }: TemplateComponentProps) {
             </p>
             <a
               href={`/p/${portfolio.slug}`}
-              className="mt-3 inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-semibold transition-opacity hover:opacity-80"
+              className="mt-3 inline-flex h-8 items-center gap-1.5 rounded-lg border px-3 text-xs font-semibold transition-all hover:opacity-95"
               style={{
-                backgroundColor: "var(--vertex-text-main)",
-                color: "var(--vertex-root-bg)",
+                backgroundColor: "var(--vertex-bg)",
+                color: "var(--vertex-text-main)",
+                borderColor: "var(--vertex-border)",
               }}
             >
               Open public resume
-              <ArrowRight className="h-3.5 w-3.5" />
+              <ArrowRight className="h-3.5 w-3.5 opacity-60" />
             </a>
             <div
               className="mt-4 space-y-3 rounded-xl border p-4"
@@ -332,10 +333,10 @@ function VertexTemplate({ portfolio }: TemplateComponentProps) {
             </div>
           </BentoCard>
 
-          <BentoCard className="@md:col-span-4">
+          <BentoCard className="@md:col-span-2">
             <h2 className="mb-4 text-lg font-bold">Tech Stack</h2>
             <div className="flex flex-wrap gap-1.5">
-              {portfolio.skills.map((skill) => (
+              {portfolio.skills.slice(0, 8).map((skill) => (
                 <span
                   key={skill}
                   className="rounded border px-2 py-0.5 text-[10px] font-medium"
@@ -404,14 +405,42 @@ function VertexTemplate({ portfolio }: TemplateComponentProps) {
           <BentoCard className="@md:col-span-2">
             <h2 className="mb-3 text-sm font-bold">Links</h2>
             <div className="space-y-1.5">
-              <a
-                href={portfolio.linkedinUrl}
-                className="flex items-center justify-between rounded-lg p-2 transition-opacity hover:opacity-80"
-                style={{ backgroundColor: "var(--vertex-root-bg)" }}
-              >
-                <span className="text-[10px] font-medium">LinkedIn</span>
-                <ArrowRight className="h-3 w-3 opacity-40" />
-              </a>
+              {portfolio.linkedinUrl && (
+                <a
+                  href={portfolio.linkedinUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center justify-between rounded-lg p-2 transition-opacity hover:opacity-80"
+                  style={{ backgroundColor: "var(--vertex-root-bg)" }}
+                >
+                  <span className="text-[10px] font-medium">LinkedIn</span>
+                  <ArrowRight className="h-3 w-3 opacity-40" />
+                </a>
+              )}
+              {portfolio.githubUrl && (
+                <a
+                  href={portfolio.githubUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center justify-between rounded-lg p-2 transition-opacity hover:opacity-80"
+                  style={{ backgroundColor: "var(--vertex-root-bg)" }}
+                >
+                  <span className="text-[10px] font-medium">GitHub</span>
+                  <ArrowRight className="h-3 w-3 opacity-40" />
+                </a>
+              )}
+              {portfolio.websiteUrl && (
+                <a
+                  href={portfolio.websiteUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center justify-between rounded-lg p-2 transition-opacity hover:opacity-80"
+                  style={{ backgroundColor: "var(--vertex-root-bg)" }}
+                >
+                  <span className="text-[10px] font-medium">Website</span>
+                  <ArrowRight className="h-3 w-3 opacity-40" />
+                </a>
+              )}
               <a
                 href={`mailto:${portfolio.email}`}
                 className="flex items-center justify-between rounded-lg p-2 transition-opacity hover:opacity-80"

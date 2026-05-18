@@ -475,7 +475,7 @@ function NovaTemplate({ portfolio }: TemplateComponentProps) {
             <TemplateGallery
               images={galleryImages}
               className="grid gap-4"
-              galleryClassName="@sm:grid-cols-3"
+              galleryClassName="@md:grid-cols-3"
               tileClassName="rounded-3xl"
               imageClassName="p-4 md:p-8 opacity-90"
               navButtonClassName="border-[var(--nova-border-strong)] text-[var(--nova-text)] bg-[var(--nova-surface)]"

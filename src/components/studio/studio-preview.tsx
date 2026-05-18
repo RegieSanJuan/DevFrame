@@ -102,12 +102,10 @@ export function StudioPreview({
   );
 
   return (
-    <div className="relative flex h-full flex-col items-center justify-center w-full">
-      <ScrollArea
-        className={`dark w-full @container ${device === "mobile" ? "max-w-[430px] border border-white/10 rounded-[32px] shadow-2xl overflow-hidden h-[80%]" : "h-full"}  transition-all duration-500 ease-in-out`}
-      >
-        <PortfolioRenderer portfolio={portfolio} />
-      </ScrollArea>
-    </div>
+    <ScrollArea
+      className={`dark w-full @container ${device === "mobile" ? "max-w-[430px] border border-white/10 rounded-[32px] shadow-2xl overflow-hidden h-[80%]" : "h-full"}  transition-all duration-500 ease-in-out`}
+    >
+      <PortfolioRenderer portfolio={portfolio} />
+    </ScrollArea>
   );
 }

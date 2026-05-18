@@ -27,9 +27,7 @@ export function TemplateLocalPreview({
         className={`grid gap-12 ${isMobile ? "lg:grid-cols-[1fr_400px]" : "grid-cols-1"}`}
       >
         {/* Preview Container */}
-        <div
-
-        >
+        <div className="relative flex justify-center w-full h-[900px]">
           <StudioPreview portfolio={portfolio} device={viewMode} />
         </div>
 

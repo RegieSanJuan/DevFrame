@@ -376,11 +376,13 @@ export function StudioShell({
           className={`min-h-0 flex-1 overflow-hidden lg:min-w-0 ${mobilePanel === "editor" ? "hidden lg:block" : "block"
             }`}
         >
-          <StudioPreview
-            portfolio={livePortfolio}
-            device={device}
-            onScaleChange={setScale}
-          />
+          <div className="relative flex h-full flex-col items-center justify-center w-full">
+            <StudioPreview
+              portfolio={livePortfolio}
+              device={device}
+              onScaleChange={setScale}
+            />
+          </div>
         </main>
       </div>
     </div>

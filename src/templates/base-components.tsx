@@ -1,7 +1,7 @@
 "use client";
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { filterRenderableGalleryImages } from "@/lib/portfolio-image-uploads";
 
@@ -101,14 +101,62 @@ export function TemplateGallery({
 }: TemplateGalleryProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [useTransition, setUseTransition] = useState(true);
+  const [slideDirection, setSlideDirection] = useState<"left" | "right">("right");
+  const [containerWidth, setContainerWidth] = useState(0);
+  const ref = useRef<HTMLDivElement>(null);
   const safeImages = filterRenderableGalleryImages(images);
 
-  const carouselEnabled = safeImages.length > visibleCount;
-  const maxIndex = Math.max(safeImages.length - visibleCount, 0);
-  const currentIndex = Math.min(activeIndex, maxIndex);
-  const visibleImages = carouselEnabled
-    ? safeImages.slice(currentIndex, currentIndex + visibleCount)
+  useEffect(() => {
+    if (!ref.current) return;
+    const observer = new ResizeObserver((entries) => {
+      for (let entry of entries) {
+        setContainerWidth(entry.contentRect.width);
+      }
+    });
+    observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+
+  const effectiveVisibleCount = containerWidth > 0 && containerWidth < 448 ? 1 : visibleCount;
+
+  const carouselEnabled = safeImages.length > effectiveVisibleCount;
+  
+  const paddedImages = carouselEnabled
+    ? [
+        ...safeImages.slice(-effectiveVisibleCount),
+        ...safeImages,
+        ...safeImages.slice(0, effectiveVisibleCount),
+      ]
     : safeImages;
+
+  useEffect(() => {
+    if (!carouselEnabled) return;
+
+    if (activeIndex >= safeImages.length) {
+      const timeout = setTimeout(() => {
+        setUseTransition(false);
+        setActiveIndex(0);
+      }, 500);
+      return () => clearTimeout(timeout);
+    }
+    if (activeIndex <= -1) {
+      const timeout = setTimeout(() => {
+        setUseTransition(false);
+        setActiveIndex(safeImages.length - 1);
+      }, 500);
+      return () => clearTimeout(timeout);
+    }
+  }, [activeIndex, safeImages.length, carouselEnabled]);
+
+  useEffect(() => {
+    if (!useTransition) {
+      const timeout = setTimeout(() => {
+        setUseTransition(true);
+      }, 50);
+      return () => clearTimeout(timeout);
+    }
+  }, [useTransition]);
 
   useEffect(() => {
     if (!isTransitioning) {
@@ -117,7 +165,7 @@ export function TemplateGallery({
 
     const timeoutId = window.setTimeout(() => {
       setIsTransitioning(false);
-    }, 180);
+    }, 500);
 
     return () => window.clearTimeout(timeoutId);
   }, [isTransitioning]);
@@ -127,38 +175,34 @@ export function TemplateGallery({
   }
 
   const moveToPrevious = () => {
-    if (currentIndex === 0) {
-      return;
-    }
-
+    if (isTransitioning || !useTransition) return;
+    setSlideDirection("left");
     setIsTransitioning(true);
-    setActiveIndex((value) => Math.max(value - 1, 0));
+    setActiveIndex((value) => value - 1);
   };
 
   const moveToNext = () => {
-    if (currentIndex === maxIndex) {
-      return;
-    }
-
+    if (isTransitioning || !useTransition) return;
+    setSlideDirection("right");
     setIsTransitioning(true);
-    setActiveIndex((value) => Math.min(value + 1, maxIndex));
+    setActiveIndex((value) => value + 1);
   };
 
   const tileAnimationClassName = isTransitioning
-    ? "opacity-0 translate-y-2 scale-[0.985]"
-    : "opacity-100 translate-y-0 scale-100";
+    ? `opacity-0 ${slideDirection === "right" ? "translate-x-10" : "-translate-x-10"} scale-[0.985]`
+    : "opacity-100 translate-x-0 scale-100";
 
   if (!carouselEnabled) {
     const gridColumnsClassName =
       safeImages.length === 1
-        ? "sm:grid-cols-1"
+        ? "grid-cols-1"
         : safeImages.length === 2
-          ? "sm:grid-cols-2"
-          : "sm:grid-cols-3";
+          ? "grid-cols-2"
+          : "grid-cols-1 @md:grid-cols-3";
 
     return (
-      <div className={`grid gap-4 ${gridColumnsClassName} ${className}`}>
-        {visibleImages.map((image, index) => (
+      <div ref={ref} className={`grid gap-4 ${gridColumnsClassName} ${className}`}>
+        {safeImages.map((image, index) => (
           <div
             key={`${image.src}-${index}`}
             className={`relative aspect-square overflow-hidden rounded-2xl  ${transitionClassName} ${tileClassName} ${tileAnimationClassName}`}
@@ -177,36 +221,42 @@ export function TemplateGallery({
 
   return (
     <div
+      ref={ref}
       className={`grid items-center gap-4 lg:grid-cols-[auto_1fr_auto] ${className}`}
     >
       <button
         type="button"
         onClick={moveToPrevious}
-        disabled={currentIndex === 0}
         className={`inline-flex h-11 w-11 items-center justify-center rounded-full border transition-opacity hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-40 ${navButtonClassName}`}
         aria-label="Previous gallery images"
       >
         <ChevronLeft className="h-4 w-4" />
       </button>
-      <div className={`grid gap-4 sm:grid-cols-3 ${galleryClassName}`}>
-        {visibleImages.map((image, index) => (
-          <div
-            key={`${image.src}-${index}`}
-            className={`relative aspect-square overflow-hidden rounded-2xl  ${transitionClassName} ${tileClassName} ${tileAnimationClassName}`}
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={image.src}
-              alt={image.alt}
-              className={`absolute inset-0 h-full w-full object-contain p-6 ${imageClassName}`}
-            />
-          </div>
-        ))}
+      <div className={`overflow-hidden w-full ${galleryClassName}`}>
+        <div
+          className={`flex ${useTransition ? "transition-transform duration-500 ease-in-out" : ""}`}
+          style={{ transform: `translateX(-${(activeIndex + effectiveVisibleCount) * (100 / effectiveVisibleCount)}%)` }}
+        >
+          {paddedImages.map((image, index) => (
+            <div
+              key={`${image.src}-${index}`}
+              className={`flex-shrink-0 ${effectiveVisibleCount === 1 ? "w-full" : "w-1/3"} px-2`}
+            >
+              <div className={`relative aspect-square overflow-hidden rounded-2xl ${tileClassName}`}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={image.src}
+                  alt={image.alt}
+                  className={`absolute inset-0 h-full w-full object-contain p-6 ${imageClassName}`}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
       <button
         type="button"
         onClick={moveToNext}
-        disabled={currentIndex === maxIndex}
         className={`inline-flex h-11 w-11 items-center justify-center rounded-full border transition-opacity hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-40 ${navButtonClassName}`}
         aria-label="Next gallery images"
       >
