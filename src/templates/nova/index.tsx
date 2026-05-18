@@ -1,12 +1,12 @@
 "use client";
 
+import { filterRenderableGalleryImages } from "@/lib/portfolio-image-uploads";
 import {
   LinkPill,
   SectionLabel,
   SkillBadge,
   TemplateGallery,
 } from "@/templates/base-components";
-import { filterRenderableGalleryImages } from "@/lib/portfolio-image-uploads";
 import type { TemplateComponentProps } from "@/templates/registry";
 import { registerTemplate } from "@/templates/registry";
 import {
@@ -485,11 +485,14 @@ function NovaTemplate({ portfolio }: TemplateComponentProps) {
           </section>
         ) : null}
 
-        {/* ── Footer ───────────────────────────────────── */}
-        <footer
-          className="pt-8 flex flex-col @sm:flex-row items-start @sm:items-center justify-between gap-4"
-          style={{ borderTop: "1px solid var(--nova-border)" }}
-        >
+
+      </div>
+      {/* ── Footer ───────────────────────────────────── */}
+      <footer
+        className="px-8 py-8 flex flex-col @sm:flex-row items-center justify-center gap-4"
+        style={{ borderTop: "1px solid var(--nova-border)" }}
+      >
+        <div className="flex justify-between max-w-7xl w-full ">
           <p className="text-sm" style={{ color: "var(--nova-soft)" }}>
             {portfolio.name} · {portfolio.title}
           </p>
@@ -500,8 +503,9 @@ function NovaTemplate({ portfolio }: TemplateComponentProps) {
           >
             {portfolio.email}
           </a>
-        </footer>
-      </div>
+        </div>
+
+      </footer>
     </div>
   );
 }
