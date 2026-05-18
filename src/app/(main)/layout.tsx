@@ -9,7 +9,7 @@ export default function MainLayout({
   return (
     <>
       <SiteHeader />
-      <main className="pb-8 max-w-6xl w-full">{children}</main>
+      <main className="pb-8 max-w-6xl w-full px-6">{children}</main>
       <SiteFooter />
     </>
   );
