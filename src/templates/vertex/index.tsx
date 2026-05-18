@@ -31,6 +31,7 @@ function BentoCard({
   return (
     <div
       className={`rounded-2xl border border-[var(--vertex-border)] bg-[var(--vertex-bg)] backdrop-blur-md p-6 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] transition-all duration-300 hover:shadow-lg hover:border-[var(--vertex-accent)]/25 md:p-8 ${className}`}
+      style={{ WebkitBackdropFilter: "blur(12px)" }}
     >
       {children}
     </div>
