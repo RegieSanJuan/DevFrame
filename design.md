@@ -1,194 +1,212 @@
-# DevFrame Design System
+# DevFrame Design System & Specifications
 
-## Product Feel
+This document defines the visual design system, type tokens, UI components, surface modes, and template specification standards for **DevFrame**.
 
-DevFrame should read like a polished developer product, not a generic template
-marketplace. The current system is:
+---
 
-- dark-first
-- calm and tool-like
-- editorial on marketing pages
-- tighter and more operational inside builder, dashboard, auth, and studio
+## 1. Product Feel & Creative Direction
 
-The old green-first "Supabase look" is no longer the global shell. The live app
-now leans on dark neutrals with a warm metallic accent.
+DevFrame is designed to read like a polished developer tool and professional portfolio publisher rather than a generic theme marketplace. The design architecture is built around three core pillars:
 
-## Type Stack
+- **Dark-First Shell**: Lean into deep, rich, low-light environments (anthracite, slate, obsidian) with warm, premium metallic and glowing accents.
+- **Calm & High-Density UI**: Interface surfaces inside operational flows (Builder, Dashboard, Studio) should prioritize data density, crisp borders, and calm transitions over flashy marketing effects.
+- **Editorial Accentuation**: Keep public and landing pages expressive, utilizing high-contrast typography and subtle motion without losing the tool-centric visual grounding.
 
-- Sans: `Manrope`
-- Mono: `IBM Plex Mono`
+---
 
-Use Manrope for product copy and headings. Use IBM Plex Mono sparingly for route
-labels, numbered steps, and compact technical details.
+## 2. Typography Stack
 
-Uppercase helper labels are a real pattern in this repo. Reuse the existing
-badge and `section-label` treatments instead of inventing new eyebrow styles.
+We enforce a strict distinction between editorial, operational, and metadata typography to maintain structure.
 
-## Color Tokens
+| Type Classification | Font Family | Usage Guidelines | CSS Variables / Classes |
+| :--- | :--- | :--- | :--- |
+| **Sans / Body** | `Manrope`, sans-serif | Primary sans-serif font for UI elements, labels, marketing copy, and descriptions. | `font-sans` |
+| **Mono / Metadata** | `IBM Plex Mono`, monospace | Used strictly for routes, statistics, technical stacks, badges, and small metadata. | `font-mono` |
 
-The source of truth is `src/app/globals.css`.
+### Eyebrow & Badging Pattern
+To prevent decorative drift, helper labels and eyebrow text should always use uppercase text, small font sizes, wide tracking, and rounded silhouettes (e.g., standardizing on `.section-label` or the `Badge` component).
 
-Light mode:
+---
 
-- Background: `#ffffff`
-- Background alt: `#fafafa`
-- Surface: `#f4f4f5`
-- Surface strong: `#e4e4e7`
-- Border: `#e4e4e7`
-- Accent: `#b48e4b`
-- Accent strong: `#8f6e33`
-- Accent soft: `#fdfaf2`
+## 3. Global Color System
 
-Dark mode:
+Global color styles are configured in `src/app/globals.css` and use Tailwind CSS v4 custom variables. **The legacy green-first "Supabase" look is deprecated.** DevFrame is now centered on dark slate neutrals and warm metallic tones.
 
-- Background: `#0f0f0f`
-- Background alt: `#0a0a0a`
-- Surface: `#161616`
-- Surface strong: `#1e1e1e`
-- Border: `#222222`
-- Accent: `#c9a96e`
-- Accent strong: `#e2c488`
-- Accent soft: `#1e1a12`
+### Light Mode Tokens
+- **Background**: `#ffffff` (Primary page background)
+- **Background Alt**: `#fafafa` (Secondary block background)
+- **Surface**: `#f4f4f5` (Standard cards and dropdowns)
+- **Surface Strong**: `#e4e4e7` (Focused borders, highlights, and inline tags)
+- **Border**: `#e4e4e7` (Low-contrast separation lines)
+- **Accent**: `#b48e4b` (Classic warm gold / primary actions)
+- **Accent Strong**: `#8f6e33` (Hover and high-visibility labels)
+- **Accent Soft**: `#fdfaf2` (Subtle highlight fills)
 
-Do not document or reintroduce the old global green accent as the primary app
-identity.
+### Dark Mode Tokens (Primary Theme)
+- **Background**: `#0f0f0f` (Obsidian / absolute page background)
+- **Background Alt**: `#0a0a0a` (Secondary layout boundaries)
+- **Surface**: `#161616` (Deep glass surfaces and inputs)
+- **Surface Strong**: `#1e1e1e` (Buttons, overlays, and secondary CTAs)
+- **Border**: `#222222` (Sleek dark panel division lines)
+- **Accent**: `#c9a96e` (Polished gold / primary brand accents)
+- **Accent Strong**: `#e2c488` (Glowing active elements)
+- **Accent Soft**: `#1e1a12` (Low-opacity golden focus backgrounds)
 
-## Shared Primitives
+---
+
+## 4. Shared UI Primitives
 
 ### Buttons
-
-Use `src/components/ui/button.tsx`.
-
-Variants:
-
-- `default`
-- `secondary`
-- `accent`
-- `ghost`
-- `outline`
-
-Sizes:
-
-- `xs`
-- `default`
-- `sm`
-- `lg`
-- `icon`
-
-The `accent` button is the main action pattern. `ghost` is for low-emphasis nav
-and utility controls. Avoid ad hoc button classes when one of the shared
-variants already fits.
+All buttons must inherit from `src/components/ui/button.tsx`.
+- **Variants**: `default`, `secondary`, `accent` (primary golden theme), `ghost` (nav and tabs), `outline`.
+- **Sizes**: `xs`, `default`, `sm`, `lg`, `icon`.
+- **Guideline**: Use `accent` for high-importance workflows. Never use custom colored inline classes for standard actions.
 
 ### Cards
+Card surfaces inherit style behaviors from `src/components/ui/card.tsx`.
+- **Primary Design Style**: Large rounding (`rounded-[28px]`), subtle glowing dark/light borders, vertical gradient overlays, soft low-frequency shadows, and backdrop-blur layers on large responsive panels.
+- **Nested Elements**: Internal statistic boxes or status blocks step down to `rounded-2xl` or `rounded-[20px]` to maintain correct nested ratios.
 
-Use `src/components/ui/card.tsx` for framed surfaces.
+### Badges & Section Labels
+Badges utilize `src/components/ui/badge.tsx` with preset states (`default`, `success`, `warning`). Section headers use a `.section-label` class featuring `uppercase text-[10px] tracking-[0.24em] font-semibold`.
 
-Current card language:
+---
 
-- `rounded-[28px]`
-- subtle border
-- low-contrast vertical highlight
-- heavy but soft shadow
-- backdrop blur on major panels
+## 5. Surface Modes
 
-Inner statistic tiles and compact info blocks often step down to `rounded-2xl`
-or `rounded-[20px]` while keeping the same border and surface vocabulary.
+DevFrame splits into four operational zones, each with unique density rules:
 
-### Badges and Labels
+```mermaid
+graph TD
+    A[DevFrame Workspace] --> B[Marketing / Landing]
+    A --> C[Builder / Dashboard]
+    A --> D[Studio Flow]
+    A --> E[Public Portfolios]
+    
+    style B fill:#1e1a12,stroke:#c9a96e,stroke-width:2px
+    style C fill:#161616,stroke:#222222,stroke-width:2px
+    style D fill:#0a0a0a,stroke:#c9a96e,stroke-width:2px
+    style E fill:#0f0f0f,stroke:#222222,stroke-width:2px
+```
 
-Use `src/components/ui/badge.tsx` and the shared `.section-label` class.
+### Marketing (`/`, `/templates`, `/support`)
+- Expressive headers, perspective cards, subtle GSAP entry animations.
+- Highlight features through real product components instead of abstract graphic placeholders.
 
-Patterns already established:
+### Dashboard & Builder
+- Compact operational density.
+- Structured bands: summaries on top, setup status indicators, and modular input clusters.
 
-- uppercase
-- small type
-- wide tracking
-- rounded-full silhouette
+### Studio (`/studio`)
+- Minimalist app shell designed for deep focus.
+- Dual-column fixed layout showing code/controls on one side and a fully dynamic interactive preview on the other.
+- No heavy decorative assets; utility header with instant responsive toggles.
 
-`Badge` variants are currently `default`, `success`, and `warning`.
+### Auth (`/sign-in`, `/sign-up`)
+- Uses route-local custom authentication components in `@/components/auth` rather than standard Clerk widgets.
+- Styled to blend perfectly with the dark slate neutrals of the app shell, incorporating icon-led inputs, robust OAuth controls, and fallback states.
 
-## Surface Modes
+---
 
-### Marketing
+## 6. Template System Specifications & Registry
 
-Marketing pages can be more cinematic than the app shell, but they still need
-to feel product-grounded. Current homepage patterns include:
+Every portfolio template resides under `src/templates/<slug>` and registers itself dynamically to `src/templates/registry.ts`. Below are the complete specifications, variable overrides, and dynamic schema settings for each template.
 
-- large type
-- controlled GSAP reveal motion
-- perspective hero panel
-- template cards with a thin accent rule
-- dense, product-like content blocks instead of fluffy marketing sections
+---
 
-### Dashboard and Builder
+### A. Nova Template (`src/templates/nova`)
+A clean, minimal, center-aligned template utilizing large gradient typographic headings, side-by-side bio splits, and card highlights. Ideal for creative frontend developers and engineers emphasizing single projects.
 
-These surfaces should feel like a compact internal tool:
+- **Layout Structure**: 
+  - Centered Hero with transparent gradient title masking.
+  - Two-column split for Bio/Skills vs. Large Highlight Project.
+  - Asymmetric rows for Resume details and chronological Experience items.
+- **Typography & Details**:
+  - Focuses on crisp, light/dark transition timings.
+  - Custom pill-shaped action badges.
+- **Dynamic CSS Properties**:
+  - `--nova-bg`: Background color (Dark: `#0f0f0f`, Light: `#ffffff`)
+  - `--nova-surface`: Glass overlays (Dark: `#161616`, Light: `#f4f4f5`)
+  - `--nova-accent`: Highlight text & actions (Dark: Custom/`#c9a96e`, Light: Custom/`#b48e4b`)
+- **Supported `templateSettings` Options**:
+  ```typescript
+  type NovaSettings = {
+    defaultMode?: "dark" | "light"; // Primary starting theme state
+    heroTagline?: string;           // Custom subtitle below Name/Title
+    accentColor?: string;           // Hex code custom accent theme overrides
+  };
+  ```
 
-- summary band first
-- short explanatory copy
-- grouped information cards
-- clear route, template, and access status
-- setup readiness visible without leaving the workflow
+---
 
-### Studio
+### B. Vertex Template (`src/templates/vertex`)
+A high-density, bento-grid based layout inspired by professional engineering portfolios. Designed to pack rich developer metadata, verification marks, and external credentials into a beautiful dashboard block view.
 
-Studio is the most app-like surface in the repo:
+- **Layout Structure**:
+  - Header band with Profile Image, Status Subtitle, Map Pin, and Verification indicator.
+  - Six-column responsive Bento Grid containing:
+    - Large *About* block.
+    - Two-column tall *Experience* timeline.
+    - Compact *Professional Resume* widget with deep stat summaries.
+    - Custom *Tech Stack* label cluster.
+    - Horizontal block of *Recent Projects*.
+    - Media *Gallery* carousel.
+- **Visual Styles**:
+  - Explicit glassmorphism cards with `backdrop-blur-md` and shadow bounds.
+  - Custom theme switches with micro-icon animations (Sun/Moon sliders).
+- **Dynamic CSS Properties**:
+  - `--vertex-root-bg`: Main canvas color (Dark: `#090a0f`, Light: `#f8fafc`)
+  - `--vertex-bg`: Bento block canvas (Dark: `rgba(22, 24, 33, 0.7)`, Light: `rgba(255, 255, 255, 0.95)`)
+  - `--vertex-border`: Glowing divider (Dark: `rgba(255, 255, 255, 0.06)`, Light: `rgba(15, 23, 42, 0.06)`)
+  - `--vertex-accent`: Main block highlights (Dark: `#6366f1`, Light: `#4f46e5`)
+- **Supported `templateSettings` Options**:
+  ```typescript
+  type VertexSettings = {
+    defaultMode?: "dark" | "light";      // Initial theme mode
+    yearsOfExperience?: string;          // Numeric badge display inside Resume block
+    openSourceStars?: string;            // Showcase total project star count
+    showVerifiedBadge?: boolean;         // Toggles the glowing verification checkmark
+  };
+  ```
 
-- near-black frame
-- fixed-height split editor/preview
-- mobile toggle between editor and preview
-- utility-first header
-- minimal ornament, maximum focus
+---
 
-Do not style Studio like the homepage.
+### C. Drift Template (`src/templates/drift`)
+A sophisticated, modern split-column portfolio styled for tech leaders and specialized backend/frontend engineers. Uses a sticky primary side panel with dynamic page scroll indicators and responsive side cards.
 
-### Auth
+- **Layout Structure**:
+  - **Left Side Panel (Sticky)**: Floating container with bold developer identity, dynamic jump-link indicator (animating lines that expand on hover), and unified social connections.
+  - **Right Side Panel (Scrollable)**: Assembling About details, high-opacity Experience cards, Recommendation blocks, Resume stats, Projects, and customizable Gallery tiles.
+- **Motion & Micro-interactions**:
+  - High-precision CSS line transitions inside navigation anchors.
+  - Fluid parent-child opacity shifts in list view groups (`group-hover/list`).
+- **Dynamic CSS Properties**:
+  - `--drift-bg`: Main side canvas (Dark: `#0f172a`, Light: `#f8fafc`)
+  - `--drift-heading`: Typography colors (Dark: `#e2e8f0`, Light: `#0f172a`)
+  - `--drift-accent`: Active navigation & hover states (Dark: Custom/`#5eead4`, Light: Custom/`#0d9488`)
+  - `--drift-hover`: Interaction overlay card (Dark: `rgba(30, 41, 59, 0.5)`, Light: `rgba(241, 245, 249, 0.8)`)
+- **Supported `templateSettings` Options**:
+  ```typescript
+  type DriftSettings = {
+    defaultMode?: "dark" | "light";      // Theme switch setting
+    sidebarTagline?: string;             // Custom text shown directly under title
+    accentColor?: string;                // Hex code override for badges/links
+  };
+  ```
 
-Auth pages now use custom route-local forms, not stock Clerk screens.
+---
 
-The established pattern is:
+## 7. Motion & Animation Standards
 
-- centered single-column form
-- icon-led inputs
-- strong primary CTA
-- secondary Google entry
-- concise copy
-- graceful empty state when Clerk keys are missing
+- **Promotion vs. Operation**: Use GSAP or Framer Motion strictly on marketing homepages or entrance overlays. Inside the Builder or Studio, favor raw, high-performance CSS transitions (`transition-all duration-300`).
+- **Interactive States**: Hover actions should feel snappy but smooth (e.g., translation offsets `hover:-translate-y-0.5`, subtle scaling, or opacity transitions).
+- **Reduced Motion**: Respect system preferences by ensuring any heavy canvas elements or page-long triggers support the standard `motion-reduce` CSS media selectors.
 
-Keep auth surfaces aligned with the app shell and Clerk appearance config in
-`src/lib/clerk-auth-appearance.ts`.
+---
 
-## Layout Rules
+## 8. Development & Architectural Guardrails
 
-- `container-shell` is the main max-width wrapper for product pages.
-- Main marketing and dashboard sections often use asymmetrical two-column grids.
-- Public sections can use larger radii and looser spacing than Studio.
-- Keep route and status data in small framed blocks instead of loose inline text.
-
-## Motion
-
-- GSAP + `ScrollTrigger` are used on the homepage only.
-- Motion should support hierarchy and reveal, not spectacle.
-- Sticky surfaces use blur and border changes on scroll as a subtle state cue.
-
-If a new surface is operational rather than promotional, prefer calm transitions
-over entrance-heavy animation.
-
-## Template Presentation Rules
-
-- Template identity belongs in template components and catalog accents.
-- The surrounding product shell should stay visually consistent.
-- Template settings should change presentation details, not rewrite the entire
-  app shell.
-
-Current templates can have distinct personalities, but they still sit inside
-one shared DevFrame system.
-
-## Guardrails
-
-- Do not drift back to a globally green Supabase-branded shell.
-- Do not create one-off card, badge, or button systems when shared primitives
-  already exist.
-- Do not make builder, dashboard, or studio pages feel like landing-page
-  sections.
-- When in doubt, choose readable, dense, and calm over flashy.
+1. **No Table Sprawl**: Do not create unique database tables per-template. Store template variables cleanly using `templateSettings` JSON fields.
+2. **Keep the Shell Consistent**: The global navigation, authentication shell, and footer wrapper are template-agnostic. Design details belong *inside* the portfolio presentation layers, not the surrounding site shell.
+3. **No Branded Regressions**: Do not reintroduce the obsolete bright green color palette into the global app core.
+4. **Fallback Resilience**: Ensure every template renders seamlessly in "Demo Mode" if Supabase database links or Clerk keys are missing. Use stable fallback values for all profile images, projects, and gallery listings.
