@@ -258,7 +258,7 @@ export function HomepageExperience({
       className="flex flex-col items-center space-y-24 pt-10 md:space-y-28 md:pt-14"
     >
       <div className="relative space-y-12 w-full max-w-full overflow-hidden flex flex-col items-center">
-        <div className="mx-auto flex max-w-4xl flex-col items-center text-center px-4">
+        <div className="mx-auto flex max-w-4xl flex-col items-center text-center">
           <h1
             data-hero-item
             className="mt-6 max-w-4xl text-4xl font-semibold tracking-[-0.07em] text-foreground sm:text-5xl md:text-7xl"
