@@ -3,8 +3,7 @@ import Link from "next/link";
 
 import { ThemeToggle } from "../theme-toggle";
 import { DevframeLogo } from "./app-icon";
-
-const githubRepoUrl = "https://github.com/RegieSanJuan/DevFrame";
+import { GITHUB_REPO_URL } from "@/lib/project-links";
 
 function GithubIcon({ size = 15 }: { size?: number }) {
   return (
@@ -31,15 +30,9 @@ const footerLinks = {
   ],
   Developers: [
     { label: "Documentation", href: "/docs" },
-    { label: "API Reference", href: "/docs/api" },
-    { label: "GitHub", href: githubRepoUrl, external: true },
-    { label: "Open Source", href: "/support" },
-  ],
-  Company: [
-    { label: "About", href: "/about" },
-    { label: "Blog", href: "/blog" },
-    { label: "Careers", href: "/careers" },
-    { label: "Contact", href: "/contact" },
+    { label: "API Reference", href: "/api-reference" },
+    { label: "GitHub", href: GITHUB_REPO_URL, external: true },
+    { label: "Open Source", href: "/open-source" },
   ],
   Legal: [
     { label: "Privacy Policy", href: "/privacy" },
@@ -69,7 +62,7 @@ export function SiteFooter() {
       </div>
 
       <div className="relative z-10 mx-auto max-w-[88rem] px-5 pt-16 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 gap-x-8 gap-y-12 md:grid-cols-[1fr_repeat(4,_auto)] md:gap-x-12">
+        <div className="grid grid-cols-2 gap-x-8 gap-y-12 md:grid-cols-[1fr_repeat(3,_auto)] md:gap-x-12">
           <div className="col-span-2 flex flex-col gap-5 md:col-span-1">
             <DevframeLogo className="w-fit opacity-90 transition hover:opacity-100" />
 
@@ -80,7 +73,7 @@ export function SiteFooter() {
 
             <div className="flex items-center gap-3">
               <a
-                href={githubRepoUrl}
+                href={GITHUB_REPO_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="GitHub"

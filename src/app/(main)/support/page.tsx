@@ -20,11 +20,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
-const githubRepoUrl = "https://github.com/RegieSanJuan/DevFrame";
-const issuesUrl = `${githubRepoUrl}/issues`;
-const discussionsUrl = `${githubRepoUrl}/discussions`;
-const contributingUrl = `${githubRepoUrl}/blob/main/CONTRIBUTING.md`;
+import {
+  GITHUB_CONTRIBUTING_URL,
+  GITHUB_DISCUSSIONS_URL,
+  GITHUB_ISSUES_URL,
+  GITHUB_REPO_URL,
+} from "@/lib/project-links";
 
 export const metadata: Metadata = {
   title: "Support",
@@ -37,7 +38,7 @@ const communityActions = [
     title: "Star the GitHub repository",
     description:
       "A star helps more developers discover DevFrame and signals that the project is worth keeping alive.",
-    href: githubRepoUrl,
+    href: GITHUB_REPO_URL,
     cta: "Star DevFrame",
     icon: Star,
   },
@@ -45,7 +46,7 @@ const communityActions = [
     title: "Report bugs",
     description:
       "Open a focused issue with steps to reproduce, screenshots, browser details, and the template or route affected.",
-    href: issuesUrl,
+    href: GITHUB_ISSUES_URL,
     cta: "Open issues",
     icon: Bug,
   },
@@ -53,7 +54,7 @@ const communityActions = [
     title: "Suggest features",
     description:
       "Share ideas for Builder, Studio, templates, public portfolios, or deployment workflows.",
-    href: discussionsUrl,
+    href: GITHUB_DISCUSSIONS_URL,
     cta: "Start a discussion",
     icon: Lightbulb,
   },
@@ -61,7 +62,7 @@ const communityActions = [
     title: "Contribute code/docs/templates",
     description:
       "Send focused pull requests for bug fixes, documentation, template improvements, and small product upgrades.",
-    href: contributingUrl,
+    href: GITHUB_CONTRIBUTING_URL,
     cta: "Read the guide",
     icon: Code2,
   },
@@ -104,7 +105,7 @@ export default function SupportPage() {
           </div>
           <div className="flex flex-col gap-3 sm:flex-row">
             <Button asChild size="lg" variant="accent">
-              <a href={githubRepoUrl} rel="noopener noreferrer" target="_blank">
+              <a href={GITHUB_REPO_URL} rel="noopener noreferrer" target="_blank">
                 <Star className="size-4" />
                 Star on GitHub
                 <ArrowUpRight className="size-4" />
