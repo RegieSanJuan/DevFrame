@@ -22,6 +22,7 @@ export const availabilityOptions = [
 export const EXPERIENCE_ENTRY_LIMIT = 8;
 export const RECENT_PROJECT_LIMIT = 6;
 export const GALLERY_IMAGE_LIMIT = 6;
+export const PORTFOLIO_SLUG_PATTERN = /^[a-z0-9-]+$/;
 
 export const PORTFOLIO_SECTION_TYPES = {
   profileImage: "profile_image",
@@ -110,7 +111,7 @@ export const portfolioFormSchema = z.object({
     .min(3, "Use at least 3 characters")
     .max(32, "Keep the slug under 32 characters")
     .regex(
-      /^[a-z0-9-]+$/,
+      PORTFOLIO_SLUG_PATTERN,
       "Use lowercase letters, numbers, and hyphens only",
     ),
   name: z.string().trim().min(2, "Enter your full name"),
@@ -269,6 +270,7 @@ export type PortfolioRecord = {
   ownerId: string;
   slug: string;
   templateSlug: TemplateSlug;
+  isPublished: boolean;
   name: string;
   title: string;
   location: string;
@@ -321,6 +323,16 @@ export function getPortfolioSectionData<T extends Record<string, unknown>>(
   );
 
   return matchingSection?.data as T | undefined;
+}
+
+export function isValidPortfolioSlug(slug: string | null | undefined) {
+  const value = slug?.trim() ?? "";
+
+  return (
+    value.length >= 3 &&
+    value.length <= 32 &&
+    PORTFOLIO_SLUG_PATTERN.test(value)
+  );
 }
 
 export function buildResumeLink(

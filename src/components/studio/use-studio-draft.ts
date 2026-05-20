@@ -29,6 +29,7 @@ type StudioDraftAction =
   | {
       type: "hydrate";
       requestedTemplate: TemplateSlug | null;
+      initialFormValues: PortfolioFormValues | null;
     }
   | {
       type: "replace-draft";
@@ -60,6 +61,24 @@ function getDefaultState(templateSlug: TemplateSlug): StudioDraftState {
     },
     templateSettings,
     isHydrated: false,
+  };
+}
+
+function getStateFromFormValues(
+  formValues: PortfolioFormValues,
+  isHydrated = false,
+): StudioDraftState {
+  const templateSettings =
+    formValues.templateSettings ??
+    getTemplateSettingsDefaults(formValues.templateSlug);
+
+  return {
+    formValues: {
+      ...formValues,
+      templateSettings,
+    },
+    templateSettings,
+    isHydrated,
   };
 }
 
@@ -111,6 +130,10 @@ function reducer(
   switch (action.type) {
     case "hydrate": {
       const fallbackTemplate = state.formValues.templateSlug;
+
+      if (action.initialFormValues) {
+        return getStateFromFormValues(action.initialFormValues, true);
+      }
 
       if (typeof window === "undefined") {
         return {
@@ -204,20 +227,36 @@ function reducer(
   }
 }
 
-export function useStudioDraft(requestedTemplate: TemplateSlug | null) {
-  const fallbackTemplate = requestedTemplate ?? "nova";
+type StudioDraftSeed = {
+  initialFormValues: PortfolioFormValues | null;
+  requestedTemplate: TemplateSlug | null;
+};
+
+function getInitialState(seed: StudioDraftSeed) {
+  if (seed.initialFormValues) {
+    return getStateFromFormValues(seed.initialFormValues);
+  }
+
+  return getDefaultState(seed.requestedTemplate ?? "nova");
+}
+
+export function useStudioDraft(
+  requestedTemplate: TemplateSlug | null,
+  initialFormValues: PortfolioFormValues | null = null,
+) {
   const [state, dispatch] = useReducer(
     reducer,
-    fallbackTemplate,
-    getDefaultState,
+    { initialFormValues, requestedTemplate },
+    getInitialState,
   );
 
   useEffect(() => {
     dispatch({
       type: "hydrate",
       requestedTemplate,
+      initialFormValues,
     });
-  }, [requestedTemplate]);
+  }, [initialFormValues, requestedTemplate]);
 
   useEffect(() => {
     if (!state.isHydrated) {

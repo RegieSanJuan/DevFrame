@@ -16,12 +16,16 @@ type SiteHeaderClientProps = {
     email?: string;
   } | null;
   isClerkConfigured: boolean;
+  primaryCtaHref: string;
+  primaryCtaLabel: string;
 };
 
 export function SiteHeaderClient({
   userId,
   userDetails,
   isClerkConfigured,
+  primaryCtaHref,
+  primaryCtaLabel,
 }: SiteHeaderClientProps) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -89,7 +93,8 @@ export function SiteHeaderClient({
                       <Link href="/sign-in">Sign in</Link>
                     </Button>
                     <Button asChild size="xs" variant="accent">
-                      <Link href="/studio">
+                      <Link href={primaryCtaHref}>
+                        {primaryCtaLabel}
                         <ArrowRight className="size-4" />
                       </Link>
                     </Button>
@@ -97,8 +102,8 @@ export function SiteHeaderClient({
                 ) : (
                   <div className="flex items-center gap-3">
                     <Button asChild size="sm" variant="accent">
-                      <Link href="/studio">
-                        Edit Portfolio
+                      <Link href={primaryCtaHref}>
+                        {primaryCtaLabel}
                         <ArrowRight className="size-4 text-zinc-950 dark:text-zinc-50" />
                       </Link>
                     </Button>
@@ -141,7 +146,8 @@ export function SiteHeaderClient({
                   <Link href="/sign-in">Sign in</Link>
                 </Button>
                 <Button asChild size="lg" variant="accent" className="w-full h-12 cursor-pointer" onClick={() => setIsOpen(false)}>
-                  <Link href="/studio" className="flex items-center justify-center gap-2">
+                  <Link href={primaryCtaHref} className="flex items-center justify-center gap-2">
+                    {primaryCtaLabel}
                     <ArrowRight className="size-4" />
                   </Link>
                 </Button>
@@ -159,8 +165,8 @@ export function SiteHeaderClient({
                   />
                 </div>
                 <Button asChild size="lg" variant="accent" className="w-full h-12 cursor-pointer" onClick={() => setIsOpen(false)}>
-                  <Link href="/studio" className="flex items-center justify-center gap-2">
-                    Edit Portfolio
+                  <Link href={primaryCtaHref} className="flex items-center justify-center gap-2">
+                    {primaryCtaLabel}
                     <ArrowRight className="size-4" />
                   </Link>
                 </Button>

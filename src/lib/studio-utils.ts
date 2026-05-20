@@ -37,6 +37,7 @@ export function formValuesToRecord(
     ownerId,
     slug: values.slug || "preview",
     templateSlug: values.templateSlug,
+    isPublished: false,
     name: values.name || "Your Name",
     title: values.title || "Your Professional Title",
     location: values.location || "Your City",

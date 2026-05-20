@@ -103,6 +103,7 @@ function ClerkSaveBridge({
 
 type StudioShellProps = {
   clerkEnabled: boolean;
+  initialValues: PortfolioFormValues | null;
   requestedTemplate: TemplateSlug | null;
   templates: readonly PortfolioTemplate[];
   saveAction: (prev: BuilderFormState, data: FormData) => Promise<BuilderFormState>;
@@ -110,6 +111,7 @@ type StudioShellProps = {
 
 export function StudioShell({
   clerkEnabled,
+  initialValues,
   requestedTemplate,
   templates,
   saveAction,
@@ -122,7 +124,7 @@ export function StudioShell({
     updateTemplateSettings,
     switchTemplate,
     replaceDraft,
-  } = useStudioDraft(requestedTemplate);
+  } = useStudioDraft(requestedTemplate, initialValues);
 
   const [isSaving, setIsSaving] = useState(false);
   const [mobilePanel, setMobilePanel] = useState<"editor" | "preview">("editor");

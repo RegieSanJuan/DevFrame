@@ -205,11 +205,13 @@ export function StackSection() {
 }
 
 type HomepageExperienceProps = {
-  startBuildingHref: string;
+  primaryCtaHref: string;
+  primaryCtaLabel: string;
 };
 
 export function HomepageExperience({
-  startBuildingHref,
+  primaryCtaHref,
+  primaryCtaLabel,
 }: HomepageExperienceProps) {
   const rootRef = useRef<HTMLDivElement>(null);
 
@@ -279,7 +281,7 @@ export function HomepageExperience({
             className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center w-full sm:w-auto justify-center px-4"
           >
             <Button asChild size="sm" variant="accent" className="w-full sm:w-auto">
-              <Link href={startBuildingHref}>Open Studio</Link>
+              <Link href={primaryCtaHref}>{primaryCtaLabel}</Link>
             </Button>
             <Button asChild size="sm" variant="secondary" className="w-full sm:w-auto">
               <Link href="/templates">Browse templates</Link>
@@ -714,8 +716,8 @@ export function HomepageExperience({
 
             <div className="flex flex-col gap-3 sm:flex-row">
               <Button asChild size="lg" variant="accent">
-                <Link href={startBuildingHref}>
-                  Open Studio
+                <Link href={primaryCtaHref}>
+                  {primaryCtaLabel}
                   <ArrowRight className="size-4" />
                 </Link>
               </Button>

@@ -8,7 +8,7 @@ import type { PortfolioRecord } from "@/lib/portfolio-schema";
 import type { TemplateCatalogItem } from "@/lib/template-catalog";
 import { ExternalLink, FileText, X } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { TemplateLocalPreview } from "./local-preview";
 import { PreviewHeader } from "./preview-header";
 
@@ -21,11 +21,6 @@ export function PreviewClient({ portfolio, template }: PreviewClientProps) {
   const [viewMode, setViewMode] = useState<"desktop" | "mobile">("desktop");
   const [fullscreen, setFullscreen] = useState(false);
   const isMobile = useIsMobile();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   const resumeHref =
     portfolio.resumeLink?.url ||
@@ -63,7 +58,7 @@ export function PreviewClient({ portfolio, template }: PreviewClientProps) {
     );
   }
 
-  if (mounted && isMobile) {
+  if (isMobile) {
     return (
       <div className="fixed inset-0 z-[100] bg-background overflow-y-auto pb-[280px]">
         <style>{`

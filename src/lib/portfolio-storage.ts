@@ -15,6 +15,7 @@ import {
   buildProfileImage,
   buildResumeLink,
   buildScheduleCallLink,
+  isValidPortfolioSlug,
   normalizeSkills,
   PORTFOLIO_SECTION_TYPES,
   type GalleryImage,
@@ -41,6 +42,7 @@ type PortfolioRow = {
   owner_clerk_user_id: string;
   slug: string;
   template_slug: PortfolioRecord["templateSlug"];
+  is_published: boolean;
   full_name: string;
   title: string;
   location: string;
@@ -194,6 +196,7 @@ const BASE_PORTFOLIO: Omit<
   featuredProjectUrl: "https://stackmap.dev",
   updatedAt: "2026-04-15T08:00:00.000Z",
   source: "seed",
+  isPublished: true,
   experience: [
     { year: "2025 - Present", role: "AI Engineer", company: "Standard Chartered" },
     {
@@ -289,7 +292,7 @@ const SEED_PORTFOLIOS: PortfolioRecord[] = [
   {
     ...BASE_PORTFOLIO,
     ownerId: "seed-morgan-nova",
-    slug: "morgan-nova",
+  slug: "morgan-nova",
     templateSlug: "nova",
     previewUrl: createPortfolioUrl("morgan-nova"),
   },
@@ -318,6 +321,7 @@ function toPortfolioRecord(
     ownerId: row.owner_clerk_user_id,
     slug: row.slug,
     templateSlug: row.template_slug,
+    isPublished: row.is_published,
     name: row.full_name,
     title: row.title,
     location: row.location,
@@ -370,6 +374,7 @@ function buildPortfolioRecord(
     ownerId,
     slug: values.slug,
     templateSlug: values.templateSlug,
+    isPublished: source === "supabase",
     name: values.name,
     title: values.title,
     location: values.location,
@@ -1111,6 +1116,10 @@ export async function getPortfolioForOwner(ownerId: string) {
 }
 
 export async function getPublicPortfolio(slug: string) {
+  if (!isValidPortfolioSlug(slug)) {
+    return null;
+  }
+
   const supabase = createSupabasePublicClient() ?? createSupabaseAdminClient();
 
   if (supabase) {
