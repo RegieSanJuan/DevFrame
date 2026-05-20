@@ -259,8 +259,8 @@ function VertexTemplate({ portfolio }: TemplateComponentProps) {
           </a>
         </div>
 
-        <section className="grid grid-cols-1 gap-4 @md:grid-cols-6 @md:gap-5">
-          <BentoCard className="@md:col-span-4">
+        <section className="grid grid-cols-1 gap-4 @lg:grid-cols-6 @lg:gap-5">
+          <BentoCard className="@lg:col-span-4">
             <h2 className="mb-2 text-lg font-bold">About</h2>
             <p
               className="text-sm leading-relaxed"
@@ -271,7 +271,7 @@ function VertexTemplate({ portfolio }: TemplateComponentProps) {
           </BentoCard>
 
           {hasExperience ? (
-            <BentoCard className="@md:col-span-2 @md:row-span-2 flex flex-col justify-between">
+            <BentoCard className="@lg:col-span-2 @lg:row-span-2 flex flex-col justify-between">
               <div>
                 <h2 className="mb-4 text-lg font-bold">Experience</h2>
                 <div className="relative space-y-5">
@@ -316,7 +316,7 @@ function VertexTemplate({ portfolio }: TemplateComponentProps) {
             </BentoCard>
           ) : null}
 
-          <BentoCard className="@md:col-span-2">
+          <BentoCard className="@lg:col-span-2">
             <h2 className="mb-3 text-sm font-bold">Professional Resume</h2>
             <p
               className="text-[10px] uppercase tracking-[0.22em]"
@@ -393,7 +393,7 @@ function VertexTemplate({ portfolio }: TemplateComponentProps) {
             </div>
           </BentoCard>
 
-          <BentoCard className="@md:col-span-2">
+          <BentoCard className="@lg:col-span-2">
             <h2 className="mb-4 text-lg font-bold">Tech Stack</h2>
             <div className="flex flex-wrap gap-1.5">
               {portfolio.skills.slice(0, 8).map((skill) => (
@@ -412,7 +412,7 @@ function VertexTemplate({ portfolio }: TemplateComponentProps) {
             </div>
           </BentoCard>
 
-          <BentoCard className="@md:col-span-4">
+          <BentoCard className="@lg:col-span-4">
             <div className="mb-4 flex items-center justify-between">
               <h2 className="text-lg font-bold">Recent Projects</h2>
               <ExternalLink className="h-4 w-4 opacity-40" />
@@ -462,7 +462,7 @@ function VertexTemplate({ portfolio }: TemplateComponentProps) {
             </div>
           </BentoCard>
 
-          <BentoCard className="@md:col-span-2">
+          <BentoCard className="@lg:col-span-2">
             <h2 className="mb-3 text-sm font-bold">Links</h2>
             <div className="space-y-1.5">
               {portfolio.linkedinUrl && (
@@ -513,7 +513,7 @@ function VertexTemplate({ portfolio }: TemplateComponentProps) {
           </BentoCard>
 
           {galleryImages.length > 0 ? (
-            <BentoCard className="@md:col-span-6">
+            <BentoCard className="@lg:col-span-6">
               <h2 className="mb-4 text-lg font-bold">Gallery</h2>
               <TemplateGallery
                 images={galleryImages}
@@ -526,7 +526,7 @@ function VertexTemplate({ portfolio }: TemplateComponentProps) {
           ) : null}
 
           {portfolio.recommendation && (
-            <BentoCard className="@md:col-span-6">
+            <BentoCard className="@lg:col-span-6">
               <h2 className="mb-3 text-sm font-bold">Recommendation</h2>
               <blockquote
                 className="mb-3 text-xs italic leading-relaxed"
@@ -547,7 +547,7 @@ function VertexTemplate({ portfolio }: TemplateComponentProps) {
           )}
         </section>
       </div>
-      <footer className="mt-12 @md:col-span-6 flex justify-center items-center gap-1 border-t border-[var(--vertex-border)] py-5 text-sm">
+      <footer className="mt-12 @lg:col-span-6 flex justify-center items-center gap-1 border-t border-[var(--vertex-border)] py-5 text-sm">
         <p className="text-xs" style={{ color: "var(--vertex-text-muted)" }}>
           © {new Date().getFullYear()} {portfolio.name}. All rights reserved.
         </p>

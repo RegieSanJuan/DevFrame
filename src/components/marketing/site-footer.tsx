@@ -50,7 +50,7 @@ const footerLinks = {
 
 export function SiteFooter() {
   return (
-    <footer className="relative mt-24 w-full overflow-hidden border-t border-border">
+    <footer id="devframe-global-footer" className="relative mt-24 w-full overflow-hidden border-t border-border">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -bottom-10 right-0 select-none translate-x-[12%]"

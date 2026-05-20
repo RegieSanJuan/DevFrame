@@ -31,12 +31,14 @@ type StudioPreviewProps = {
   portfolio: PortfolioRecord;
   device: DeviceSize;
   onScaleChange?: (scale: number) => void;
+  frameless?: boolean;
 };
 
 export function StudioPreview({
   portfolio,
   device,
   onScaleChange,
+  frameless = false,
 }: StudioPreviewProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -101,9 +103,12 @@ export function StudioPreview({
     Math.min(containerSize.height - 88, config.viewportHeight * scale),
   );
 
+  const mobileFrame = device === "mobile" && !frameless;
+  const mobileFullscreen = device === "mobile" && frameless;
+
   return (
     <ScrollArea
-      className={`dark w-full @container ${device === "mobile" ? "max-w-[430px] border border-white/10 rounded-[32px] shadow-2xl overflow-hidden h-[80%]" : "h-full"}  transition-all duration-500 ease-in-out`}
+      className={`dark w-full @container ${mobileFrame ? "max-w-[430px] border border-white/10 rounded-[32px] shadow-2xl overflow-hidden h-[80%]" : mobileFullscreen ? "h-full overflow-y-auto" : "h-full"}  transition-all duration-500 ease-in-out`}
     >
       <PortfolioRenderer portfolio={portfolio} />
     </ScrollArea>

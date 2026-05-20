@@ -168,7 +168,7 @@ function NovaTemplate({ portfolio }: TemplateComponentProps) {
           </div>
 
           {/* Two-column: Story+Skills | Featured Card */}
-          <div className="grid grid-cols-1 gap-10 @md:grid-cols-2 @lg:gap-12 items-start">
+          <div className="grid grid-cols-1 gap-10 @lg:grid-cols-2 @lg:gap-12 items-start">
             {/* Left: Story + Expertise */}
             <div className="space-y-8">
               <div>
@@ -266,14 +266,14 @@ function NovaTemplate({ portfolio }: TemplateComponentProps) {
         </section>
 
         {/* ── Professional Resume ────────────────────── */}
-        <section className="grid grid-cols-1 @md:grid-cols-[1fr_2fr] gap-8 @md:gap-12 items-start">
-          <div className="@md:sticky @md:top-24">
+        <section className="grid grid-cols-1 @lg:grid-cols-[1fr_2fr] gap-8 @lg:gap-12 items-start">
+          <div className="@lg:sticky @lg:top-24">
             <SectionLabel style={{ color: "var(--nova-soft)" }}>
               Professional Resume
             </SectionLabel>
           </div>
           <div
-            className="rounded-3xl p-4 @md:p-8"
+            className="rounded-3xl p-4 @lg:p-8"
             style={{
               backgroundColor: "var(--nova-surface)",
               border: "1px solid var(--nova-border)",
@@ -285,7 +285,7 @@ function NovaTemplate({ portfolio }: TemplateComponentProps) {
             >
               View full professional resume
             </p>
-            <div className="mt-4 grid grid-cols-1 gap-5 @md:grid-cols-[1.2fr_0.8fr]">
+            <div className="mt-4 grid grid-cols-1 gap-5 @lg:grid-cols-[1.2fr_0.8fr]">
               <div>
                 <p
                   className="text-2xl font-semibold tracking-tight"
@@ -312,7 +312,7 @@ function NovaTemplate({ portfolio }: TemplateComponentProps) {
                     }}
                   >
                     <FileText className="w-4 h-4" />
-                    {resumeLabel}
+                    <span className="hidden sm:block">{resumeLabel}</span>
                   </a>
                   {portfolioLinkHref ? (
                     <a
@@ -326,7 +326,7 @@ function NovaTemplate({ portfolio }: TemplateComponentProps) {
                       }}
                     >
                       <ExternalLink className="w-4 h-4" />
-                      View portfolio link
+                      <span className="hidden sm:block">View portfolio link</span>
                     </a>
                   ) : null}
                 </div>
@@ -384,8 +384,8 @@ function NovaTemplate({ portfolio }: TemplateComponentProps) {
 
         {/* ── Experience ───────────────────────────────── */}
         {portfolio.experience && portfolio.experience.length > 0 && (
-          <section className="grid grid-cols-1 @md:grid-cols-[1fr_2fr] gap-8 @md:gap-12 items-start">
-            <div className="@md:sticky @md:top-24">
+          <section className="grid grid-cols-1 @lg:grid-cols-[1fr_2fr] gap-8 @lg:gap-12 items-start">
+            <div className="@lg:sticky @lg:top-24">
               <SectionLabel style={{ color: "var(--nova-soft)" }}>
                 Experience
               </SectionLabel>
@@ -429,14 +429,14 @@ function NovaTemplate({ portfolio }: TemplateComponentProps) {
 
         {/* ── Recommendation ───────────────────────────── */}
         {portfolio.recommendation && (
-          <section className="grid grid-cols-1 @md:grid-cols-[1fr_2fr] gap-8 @md:gap-12 items-start">
-            <div className="@md:sticky @md:top-24">
+          <section className="grid grid-cols-1 @lg:grid-cols-[1fr_2fr] gap-8 @lg:gap-12 items-start">
+            <div className="@lg:sticky @lg:top-24">
               <SectionLabel style={{ color: "var(--nova-soft)" }}>
                 Recommendation
               </SectionLabel>
             </div>
             <figure
-              className="rounded-3xl p-4 @md:p-8 space-y-6"
+              className="rounded-3xl p-4 @lg:p-8 space-y-6"
               style={{
                 backgroundColor: "var(--nova-surface)",
                 border: "1px solid var(--nova-border)",

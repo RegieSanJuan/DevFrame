@@ -2,7 +2,7 @@ import { StudioPreview } from "@/components/studio/studio-preview";
 import { Button } from "@/components/ui/button";
 import type { PortfolioRecord } from "@/lib/portfolio-schema";
 import type { TemplateCatalogItem } from "@/lib/template-catalog";
-import { Check } from "lucide-react";
+import { Check, ExternalLink, FileText } from "lucide-react";
 import Link from "next/link";
 
 interface TemplateLocalPreviewProps {
@@ -19,6 +19,13 @@ export function TemplateLocalPreview({
   const [mode] = ["dark"];
 
   const isMobile = viewMode === "mobile";
+
+  const resumeHref =
+    portfolio.resumeLink?.url ||
+    portfolio.websiteUrl ||
+    portfolio.featuredProjectUrl ||
+    `/p/${portfolio.slug}`;
+  const portfolioLinkHref = portfolio.websiteUrl || portfolio.featuredProjectUrl;
 
   return (
     <div className="space-y-8">
@@ -80,6 +87,43 @@ export function TemplateLocalPreview({
                 >
                   <Link href={`/studio?template=${template.slug}`}>Use in Studio</Link>
                 </Button>
+
+                {/* Resume and Portfolio Link Buttons */}
+                <div className="grid grid-cols-2 gap-3">
+                  <Button
+                    asChild
+                    variant="outline"
+                    className="rounded-2xl h-12 text-sm font-semibold border-border bg-surface-strong hover:bg-surface-strong/80"
+                  >
+                    <a
+                      href={resumeHref}
+                      target={resumeHref.startsWith("http") ? "_blank" : undefined}
+                      rel={resumeHref.startsWith("http") ? "noreferrer" : undefined}
+                      className="flex items-center gap-2 justify-center"
+                    >
+                      <FileText className="size-4" />
+                      Resume
+                    </a>
+                  </Button>
+                  {portfolioLinkHref ? (
+                    <Button
+                      asChild
+                      variant="outline"
+                      className="rounded-2xl h-12 text-sm font-semibold border-border bg-surface-strong hover:bg-surface-strong/80"
+                    >
+                      <a
+                        href={portfolioLinkHref}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="flex items-center gap-2 justify-center"
+                      >
+                        <ExternalLink className="size-4" />
+                        View Link
+                      </a>
+                    </Button>
+                  ) : null}
+                </div>
+
                 <Button
                   asChild
                   variant="ghost"

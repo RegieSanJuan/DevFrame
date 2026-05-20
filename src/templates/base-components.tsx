@@ -222,7 +222,7 @@ export function TemplateGallery({
   return (
     <div
       ref={ref}
-      className={`grid items-center gap-4 lg:grid-cols-[auto_1fr_auto] ${className}`}
+      className={`grid items-center gap-4 grid-cols-[auto_1fr_auto] ${className}`}
     >
       <button
         type="button"

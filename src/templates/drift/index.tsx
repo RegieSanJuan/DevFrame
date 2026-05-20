@@ -177,7 +177,7 @@ function DriftTemplate({ portfolio }: TemplateComponentProps) {
           <main className="space-y-16 pt-16 @lg:space-y-24 @lg:w-[52%] @lg:pt-24">
             <section
               id="about"
-              className="scroll-mt-16 @lg:scroll-mt-24"
+              className="mt-10 scroll-mt-16 @lg:scroll-mt-24"
               aria-label="About me"
             >
               <h2 className="mb-4 text-sm font-bold uppercase tracking-widest text-[var(--drift-heading)] @lg:sr-only">

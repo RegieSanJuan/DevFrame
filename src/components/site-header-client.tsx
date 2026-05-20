@@ -2,7 +2,7 @@
 
 import { ArrowRight, Menu, X } from "lucide-react";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { DevframeLogo } from "./marketing/app-icon";
@@ -45,12 +45,12 @@ export function SiteHeaderClient({
 
   return (
     <>
-      <header className="sticky top-0 z-50 grid place-items-center w-full">
+      <header id="devframe-global-header" className="sticky top-0 z-50 grid place-items-center w-full">
         <SiteHeaderSurface>
           <div className="max-w-6xl w-full px-4 sm:px-6 lg:px-8 flex flex-col gap-4 py-4 md:flex-row md:items-center md:justify-between">
             <div className="flex items-center justify-between w-full md:w-auto">
               <DevframeLogo />
-              
+
               {/* Mobile menu toggle */}
               <button
                 onClick={() => setIsOpen((prev) => !prev)}
@@ -90,7 +90,6 @@ export function SiteHeaderClient({
                     </Button>
                     <Button asChild size="xs" variant="accent">
                       <Link href="/studio">
-                        Open Studio
                         <ArrowRight className="size-4" />
                       </Link>
                     </Button>
@@ -143,7 +142,6 @@ export function SiteHeaderClient({
                 </Button>
                 <Button asChild size="lg" variant="accent" className="w-full h-12 cursor-pointer" onClick={() => setIsOpen(false)}>
                   <Link href="/studio" className="flex items-center justify-center gap-2">
-                    Open Studio
                     <ArrowRight className="size-4" />
                   </Link>
                 </Button>
