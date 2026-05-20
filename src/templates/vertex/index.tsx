@@ -219,12 +219,12 @@ function VertexTemplate({ portfolio }: TemplateComponentProps) {
           </div>
         </section>
 
-        <div className="flex mb-4  mt-4  flex-col w-full @md:hidden @sm:flex-row @sm:w-auto @sm:flex-wrap justify-center @sm:justify-start gap-2">
+        <div className="flex mb-4 mt-4 flex-row flex-wrap w-full @md:hidden justify-center @sm:justify-start gap-2">
           <a
             href={scheduleCallHref}
             target={scheduleCallHref.startsWith("http") ? "_blank" : undefined}
             rel={scheduleCallHref.startsWith("http") ? "noreferrer" : undefined}
-            className="inline-flex h-9 items-center justify-center gap-1.5 rounded-lg px-4 text-xs font-semibold transition-opacity hover:opacity-90 w-full @sm:w-auto"
+            className="inline-flex h-9 items-center justify-center gap-1.5 rounded-lg px-4 text-xs font-semibold transition-opacity hover:opacity-90"
             style={{
               backgroundColor: "var(--vertex-text-main)",
               color: "var(--vertex-root-bg)",
@@ -236,7 +236,7 @@ function VertexTemplate({ portfolio }: TemplateComponentProps) {
           </a>
           <a
             href={portfolio.githubUrl}
-            className="inline-flex h-9 items-center justify-center gap-1.5 rounded-lg border px-4 text-xs font-semibold transition-all w-full @sm:w-auto"
+            className="inline-flex h-9 items-center justify-center gap-1.5 rounded-lg border px-4 text-xs font-semibold transition-all"
             style={{
               backgroundColor: "var(--vertex-bg)",
               color: "var(--vertex-text-main)",
@@ -248,7 +248,7 @@ function VertexTemplate({ portfolio }: TemplateComponentProps) {
           </a>
           <a
             href={portfolio.linkedinUrl}
-            className="inline-flex h-9 items-center justify-center gap-1.5 rounded-lg px-4 text-xs font-semibold transition-opacity hover:opacity-90 w-full @sm:w-auto"
+            className="inline-flex h-9 items-center justify-center gap-1.5 rounded-lg px-4 text-xs font-semibold transition-opacity hover:opacity-90"
             style={{
               backgroundColor: "var(--vertex-text-main)",
               color: "var(--vertex-root-bg)",

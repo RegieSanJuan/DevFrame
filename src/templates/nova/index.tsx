@@ -133,7 +133,7 @@ function NovaTemplate({ portfolio }: TemplateComponentProps) {
                 {ts.heroTagline}
               </p>
             )}
-            <div className="flex flex-col @sm:flex-row items-center justify-center gap-4 pt-2">
+            <div className="flex flex-row flex-wrap items-center justify-center gap-4 pt-2">
               <LinkPill
                 href={portfolio.githubUrl}
                 label="GitHub"
@@ -489,10 +489,10 @@ function NovaTemplate({ portfolio }: TemplateComponentProps) {
       </div>
       {/* ── Footer ───────────────────────────────────── */}
       <footer
-        className="px-8 py-8 flex flex-col @sm:flex-row items-center justify-center gap-4"
+        className="px-8 py-8"
         style={{ borderTop: "1px solid var(--nova-border)" }}
       >
-        <div className="flex justify-between max-w-7xl w-full ">
+        <div className="flex flex-col @sm:flex-row items-center @sm:justify-between max-w-7xl w-full mx-auto gap-4 @sm:gap-0 text-center @sm:text-left">
           <p className="text-sm" style={{ color: "var(--nova-soft)" }}>
             {portfolio.name} · {portfolio.title}
           </p>
